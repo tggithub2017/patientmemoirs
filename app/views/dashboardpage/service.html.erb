@@ -1,0 +1,137 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<link href="../assets/global/plugins/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+
+<br>
+
+<div class="portlet light bordered dashboardpage_height">
+    <div class="portlet-title">
+        <div class="caption font-green">
+            <i class="icon-pin font-green"></i>
+            <span class="caption-subject bold uppercase"> Detail Request</span>
+        </div>
+        <div class="actions">
+            <div class="btn-group">
+                <a class="btn btn-sm default dropdown-toggle" href="javascript:;" data-toggle="dropdown" aria-expanded="false"> Settings
+                    <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-pencil"></i> Edit </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-trash-o"></i> Delete </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-ban"></i> Ban </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="portlet light bordered">
+        <div class="service-vr">
+            <div class="">
+                <label class="service-vr-title"> VR 1 : </label>
+                <select placeholder="VR 1" class="form-control service-vr-select">
+                    <option>eqp1</option>
+                    <option>eqp2</option>
+                    <option>eqp3</option>
+                    <option>eqp4</option>
+                    <option>eqp5</option>
+                </select>
+                <input type="text" placeholder="value" class="form-control service-vr-input"/>
+            </div><br>
+            <div class="service-vr-comment-cover"><h5>VR 1 status</h5></div>
+        </div><br>
+
+        <div class="service-vr">
+            <div class="">
+                <label class="service-vr-title"> VR 2 : </label>
+                <select placeholder="VR 1" class="form-control service-vr-select">
+                    <option>eqp1</option>
+                    <option>eqp2</option>
+                    <option>eqp3</option>
+                    <option>eqp4</option>
+                    <option>eqp5</option>
+                </select>
+                <input type="text" placeholder="value" class="form-control service-vr-input"/>
+            </div><br>
+            <div class="service-vr-comment-cover"><h5>VR 1 status</h5></div>
+        </div><br>
+
+        <div class="service-vr">
+            <div class="">
+                <label class="service-vr-title"> VR 3 : </label>
+                <select placeholder="VR 1" class="form-control service-vr-select">
+                    <option>eqp1</option>
+                    <option>eqp2</option>
+                    <option>eqp3</option>
+                    <option>eqp4</option>
+                    <option>eqp5</option>
+                </select>
+                <input type="text" placeholder="value" class="form-control service-vr-input"/>
+            </div><br>
+            <div class="service-vr-comment-cover"><h5>VR 1 status</h5></div>
+        </div><br>
+
+        <div class="service-vr">
+            <div class="">
+                <label class="service-vr-title"> VR 4 : </label>
+                <select placeholder="VR 1" class="form-control service-vr-select">
+                    <option>eqp1</option>
+                    <option>eqp2</option>
+                    <option>eqp3</option>
+                    <option>eqp4</option>
+                    <option>eqp5</option>
+                </select>
+                <input type="text" placeholder="value" class="form-control service-vr-input"/>
+            </div><br>
+            <div class="service-vr-comment-cover"><h5>VR 1 status</h5></div>
+        </div><br>
+
+        <div class="service-vr">
+            <div class="">
+                <label class="service-vr-title"> VR 5 : </label>
+                <select placeholder="VR 1" class="form-control service-vr-select">
+                    <option>eqp1</option>
+                    <option>eqp2</option>
+                    <option>eqp3</option>
+                    <option>eqp4</option>
+                    <option>eqp5</option>
+                </select>
+                <input type="text" placeholder="value" class="form-control service-vr-input"/>
+            </div><br>
+            <div class="service-vr-comment-cover"><h5>VR 1 status</h5></div>
+        </div><br>
+
+        <div class="service-vr">
+            <div class="">
+                <label class="service-vr-title"> VR 6 : </label>
+                <select placeholder="VR 1" class="form-control service-vr-select">
+                    <option>eqp1</option>
+                    <option>eqp2</option>
+                    <option>eqp3</option>
+                    <option>eqp4</option>
+                    <option>eqp5</option>
+                </select>
+                <input type="text" placeholder="value" class="form-control service-vr-input"/>
+            </div><br>
+            <div class="service-vr-comment-cover"><h5>VR 1 status</h5></div>
+        </div><br>
+
+        <a href="javascript:;" class="btn green"><i class="fa fa-check"></i> Submit</a>
+    </div>
+</div>
+
+<script src="../assets/global/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/components-bootstrap-multiselect.min.js" type="text/javascript"></script>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script>
+    $("#page-title").html("<h4>Services</h4>");
+</script>

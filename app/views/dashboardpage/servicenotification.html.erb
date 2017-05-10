@@ -1,0 +1,167 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<br>
+
+<div class="portlet light bordered dashboardpage_height">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-bubble font-hide hide"></i>
+            <span class="caption-subject font-hide bold uppercase">Notifications</span>
+        </div>
+        <div class="actions">
+            <div class="see_allmsg">
+                <a onclick="see_allmsg()">See all messages</a>
+            </div>
+            <div class="portlet-input input-inline">
+                <div class="input-icon right">
+                    <i class="icon-magnifier"></i>
+                    <input type="text" class="form-control input-circle" placeholder="search..."> </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body chat-room" id="chats">
+        <% if current_authcon %>
+            <% if Authcon.find(current_authcon.id).usertype == "Staff" || Authcon.find(current_authcon.id).usertype == "Admin" %>
+                <% sel_access = 1
+                   tmpPro = PatientProfile.where('id is not NULL') %>
+                <select id="user_select" style="margin-bottom: 15px;">
+                    <% for i in 0..tmpPro.count - 1 %>
+                        <option value="<%= tmpPro[i].id %>">
+                            ID : <%= tmpPro[i].id %>&nbsp
+                            Name : <%= tmpPro[i].first_name + ' ' + tmpPro[i].last_name %>
+                        </option>
+                    <% end %>
+                </select>
+            <% end %>
+        <% end %>
+
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto;"><div class="scroller" style="height: 525px; overflow: auto; width: auto;" data-always-visible="1" data-rail-visible1="1" data-initialized="1">
+            <ul class="chats">
+                <% if sel_access == 1 %>
+                    <% srmsg = Message.where('id is not NULL') %>
+                    <% for i in 0..srmsg.count - 1 %>
+                        <% if srmsg[i].patient_profile_id.to_s != '-1' && srmsg[i].patient_profile_id.to_s != '-2' %>
+                            <% if srmsg[i].staff_profile_id == nil || srmsg[i].staff_profile_id.to_s == '' %>
+                                <li class="in">
+                                    <% if PatientProfile.exists?('id': srmsg[i].patient_profile_id) %>
+                                        <% if PatientProfile.find(srmsg[i].patient_profile_id).image.to_s.length > 0 %>
+                                            <%  file = File.open("savedimages/" + PatientProfile.find(srmsg[i].patient_profile_id).image, "rb")
+                                            contents = file.read %>
+                                            <img class="avatar" alt="" src="<%= contents %>">
+                                        <% else %>
+                                            <img class="avatar" alt="" src="/images/blank_profile_image.png">
+                                        <% end %>
+                                        <div class="message">
+                                            <span class="arrow"> </span>
+                                            <a href="javascript:;" class="name"> Customer : <%= PatientProfile.find(srmsg[i].patient_profile_id).first_name + ' ' + PatientProfile.find(srmsg[i].patient_profile_id).last_name %> </a>
+                                            <span class="datetime"> <%= srmsg[i].updated_at %> </span>
+                                            <span class="body"> <%= srmsg[i].content %> </span>
+                                        </div>
+                                    <% end %>
+                                </li>
+                            <% else %>
+                                <% if srmsg[i].staff_profile_id == StaffProfile.find_by('authcons_id': current_authcon.id).id %>
+                                    <li class="out">
+                                        <% if StaffProfile.find(srmsg[i].staff_profile_id).image.to_s.length > 0 %>
+                                            <%  file = File.open("savedimages/" + StaffProfile.find(srmsg[i].staff_profile_id).image, "rb")
+                                            contents = file.read %>
+                                            <img class="avatar" alt="" src="<%= contents %>">
+                                        <% else %>
+                                            <img class="avatar" alt="" src="/images/blank_profile_image.png">
+                                        <% end %>
+                                        <div class="message">
+                                            <span class="arrow"> </span>
+                                            <a href="javascript:;" class="name"> You </a>
+                                            <span class="datetime"> <%= srmsg[i].updated_at %> </span>
+                                            <span class="body"> <%= srmsg[i].content %> </span>
+                                        </div>
+                                    </li>                          
+                                <% end %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                <% else %>
+                    <%  if current_authcon 
+                            my_id = PatientProfile.find_by('authcons_id': current_authcon.id).id
+                        else
+                            my_id = PatientProfile.find_by('fusers_id': session[:fuser_id]).id
+                        end
+                    %>
+                    <% prmsg = Message.where('id is not NULL') %>
+                    <% for i in 0..prmsg.count - 1 %>
+                        <% if prmsg[i].patient_profile_id == my_id %>
+                            <li class="out">
+                                <% if PatientProfile.find(prmsg[i].patient_profile_id).image.to_s.length > 0 %>
+                                    <%  file = File.open("savedimages/" + PatientProfile.find(prmsg[i].patient_profile_id).image, "rb")
+                                    contents = file.read %>
+                                    <img class="avatar" alt="" src="<%= contents %>">
+                                <% else %>
+                                    <img class="avatar" alt="" src="/images/blank_profile_image.png">
+                                <% end %>
+                                <div class="message">
+                                    <span class="arrow"> </span>
+                                    <a href="javascript:;" class="name"> You </a>
+                                    <span class="datetime"> <%= prmsg[i].updated_at %> </span>
+                                    <span class="body"> <%= prmsg[i].content %> </span>
+                                </div>
+                            </li>
+                        <% end %>
+                        <% if prmsg[i].send_to == my_id %>
+                            <li class="in">
+                                <% if StaffProfile.find(Message.find_by('send_to': prmsg[i].send_to).staff_profile_id).image.to_s.length > 0 %>
+                                    <%  file = File.open("savedimages/" + StaffProfile.find(Message.find_by('send_to': prmsg[i].send_to).staff_profile_id).image, "rb")
+                                    contents = file.read %>
+                                    <img class="avatar" alt="" src="<%= contents %>">
+                                <% else %>
+                                    <img class="avatar" alt="" src="/images/blank_profile_image.png">
+                                <% end %>
+                                <div class="message">
+                                    <span class="arrow"> </span>
+                                    <a href="javascript:;" class="name"> Support </a>
+                                    <span class="datetime"> <%= prmsg[i].updated_at %> </span>
+                                    <span class="body"> <%= prmsg[i].content %> </span>
+                                </div>
+                            </li>
+                        <% end %>          
+                    <% end %>
+                <% end %>
+            </ul>
+        </div>
+
+        <%= form_for(:message_request, :url => dashboardpage_message_path, :method => "post") do |f| %>
+            <%= f.text_field(:id, style: "display: none;") %>
+            <%= f.text_field(:content, class: "form-control pull-left", placeholder: "Type a message here...") %>
+            <%= f.submit("Send Request", class: "btn blue icn-only send_msg pull-right") %>
+        <% end %>
+
+        <% if sel_access == 1 %>
+            <% if tmpPro.count != 0 %>
+                <script>
+                    setTimeout(function() {
+                        $("#message_request_id").val("<%= tmpPro[0].id %>");
+                    }, 0);
+                </script>
+            <% end %>
+        <% end %>
+    </div>
+</div>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script>
+    $("#page-title").html("<h4>Service Notifications</h4>");
+    setTimeout(function() {
+        $(".page-content").css('height', 'auto');
+
+        if($(".chats li").length > 20) {
+            $(".chats li").css("display", "none");
+            for(var i = $(".chats li").length - 20; i < $(".chats li").length; i ++) {
+                $(".chats li:eq("+i+")").css("display", "block");
+            }
+        }
+    } ,0);
+
+    function see_allmsg() {
+        $(".chats li").css("display", "block");
+    }
+</script>

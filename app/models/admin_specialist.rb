@@ -1,0 +1,2 @@
+class AdminSpecialist < ApplicationRecord
+end

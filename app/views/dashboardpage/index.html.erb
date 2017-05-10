@@ -1,0 +1,104 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<br>
+
+<div class="row dashboardpage_height">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <% if current_authcon %>
+                <% if Authcon.count != 0 && Authcon.exists?('id': current_authcon.id) %>
+                    <% if Authcon.find(current_authcon.id).usertype == "Staff" %>
+                        <% if StaffProfile.find_by('authcons_id': current_authcon.id).occupation == "Staff" || StaffProfile.find_by('authcons_id': current_authcon.id).occupation == "Admin" %>
+                            <h1 class="dashboard_land_font">Welcome to Staff Dashboard</h1>
+                            <br>
+                            <h4 class="dashboard_land_font">1.&nbspPatient Management</h4>
+                            <h5 class="dashboard_land_font">&nbsp&nbspView your profile, View all patients, You and patients profile setup</h5>
+
+                            <h4 class="dashboard_land_font">2.&nbspService</h4>
+                            <h5 class="dashboard_land_font">&nbsp&nbspView patient requests and dispose them</h5>
+
+                            <h4 class="dashboard_land_font">3.&nbspPatient Transaction Request</h4>
+                            <h5 class="dashboard_land_font">&nbsp&nbspView patients' transaction requests</h5>
+
+                            <h4 class="dashboard_land_font">4.&nbspPost News</h4>
+                            <h5 class="dashboard_land_font">&nbsp&nbspPost news developed in our team</h5>
+
+                            <h4 class="dashboard_land_font">5.&nbspHistory</h4>
+                            <h5 class="dashboard_land_font">&nbsp&nbspView all histories</h5>
+
+                            <% if !StaffProfile.exists?('authcons_id': current_authcon.id) %>
+                                <h3 class="dashboard_land_font" style="font-family: serif;font-weight: 600;">Before them you need to create your profile <a href="profilesetting">here...</a></h3>
+                            <% end %>
+                        <% else %>
+                            <% if StaffProfile.find_by('authcons_id': current_authcon.id).occupation == "Admin" %>
+                                <h1 class="dashboard_land_font">Welcome to Admin Dashboard</h1>
+                                <br>
+                                <h4 class="dashboard_land_font">1.&nbspPatient Management</h4>
+                                <h5 class="dashboard_land_font">&nbsp&nbspView your profile, View all patients, You and patients profile setup</h5>
+
+                                <h4 class="dashboard_land_font">2.&nbspService</h4>
+                                <h5 class="dashboard_land_font">&nbsp&nbspView patient requests and dispose them</h5>
+
+                                <h4 class="dashboard_land_font">3.&nbspPatient Transaction Request</h4>
+                                <h5 class="dashboard_land_font">&nbsp&nbspView patients' transaction requests</h5>
+
+                                <h4 class="dashboard_land_font">4.&nbspPost News</h4>
+                                <h5 class="dashboard_land_font">&nbsp&nbspPost news developed in our team</h5>
+
+                                <h4 class="dashboard_land_font">5.&nbspHistory</h4>
+                                <h5 class="dashboard_land_font">&nbsp&nbspView all histories</h5>
+
+                                <% if !StaffProfile.exists?('authcons_id': current_authcon.id) %>
+                                    <h3 class="dashboard_land_font" style="font-family: serif;font-weight: 600;">Before them you need to create your profile <a href="profilesetting">here...</a></h3>
+                                <% end %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                    <% if Authcon.find(current_authcon.id).usertype == "Patient" %>
+                        <h1 class="dashboard_land_font">Welcome to Patient Dashboard</h1>
+                        <br>
+                        <h4 class="dashboard_land_font">1.&nbspPatient Place</h4>
+                        <h5 class="dashboard_land_font">&nbsp&nbspView your profile, View helps</h5>
+
+                        <h4 class="dashboard_land_font">2.&nbspService</h4>
+                        <h5 class="dashboard_land_font">&nbsp&nbspVirtual reality service, Request service, Notifications</h5>
+
+                        <h4 class="dashboard_land_font">3.&nbspTransaction</h4>
+                        <h5 class="dashboard_land_font">&nbsp&nbspSetup payment method, Order</h5>
+
+                        <h4 class="dashboard_land_font">4.&nbspHistory</h4>
+                        <h5 class="dashboard_land_font">&nbsp&nbspView all histories</h5>
+
+                        <% if !PatientProfile.exists?('authcons_id': current_authcon.id) %>
+                            <h3 class="dashboard_land_font" style="font-family: serif;font-weight: 600;">Before them you need to create your profile <a href="servicerequest">here...</a></h3>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            <% else %>
+                <h1 class="dashboard_land_font">Welcome to Patient Dashboard</h1>
+                <br>
+                <h4 class="dashboard_land_font">1.&nbspPatient Place</h4>
+                <h5 class="dashboard_land_font">&nbsp&nbspView your profile, View helps</h5>
+
+                <h4 class="dashboard_land_font">2.&nbspService</h4>
+                <h5 class="dashboard_land_font">&nbsp&nbspVirtual reality service, Request service, Notifications</h5>
+
+                <h4 class="dashboard_land_font">3.&nbspTransaction</h4>
+                <h5 class="dashboard_land_font">&nbsp&nbspSetup payment method, Order</h5>
+
+                <h4 class="dashboard_land_font">4.&nbspHistory</h4>
+                <h5 class="dashboard_land_font">&nbsp&nbspView all histories</h5>
+
+                <% if !PatientProfile.exists?('fusers_id': session[:fuser_id]) %>
+                    <h3 class="dashboard_land_font" style="font-family: serif;font-weight: 600;">Before them you need to create your profile <a href="servicerequest">here...</a></h3>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script>
+    $("#page-title").html("<h4>Staff Dashboard</h4>");
+</script>

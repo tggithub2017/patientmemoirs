@@ -1,0 +1,357 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<br>
+
+<div class="portlet light bordered dashboardpage_height">
+    <div class="portlet-body qn_request">
+        <% if current_authcon %>
+            <% if Authcon.find(current_authcon.id).usertype == "Staff" %>
+                <% sel_access = 1
+                   tmpPro = PatientProfile.where('id is not NULL') %>
+                <select id="user_select" style="margin-bottom: 15px;">
+                    <% for i in 0..tmpPro.count - 1 %>
+                        <option value="<%= tmpPro[i].id %>">
+                            ID : <%= tmpPro[i].id %>&nbsp
+                            Name : <%= tmpPro[i].first_name + ' ' + tmpPro[i].last_name %>
+                        </option>
+                    <% end %>
+                </select>
+            <% end %>
+        <% end %><br><br>
+
+        <% tmpQn = Qn.where('id is not NULL') %>
+
+        <label style="font-size: 15px;color: red;">Questionnaire Type : </label>
+        <% for i in 0..1 %>
+            <a onclick="pagenation('.qn' + <%= i %>, <%= i %>)" class="qn_type"><%= tmpQn[i].q_type %></a> , 
+        <% end %>
+        <a onclick="pagenation('.qn2', 2)" class="qn_type">PAM-13</a>
+        <br><br>
+
+        <% for i in 0..1 %>
+            <div class="qn<%= i %> nqn">
+                <%= form_for(:qn_request, :url => dashboardpage_qnrequestinsert_path, :method => "post") do |f| %>
+                    <div class="form-body" style="padding-left: 50px;padding-right: 50px;">
+                        <%= f.text_field :qntype, style: "display: none", value: "qn" + i.to_s %>
+                        <%= f.text_field :id, style: "display: none;", class: "patient_profile_id" %>
+                        <div class="form-group">
+                            <% if tmpQn[i].q1 != nil %>
+                                <div class="qn_each">
+                                    <label class="qn_setup_custom"> 1. <%= tmpQn[i].q1 %> </label>
+                                    <div style="float: right;">
+                                        <%= f.radio_button :q1, 0 %> Not at all sure &nbsp&nbsp
+                                        <%= f.radio_button :q1, 1 %> Several days &nbsp&nbsp
+                                        <%= f.radio_button :q1, 2 %> Over half the days &nbsp&nbsp
+                                        <%= f.radio_button :q1, 3 %> Nearly every day
+                                    </div>
+                                </div>
+                            <% end %>
+                            <% if tmpQn[i].q2 != nil %>
+                                <div class="qn_each">
+                                    <label class="qn_setup_custom"> 2. <%= tmpQn[i].q2 %> </label>
+                                    <div style="float: right;">
+                                        <%= f.radio_button :q2, 0 %> Not at all sure &nbsp&nbsp
+                                        <%= f.radio_button :q2, 1 %> Several days &nbsp&nbsp
+                                        <%= f.radio_button :q2, 2 %> Over half the days &nbsp&nbsp
+                                        <%= f.radio_button :q2, 3 %> Nearly every day
+                                    </div>
+                                </div>
+                            <% end %>
+                            <% if tmpQn[i].q3 != nil %>
+                                <div class="qn_each">
+                                    <label class="qn_setup_custom"> 3. <%= tmpQn[i].q3 %> </label>
+                                    <div style="float: right;">
+                                        <%= f.radio_button :q3, 0 %> Not at all sure &nbsp&nbsp
+                                        <%= f.radio_button :q3, 1 %> Several days &nbsp&nbsp
+                                        <%= f.radio_button :q3, 2 %> Over half the days &nbsp&nbsp
+                                        <%= f.radio_button :q3, 3 %> Nearly every day
+                                    </div>
+                                </div>
+                            <% end %>                    
+                            <% if tmpQn[i].q4 != nil %>
+                                <div class="qn_each">
+                                    <label class="qn_setup_custom"> 4. <%= tmpQn[i].q4 %> </label>
+                                    <div style="float: right;">
+                                        <%= f.radio_button :q4, 0 %> Not at all sure &nbsp&nbsp
+                                        <%= f.radio_button :q4, 1 %> Several days &nbsp&nbsp
+                                        <%= f.radio_button :q4, 2 %> Over half the days &nbsp&nbsp
+                                        <%= f.radio_button :q4, 3 %> Nearly every day
+                                    </div>
+                                </div>
+                            <% end %>
+                            <% if tmpQn[i].q5 != nil %>
+                                <div class="qn_each">
+                                    <label class="qn_setup_custom"> 5. <%= tmpQn[i].q5 %> </label>
+                                    <div style="float: right;">
+                                        <%= f.radio_button :q5, 0 %> Not at all sure &nbsp&nbsp
+                                        <%= f.radio_button :q5, 1 %> Several days &nbsp&nbsp
+                                        <%= f.radio_button :q5, 2 %> Over half the days &nbsp&nbsp
+                                        <%= f.radio_button :q5, 3 %> Nearly every day
+                                    </div>
+                                </div>
+                            <% end %>
+                            <% if tmpQn[i].q6 != nil %>
+                                <div class="qn_each">
+                                    <label class="qn_setup_custom"> 6. <%= tmpQn[i].q6 %> </label>
+                                    <div style="float: right;">
+                                        <%= f.radio_button :q6, 0 %> Not at all sure &nbsp&nbsp
+                                        <%= f.radio_button :q6, 1 %> Several days &nbsp&nbsp
+                                        <%= f.radio_button :q6, 2 %> Over half the days &nbsp&nbsp
+                                        <%= f.radio_button :q6, 3 %> Nearly every day
+                                    </div>
+                                </div>
+                            <% end %>
+                            <% if tmpQn[i].q7 != nil %>
+                                <div class="qn_each">
+                                    <label class="qn_setup_custom"> 7. <%= tmpQn[i].q7 %> </label>
+                                    <div style="float: right;">
+                                        <%= f.radio_button :q7, 0 %> Not at all sure &nbsp&nbsp
+                                        <%= f.radio_button :q7, 1 %> Several days &nbsp&nbsp
+                                        <%= f.radio_button :q7, 2 %> Over half the days &nbsp&nbsp
+                                        <%= f.radio_button :q7, 3 %> Nearly every day
+                                    </div>
+                                </div>
+                            <% end %>
+                            <% if tmpQn[i].q8 != nil %>
+                                <div class="qn_each">
+                                    <label class="qn_setup_custom"> 8. <%= tmpQn[i].q8 %> </label>
+                                    <div style="float: right;">
+                                        <%= f.radio_button :q8, 0 %> Not at all sure &nbsp&nbsp
+                                        <%= f.radio_button :q8, 1 %> Several days &nbsp&nbsp
+                                        <%= f.radio_button :q8, 2 %> Over half the days &nbsp&nbsp
+                                        <%= f.radio_button :q8, 3 %> Nearly every day
+                                    </div>
+                                </div>
+                            <% end %>
+                            <% if tmpQn[i].q9 != nil %>
+                                <div class="qn_each">
+                                    <label class="qn_setup_custom"> 9. <%= tmpQn[i].q9 %> </label>
+                                    <div style="float: right;">
+                                        <%= f.radio_button :q9, 0 %> Not at all sure &nbsp&nbsp
+                                        <%= f.radio_button :q9, 1 %> Several days &nbsp&nbsp
+                                        <%= f.radio_button :q9, 2 %> Over half the days &nbsp&nbsp
+                                        <%= f.radio_button :q9, 3 %> Nearly every day
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions noborder">
+                        <%= f.submit("Send Request", class: "btn blue qn_btn") %>
+                    </div>
+                <% end %> 
+            </div> 
+        <% end %>
+
+        <div class="qn2 nqn">
+            <%= form_for(:qn_request, :url => dashboardpage_qnrequestinsert_path, :method => "post") do |f| %>
+                <div class="form-body" style="padding-left: 50px;padding-right: 50px;">
+                    <%= f.text_field :qntype, style: "display: none;", value: "qn2" %>
+                    <%= f.text_field :id, style: "display: none;", class: "patient_profile_id" %>
+                    <div class="form-group">
+                        <% if tmpQn[2].q1 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 1. <%= tmpQn[2].q1 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q1, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q1, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q1, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q1, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q1, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q2 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 2. <%= tmpQn[2].q2 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q2, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q2, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q2, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q2, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q2, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q3 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 3. <%= tmpQn[2].q3 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q3, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q3, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q3, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q3, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q3, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>                    
+                        <% if tmpQn[2].q4 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 4. <%= tmpQn[2].q4 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q4, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q4, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q4, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q4, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q4, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q5 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 5. <%= tmpQn[2].q5 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q5, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q5, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q5, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q5, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q5, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q6 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 6. <%= tmpQn[2].q6 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q6, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q6, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q6, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q6, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q6, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q7 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 7. <%= tmpQn[2].q7 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q7, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q7, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q7, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q7, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q7, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q8 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 8. <%= tmpQn[2].q8 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q8, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q8, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q8, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q8, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q8, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q9 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 9. <%= tmpQn[2].q9 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q9, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q9, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q9, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q9, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q9, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q10 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 10. <%= tmpQn[2].q10 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q10, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q10, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q10, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q10, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q10, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q11 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 11. <%= tmpQn[2].q11 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q11, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q11, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q11, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q11, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q11, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q12 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 12. <%= tmpQn[2].q12 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q12, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q12, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q12, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q12, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q12, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                        <% if tmpQn[2].q13 != nil %>
+                            <div class="qn_each">
+                                <label class="qn_setup_custom"> 13. <%= tmpQn[2].q13 %> </label>
+                                <div style="float: right;">
+                                    <%= f.radio_button :q13, 1 %> Disagree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q13, 2 %> Disagree &nbsp&nbsp
+                                    <%= f.radio_button :q13, 3 %> Agree &nbsp&nbsp
+                                    <%= f.radio_button :q13, 4 %> Agree Strongly &nbsp&nbsp
+                                    <%= f.radio_button :q13, 5 %> N/A
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+                
+                <div class="form-actions noborder">
+                    <%= f.submit("Send Request", class: "btn blue qn_btn") %>
+                </div>
+            <% end %> 
+        </div> 
+    </div>
+<div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script>
+    $("#page-title").html("<h4 style='font-size: 18px;'>Patient Questionnaire Setup</h4>");
+
+    function pagenation(e, index) {
+        $(".nqn").css("display", "none");
+        $(e).css("display", "block");
+        $(".qn_type").css("text-decoration", "none");
+        $(".qn_type:eq(" + index +")").css("text-decoration", "underline");
+
+        if($(".qn_request").height() > $(window).height()) {
+            $(".page-content").height($(".qn_request").height() + 200); 
+        }
+    }
+
+    setTimeout(function() {
+        var index = 0;
+        $(".qn_each").each(function() {
+            $(".qn_each:eq(" + index + ") input:eq(0)").prop("checked", true);
+            index++;
+        });
+
+        index = 0;
+        $(".patient_profile_id").each(function() {
+            $(".patient_profile_id:eq("+ index +")").val("<%= tmpPro[0].id %>");
+            index++;
+        }, 0);
+    }, 0);
+
+    $("#user_select").change(function() {
+        $( "select option:selected" ).each(function() {
+            $(".patient_profile_id").val($(this).val());
+        });
+    }).trigger( "change" );
+</script>

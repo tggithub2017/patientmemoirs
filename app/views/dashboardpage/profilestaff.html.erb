@@ -1,0 +1,202 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<style>
+    @media screen and (max-height: 991px) {
+        .profile-sidebar {
+            text-align: center;
+        }
+
+        .staff_introduce {
+            display: block;
+        }
+    }
+</style>
+
+<br>
+
+<div class="row dashboardpage_height">
+    <div class="col-md-12">
+        <!-- BEGIN PROFILE SIDEBAR -->
+        <div class="profile-sidebar">
+            <!-- PORTLET MAIN -->
+            <div class="portlet light profile-sidebar-portlet">
+                <!-- SIDEBAR USERPIC -->
+                <div class="profile-userpic">
+                    <% if StaffProfile.count != 0 && StaffProfile.exists?('authcons_id': current_authcon.id) %>
+                        <% if StaffProfile.find_by('authcons_id': current_authcon.id).image == '' || StaffProfile.find_by('authcons_id': current_authcon.id).image == nil %>
+                            <img src="/images/blank_profile_image.png" class="img-responsive" style="width: 200px;height: 200px;" alt=""> 
+                        <% else %>
+                            <%  file = File.open("savedimages/" + StaffProfile.find_by('authcons_id': current_authcon.id).image, "rb")
+                                contents = file.read %>
+                            <img src="<%= contents %>" class="img-responsive" style="width: 200px;height: 200px;" alt="">
+                        <% end %>
+                    <% else %>
+                        <img src="/images/blank_profile_image.png" class="img-responsive" style="width: 200px;height: 200px;" alt=""> 
+                    <% end %>
+                </div>
+                <!-- END SIDEBAR USERPIC -->
+                <!-- SIDEBAR USER TITLE -->
+                <% if StaffProfile.count != 0 && StaffProfile.exists?('authcons_id': current_authcon.id) %>
+                    <div class="profile-usertitle">
+                        <div class="profile-usertitle-name"> <%= StaffProfile.find_by('authcons_id': current_authcon.id).first_name + ' ' + StaffProfile.find_by('authcons_id': current_authcon.id).last_name %> </div>
+                        <div class="profile-usertitle-job"> <%= StaffProfile.find_by('authcons_id': current_authcon.id).occupation %> </div>
+                    </div>
+                    <% tmpstaffaccount = StaffProfile.find_by('authcons_id': current_authcon.id) %>
+                    <ul class="list-inline staff_introduce">
+                        <li>
+                            <i class="fa fa-map-marker"></i> <%= tmpstaffaccount.address.to_s %> </li>
+                        <li>
+                            <i class="fa fa-calendar"></i> <%= tmpstaffaccount.birthdate.to_s %> </li>
+                        <li>
+                            <i class="fa fa-user"></i> <%= tmpstaffaccount.occupation.to_s %> </li>
+                        <li>
+                            <i class="icon-notebook"></i> <%= tmpstaffaccount.email.to_s %> </li>
+                    </ul>
+
+                     <% if Message.count != 0
+                        if Message.exists?('patient_profile_id': -1)
+                            tmpMrequest = Message.where('patient_profile_id = -1')
+                        end   
+                     end %>
+                <% else %>
+                    <div class="profile-usertitle-name">Please create your profile</div>
+                <% end %>
+                <!-- END SIDEBAR BUTTONS -->
+            </div>
+            <!-- END PORTLET MAIN -->
+            <!-- END PORTLET MAIN -->
+        </div>
+        <!-- END BEGIN PROFILE SIDEBAR -->
+        <!-- BEGIN PROFILE CONTENT -->
+        <div class="profile-content">
+            <div class="row">
+                <div class="col-md-8 profile-info">
+                    <p class="staff_workplace"> PATIENTS NEED YOUR HELP BELOW. </p>
+                </div>
+                <!--end col-md-8-->
+                <div class="col-md-4">
+                    <div class="portlet sale-summary">
+                        <div class="portlet-title">
+                            <div class="caption font-red sbold"> PATIENTS </div>
+                            <div class="tools">
+                                <a class="reload" href="" onclick="reload_requests()" data-original-title="" title=""> </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span class="sale-info"> All Patients
+                                        <i class="fa fa-img-up"></i>
+                                    </span>
+                                    <span class="sale-num"> <%= PatientProfile.count %> </span>
+                                </li>
+                                <li>
+                                    <span class="sale-info"> Request from Users
+                                        <i class="fa fa-img-down"></i>
+                                    </span>
+                                    <% if Message.exists?('patient_profile_id': -1) %>
+                                        <span class="sale-num newrequest_num"> <%= PatientProfile.where('allowed = 0').count + tmpMrequest.count %> </span>
+                                    <% else %>
+                                        <span class="sale-num newrequest_num"> <%= PatientProfile.where('allowed = 0').count %> </span>
+                                    <% end %>
+                                    <button type="button" class="btn btn-xs green newrequest_btn">New Request</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--end col-md-4-->
+            </div>
+            <!--end row-->
+
+            <div class="tabbable-line tabbable-custom-profile">
+                <ul class="nav nav-tabs">
+                    <li class="active no_hover">
+                        <a> Requests Summary </a>
+                    </li>
+                </ul>
+
+                <div class="wrapper">
+                    <div class="portlet box blue">
+                        <div class="portlet-title" style="background-color: #4795c4;">
+                            <div class="caption">
+                                <i class="fa fa-cogs"></i>Patient Lists
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="table-scrollable">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"> Priority </th>
+                                            <th scope="col"> Account ID </th>
+                                            <th scope="col"> Name </th>
+                                            <th scope="col"> Email </th>
+                                            <th scope="col"> NHS_Number </th>
+                                            <th scope="col"> Status </th>
+                                            <th scope="col" style="width: 30%;"> Order Summary </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% tmpPatient = PatientProfile.where('allowed = 0') %>
+                                        <% for i in 0..tmpPatient.count-1 %>
+                                            <tr onclick="request_check('Profile Setup Request')">
+                                                <td> <%= i+1 %> </td>
+                                                <% if tmpPatient[i].authcons_id.to_s != '' %>
+                                                    <td> <%= tmpPatient[i].authcons_id %> </td>
+                                                <% else %>
+                                                    <td> <%= tmpPatient[i].fusers_id.to_s + ' ' + 'F' %> </td>
+                                                <% end %>
+                                                <td> <%= tmpPatient[i].first_name.to_s + ' ' + tmpPatient[i].last_name.to_s %> </td>
+                                                <td> <%= tmpPatient[i].email.to_s %> </td>
+                                                <td> <%= tmpPatient[i].nhs_number.to_s %> </td>
+                                                <td> <%= tmpPatient[i].updated_at.to_s %> </td>
+                                                <td> Profile Setup Request </td>
+                                            </tr>
+                                        <% end %>
+                                        <% if Message.exists?('patient_profile_id': -1) %>
+                                            <% for i in 0..tmpMrequest.count-1 %>
+                                                <tr onclick="request_checkuser('<%= tmpMrequest[i].content %>')">
+                                                    <td> <%= tmpPatient.count+i+1 %> </td>
+                                                    <td> Not signed User </td>
+                                                    <td> <% tmpname = tmpMrequest[i].content.split('|') %><%= tmpname[0] %> </td>
+                                                    <td> <%= tmpname[2] %> </td>
+                                                    <td> <%= tmpname[1] %> </td>
+                                                    <td> <%= tmpMrequest[i].updated_at.to_s %> </td>
+                                                    <td> <%= tmpname[4] %> </td>
+                                                </tr>
+                                            <% end %>
+                                        <% end %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>         
+                </div>
+            </div>
+        </div>
+        <!-- END PROFILE CONTENT -->
+    </div>
+</div>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script>
+    $("#page-title").html("<h4 style='font-size: 18px;'>My Workplace</h4>");
+
+    function reload_requests() {
+        location.reload();
+    }
+
+    function request_check(e) {
+        if(e == "Profile Setup Request") {
+            window.location.href = "profilesetting";
+        }
+    }
+
+    function request_checkuser(e) {
+        if(confirm("Will you perform this request?")) {
+            window.location.href = "profileperform?flag=" + e;
+        }
+    }
+</script>

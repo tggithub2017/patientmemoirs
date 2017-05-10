@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<!-- 
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
+Version: 4.7.1
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<style>
+    html {
+        margin-top: 0px!important;
+    }
+</style>
+
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Dashboard</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="Preview page of Metronic Admin Theme #1 for " name="description" />
+        <meta content="" name="author" />
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+
+        <link rel="shortcut icon" href="/images/pageicon.png">
+
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN THEME GLOBAL STYLES -->
+        <link href="../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+        <!-- END THEME GLOBAL STYLES -->
+        <!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL STYLES -->
+        <!-- BEGIN THEME LAYOUT STYLES -->
+        <link href="../assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="../assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+        <!-- END THEME LAYOUT STYLES -->
+        <link rel="shortcut icon" href="favicon.ico" />
+
+        <link rel="stylesheet" type="text/css" href="/css/profile-form.css" />
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-content-white page-sidebar-closed">
+        <div class="page-wrapper">
+            <!-- BEGIN HEADER -->
+            <div class="page-header navbar navbar-fixed-top">
+                <!-- BEGIN HEADER INNER -->
+                <div class="page-header-inner ">
+                    <!-- BEGIN LOGO -->
+                    <div class="page-logo">
+                        <%= link_to root_path, class: "dashboard_logo" do %>
+                            <img src="/images/dashboardlogo.png" alt="logo" class="logo-default" />
+                        <% end %>
+                        <div class="menu-toggler sidebar-toggler">
+                            <span></span>
+                        </div>
+                    </div>
+                    <!-- END LOGO -->
+                    <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+                    <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span></span>
+                    </a>
+                    <!-- END RESPONSIVE MENU TOGGLER -->
+                    <!-- BEGIN TOP NAVIGATION MENU -->
+                    <div class="top-menu">
+                        <ul class="nav navbar-nav pull-right">
+                            <!-- BEGIN NOTIFICATION DROPDOWN -->
+                            <!-- DOC: Apply "dropdown-dark" class after "dropdown-extended" to change the dropdown styte -->
+                            <!-- DOC: Apply "dropdown-hoverable" class after below "dropdown" and remove data-toggle="dropdown" data-hover="dropdown" data-close-others="true" attributes to enable hover dropdown mode -->
+                            <!-- DOC: Remove "dropdown-hoverable" and add data-toggle="dropdown" data-hover="dropdown" data-close-others="true" attributes to the below A element with dropdown-toggle class -->
+                            <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" style="padding-top: 17px;padding-bottom: 12px;">
+                                    <i class="icon-bell"></i>
+                                    <span class="badge badge-default notification"> 0 </span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="external">
+                                        <h3>
+                                            <span class="bold">Pending</span> notifications</h3>
+                                        <a href="servicenotification">view all</a>
+                                    </li>
+                                    <li>
+                                        <ul class="dropdown-menu-list scroller" id="pending_msg" style="height: 200px;" data-handle-color="#637283">
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- END NOTIFICATION DROPDOWN -->
+
+                            <!-- BEGIN USER LOGIN DROPDOWN -->
+                            <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                            <li class="dropdown dropdown-user">
+                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <%  if current_authcon 
+                                            if Authcon.find(current_authcon.id).usertype == "Staff"
+                                                if StaffProfile.count != 0
+                                                    if StaffProfile.exists?('authcons_id': current_authcon.id)
+                                                        if StaffProfile.find_by('authcons_id': current_authcon.id).image == '' || StaffProfile.find_by('authcons_id': current_authcon.id).image == nil %>
+                                                            <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                                        <% else %>
+                                                            <%  file = File.open("savedimages/" + StaffProfile.find_by('authcons_id': current_authcon.id).image, "rb")
+                                                                contents = file.read %>
+                                                            <img alt="" class="img-circle" src="<%= contents %>" />
+                                                        <% end
+                                                    else %>
+                                                        <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                                    <% end
+                                                else %>
+                                                    <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                                <% end
+                                            else
+                                                if PatientProfile.count != 0
+                                                    if PatientProfile.exists?('authcons_id': current_authcon.id)
+                                                        if PatientProfile.find_by('authcons_id': current_authcon.id).image == '' || PatientProfile.find_by('authcons_id': current_authcon.id).image == nil %>
+                                                            <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                                        <% else %>
+                                                            <% if PatientProfile.find_by('authcons_id': current_authcon.id).allowed == 1 %>
+                                                                <%  file = File.open("savedimages/" + PatientProfile.find_by('authcons_id': current_authcon.id).image, "rb")
+                                                                    contents = file.read %>
+                                                                <img alt="" class="img-circle" src="<%= contents %>" />
+                                                            <% else %>
+                                                                <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                                            <% end %>
+                                                        <% end
+                                                    else %>
+                                                        <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                                    <% end
+                                                else %>
+                                                    <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                                <% end
+                                            end
+                                        else
+                                            if PatientProfile.exists?('fusers_id': session[:fuser_id])
+                                                if PatientProfile.find_by('fusers_id': session[:fuser_id]).image == '' || PatientProfile.find_by('fusers_id': session[:fuser_id]).image == nil %>
+                                                    <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                                <% else %>
+                                                    <% if PatientProfile.find_by('fusers_id': session[:fuser_id]).allowed == 1 %>
+                                                        <%  file = File.open("savedimages/" + PatientProfile.find_by('fusers_id': session[:fuser_id]).image, "rb")
+                                                            contents = file.read %>
+                                                        <img alt="" class="img-circle" src="<%= contents %>" />
+                                                    <% else %>
+                                                        <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                                    <% end %>
+                                                <% end
+                                            else %>
+                                                <img alt="" class="img-circle" src="/images/blank_profile_image.png" />
+                                            <% end
+                                        end
+                                    %>
+
+                                    <% if !signed_in? %>
+                                        <span class="username username-hide-on-mobile"> <%= Fuser.find(session[:fuser_id]).name if session[:fuser_id] %> </span>
+                                    <% else %>
+                                        <span class="username username-hide-on-mobile"> <%= current_authcon.email %> </span>
+                                    <% end %>
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-default">
+                                    <li>
+                                        <a href="/">
+                                            <i class="icon-home"></i> Home Page </a>
+                                    </li>
+
+                                    <li class="divider"> </li>
+
+                                    <li>
+                                        <% if !signed_in? %>
+                                            <%= link_to "Log out", signout_path, class: "signout" %>
+                                        <% else %>
+                                            <%= link_to destroy_authcon_session_path, class: "signout" do %>
+                                                <i class="icon-logout"></i>Log Out
+                                            <% end %>
+                                        <% end %>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- END USER LOGIN DROPDOWN -->
+                            <!-- END QUICK SIDEBAR TOGGLER -->
+                        </ul>
+                    </div>
+                    <!-- END TOP NAVIGATION MENU -->
+                </div>
+                <!-- END HEADER INNER -->
+            </div>
+            <!-- END HEADER -->
+
+            <!-- Information about me -->
+            <% if current_authcon %>
+                <% if Authcon.find(current_authcon.id).usertype == "Staff" %>
+                    <% sel_access = 1 %>
+                <% end %>
+            <% end %>
+            <div style="display: none;" id="user_type">
+                <% if sel_access == 1 %><%= "Staff" %>
+                <% else %><%= "Patient" %><% end %>
+            </div>
+            <div style="display: none;" id="my_profile_id">
+                <% if current_authcon 
+                    if Authcon.find(current_authcon.id).usertype == "Patient" %>
+                        <%= PatientProfile.find_by('authcons_id': current_authcon.id).id %>
+                    <% else %>
+                        <%= StaffProfile.find_by('authcons_id': current_authcon.id).id %>
+                    <% end %>
+                <% else %>
+                    <%= PatientProfile.find_by('fusers_id': session[:fuser_id]).id %>
+                <% end %>
+            </div>
+
+            <!-- BEGIN HEADER & CONTENT DIVIDER -->
+            <div class="clearfix"> </div>
+            <!-- END HEADER & CONTENT DIVIDER -->
+            <!-- BEGIN CONTAINER -->
+            <div class="page-container">
+                <!-- BEGIN SIDEBAR -->
+                <div class="page-sidebar-wrapper">
+                    <!-- BEGIN SIDEBAR -->
+                    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+                    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+                    <div class="page-sidebar navbar-collapse collapse">
+                        <!-- BEGIN SIDEBAR MENU -->
+                        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+                        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+                        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+                        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+                        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+                        <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+                        <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-closed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+                            <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                            <li class="sidebar-toggler-wrapper hide">
+                                <div class="sidebar-toggler">
+                                    <span></span>
+                                </div>
+                            </li>
+                            <!-- END SIDEBAR TOGGLER BUTTON -->
+                            <% if current_authcon %>
+                                <li class="nav-item pmenu">
+                                    <% if(current_authcon.usertype == "Patient") %>
+                                        <a href="profilepatient" class="nav-link nav-toggle">
+                                            <i class="icon-user"></i>
+                                            <span class="title ptitle">Patient</span>
+                                            <span class="selected"></span>
+                                            <span class="arrow"></span>
+                                        </a>
+                                    <% else %>
+                                        <a href="profilestaff" class="nav-link nav-toggle">
+                                            <i class="icon-user"></i>
+                                            <span class="title ptitle">Staff</span>
+                                            <span class="selected"></span>
+                                            <span class="arrow"></span>
+                                        </a>   
+                                    <% end %>
+
+                                    <ul class="sub-menu">
+                                        <% if(current_authcon.usertype == "Patient") %>
+                                            <li class="nav-item  ">
+                                                <a href="profilepatient" class="nav-link ">
+                                                    <i class="icon-docs"></i>
+                                                    <span class="title">My Profile</span>
+                                                </a>
+                                            </li>
+                                        <% end %>
+
+                                        <% if(current_authcon.usertype == "Staff") %>
+                                            <li class="nav-item  ">
+                                                <a href="profilestaff" class="nav-link ">
+                                                    <i class="icon-docs"></i>
+                                                    <span class="title">My Wrokplace</span>
+                                                </a>
+                                            </li>
+                                        <% end %>
+
+                                        <% if(current_authcon.usertype == "Staff") %>
+                                            <!-- <li class="nav-item ">
+                                                <a href="profilemanagement" class="nav-link ">
+                                                    <i class="icon-wrench"></i>
+                                                    <span class="title">Patient Management</span>
+                                                </a>
+                                            </li> -->
+                                            <li class="nav-item  ">
+                                                <a href="profilesetting" class="nav-link ">
+                                                    <i class="icon-settings"></i>
+                                                    <span class="title">Profile Setup</span>
+                                                    <span class="selected"></span>
+                                                </a>
+                                            </li>
+                                        <% end %>
+
+                                        <% if(current_authcon.usertype == "Patient") %>
+                                            <li class="nav-item  ">
+                                                <a href="profilehelp" class="nav-link ">
+                                                    <i class="icon-info"></i>
+                                                    <span class="title">Help</span>
+                                                </a>
+                                            </li>
+                                        <% end %>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item pmenu">
+                                    <% if(current_authcon.usertype == "Patient") %>
+                                        <a href="service" class="nav-link nav-toggle">
+                                            <i class="icon-social-dribbble"></i>
+                                            <span class="title ptitle">Service</span>
+                                            <span class="arrow"></span>
+                                        </a>
+
+                                        <ul class="sub-menu">
+                                            <li class="nav-item  ">
+                                                <a href="service" class="nav-link ">
+                                                    <i class="icon-graph"></i>
+                                                    <span class="title">Service VR</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item  ">
+                                                <a href="servicerequest" class="nav-link ">
+                                                    <i class="icon-notebook"></i>
+                                                    <span class="title">Service Request</span>
+                                                </a>
+                                            </li>
+                                            <% if current_authcon
+                                                if PatientProfile.find_by('authcons_id': current_authcon.id).allowed %>
+                                                    <li class="nav-item  ">
+                                                        <a href="servicenotification" class="nav-link ">
+                                                            <i class="icon-envelope"></i>
+                                                            <span class="title">Service Notification</span>
+                                                        </a>
+                                                    </li>
+                                                <% end
+                                            else
+                                                if PatientProfile.find_by('fusers_id': session[:fuser_id]).allowed %>
+                                                    <li class="nav-item  ">
+                                                        <a href="servicenotification" class="nav-link ">
+                                                            <i class="icon-envelope"></i>
+                                                            <span class="title">Service Notification</span>
+                                                        </a>
+                                                    </li>
+                                                <% end                                        
+                                            end %>
+                                        </ul>
+                                    <% else %>
+                                        <a href="serviceqnsetup" class="nav-link nav-toggle">
+                                            <i class="icon-globe"></i>
+                                            <span class="title ptitle">Service</span>
+                                            <span class="arrow"></span>
+                                        </a>
+
+                                        <ul class="sub-menu">
+                                            <li class="nav-item  ">
+                                                <a href="serviceqnsetup" class="nav-link ">
+                                                    <i class="icon-note"></i>
+                                                    <span class="title">Questionnaire Setup</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item  ">
+                                                <a href="servicenotification" class="nav-link ">
+                                                    <i class="icon-envelope-open"></i>
+                                                    <span class="title">Service Notification</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    <% end %>
+                                </li>
+
+                                <li class="nav-item pmenu">
+                                    <% if(current_authcon.usertype == "Patient") %>
+                                        <a href="transactionrequest" class="nav-link nav-toggle">
+                                            <i class="icon-basket"></i>
+                                            <span class="title ptitle">Transaction</span>
+                                            <span class="arrow"></span>
+                                        </a>
+
+                                        <ul class="sub-menu">
+                                            <li class="nav-item  ">
+                                                <a href="transactionrequest" class="nav-link ">
+                                                    <i class="icon-tag"></i>
+                                                    <span class="title">Order New</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item  ">
+                                                <a href="transactionsetting" class="nav-link ">
+                                                    <i class="icon-settings"></i>
+                                                    <span class="title">Billing Setup</span>
+                                                </a>
+                                            </li>
+
+                                            <!-- <li class="nav-item  ">
+                                                <a href="#transaction" class="nav-link ">
+                                                    <i class="icon-home"></i>
+                                                    <span class="title">Transaction Overview</span>
+                                                </a>
+                                            </li> -->
+                                        </ul>
+                                    <% else %>
+                                        <a href="transaction" class="nav-link nav-toggle">
+                                            <i class="icon-basket"></i>
+                                            <span class="title">Transaction</span>
+                                            <span class="arrow"></span>
+                                        </a>
+                                    <% end %>
+                                </li>
+
+                                <% if current_authcon.usertype == "Staff" %>
+                                    <% if StaffProfile.find_by('authcons_id': current_authcon.id).occupation == "Staff" %>
+                                        <li class="nav-item pmenu">
+                                            <a href="blog_post" class="nav-link nav-toggle">
+                                                <i class="icon-note"></i>
+                                                <span class="title ptitle">Post</span>
+                                                <span class="arrow"></span>
+                                            </a>
+                                        </li>
+                                    <% else %>
+                                        <li class="nav-item pmenu">
+                                            <a href="blog_post" class="nav-link nav-toggle">
+                                                <i class="icon-note"></i>
+                                                <span class="title ptitle">Post</span>
+                                                <span class="arrow"></span>
+                                            </a>
+
+                                            <ul class="sub-menu">
+                                                <li class="nav-item">
+                                                    <a href="blog_post" class="nav-link ">
+                                                        <i class="icon-note"></i>
+                                                        <span class="title">Blog Post</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="specialists_post" class="nav-link ">
+                                                        <i class="icon-tag"></i>
+                                                        <span class="title">Specialists Post</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    <% end %>
+                                <% end %>
+
+                                <li class="nav-item pmenu">
+                                    <a href="history" class="nav-link nav-toggle">
+                                        <i class="icon-clock"></i>
+                                        <span class="title ptitle">History</span>
+                                        <span class="arrow"></span>
+                                    </a>
+                                </li>
+                            <% end %>
+
+                            <% if session[:fuser_id] %>
+                                <li class="nav-item  ">
+                                    <a href="profilepatient" class="nav-link nav-toggle">
+                                        <i class="icon-user"></i>
+                                        <span class="title">Patient</span>
+                                        <span class="selected"></span>
+                                        <span class="arrow"></span>
+                                    </a>
+
+
+                                    <ul class="sub-menu">
+                                        <li class="nav-item  ">
+                                            <a href="profilepatient" class="nav-link ">
+                                                <i class="icon-docs"></i>
+                                                <span class="title">My Profile</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item  ">
+                                            <a href="profilehelp" class="nav-link ">
+                                                <i class="icon-info"></i>
+                                                <span class="title">Help</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item  ">
+                                    <a href="service" class="nav-link nav-toggle">
+                                        <i class="icon-social-dribbble"></i>
+                                        <span class="title">Service</span>
+                                        <span class="arrow"></span>
+                                    </a>
+
+                                    <ul class="sub-menu">
+                                        <li class="nav-item  ">
+                                            <a href="service" class="nav-link ">
+                                                <i class="icon-graph"></i>
+                                                <span class="title">Service VR</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item  ">
+                                            <a href="servicerequest" class="nav-link ">
+                                                <i class="icon-notebook"></i>
+                                                <span class="title">Service Request</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item  ">
+                                            <a href="servicenotification" class="nav-link ">
+                                                <i class="icon-envelope"></i>
+                                                <span class="title">Service Notification</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item  ">
+                                    <a href="transactionrequest" class="nav-link nav-toggle">
+                                        <i class="icon-basket"></i>
+                                        <span class="title">Transaction</span>
+                                        <span class="arrow"></span>
+                                    </a>
+
+                                    <ul class="sub-menu">
+                                        <li class="nav-item  ">
+                                            <a href="transactionrequest" class="nav-link ">
+                                                <i class="icon-tag"></i>
+                                                <span class="title">Order New</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item  ">
+                                            <a href="transactionsetting" class="nav-link ">
+                                                <i class="icon-settings"></i>
+                                                <span class="title">Billing Setup</span>
+                                            </a>
+                                        </li>
+
+                                        <!-- <li class="nav-item  ">
+                                            <a href="#transaction" class="nav-link ">
+                                                <i class="icon-home"></i>
+                                                <span class="title">Transaction Overview</span>
+                                            </a>
+                                        </li> -->
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item  ">
+                                    <a href="history" class="nav-link nav-toggle">
+                                        <i class="icon-clock"></i>
+                                        <span class="title">History</span>
+                                        <span class="arrow"></span>
+                                    </a>
+                                </li>
+                            <% end %>
+
+                        </ul>
+                        <!-- END SIDEBAR MENU -->
+                        <!-- END SIDEBAR MENU -->
+                    </div>
+                    <!-- END SIDEBAR -->
+                </div>
+                <!-- END SIDEBAR -->
+                <!-- BEGIN CONTENT -->
+                <div class="page-content-wrapper">
+                    <!-- BEGIN CONTENT BODY -->
+                    <div class="page-content">
+                        <!-- BEGIN PAGE HEADER-->
+                        <!-- BEGIN PAGE BAR -->
+
+                        <div class="page-bar" id="page-title"></div>
+                        <!-- END PAGE BAR -->
+                        <!-- BEGIN PAGE TITLE-->
+
+                        <!-- END PAGE TITLE-->
+                        <!-- END PAGE HEADER-->
+                        <div class="row" style="display: none;">
+                            <div class="col-md-12">
+                                <!-- BEGIN PROFILE SIDEBAR -->
+                                <div class="profile-sidebar">
+                                    <!-- PORTLET MAIN -->
+                                    <div class="portlet light profile-sidebar-portlet ">
+                                        <!-- SIDEBAR USERPIC -->
+                                        <div class="profile-userpic">
+                                            <img src="../assets/pages/media/profile/profile_user.jpg" class="img-responsive" alt=""> </div>
+                                        <!-- END SIDEBAR USERPIC -->
+                                        <!-- SIDEBAR USER TITLE -->
+                                        <div class="profile-usertitle">
+                                            <div class="profile-usertitle-name"> Marcus Doe </div>
+                                            <div class="profile-usertitle-job"> Developer </div>
+                                        </div>
+                                        <!-- END SIDEBAR USER TITLE -->
+                                        <!-- SIDEBAR BUTTONS -->
+                                        <div class="profile-userbuttons">
+                                            <button type="button" class="btn btn-circle green btn-sm">Follow</button>
+                                            <button type="button" class="btn btn-circle red btn-sm">Message</button>
+                                        </div>
+                                        <!-- END SIDEBAR BUTTONS -->
+                                    </div>
+                                    <!-- END PORTLET MAIN -->
+                                    <!-- END PORTLET MAIN -->
+                                </div>
+                                <!-- END BEGIN PROFILE SIDEBAR -->
+                                <!-- BEGIN PROFILE CONTENT -->
+                                <div class="profile-content">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="portlet light portlet-fit ">
+                                                <div class="portlet-title">
+                                                    <div class="caption">
+                                                        <i class="icon-microphone font-green"></i>
+                                                        <span class="caption-subject bold font-green uppercase"> Timeline</span>
+                                                        <span class="caption-helper">user timeline</span>
+                                                    </div>
+                                                    <div class="actions">
+                                                        <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm active">
+                                                                <input type="radio" name="options" class="toggle" id="option1">Actions</label>
+                                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm">
+                                                                <input type="radio" name="options" class="toggle" id="option2">Settings</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="portlet-body">
+                                                    <div class="timeline">
+                                                        <!-- TIMELINE ITEM -->
+                                                        <div class="timeline-item">
+                                                            <div class="timeline-badge">
+                                                                <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg"> </div>
+                                                            <div class="timeline-body">
+                                                                <div class="timeline-body-arrow"> </div>
+                                                                <div class="timeline-body-head">
+                                                                    <div class="timeline-body-head-caption">
+                                                                        <a href="javascript:;" class="timeline-body-title font-blue-madison">Lisa Strong</a>
+                                                                        <span class="timeline-body-time font-grey-cascade">Replied at 17:45 PM</span>
+                                                                    </div>
+                                                                    <div class="timeline-body-head-actions">
+                                                                        <div class="btn-group">
+                                                                            <button class="btn btn-circle green btn-outline btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Actions
+                                                                                <i class="fa fa-angle-down"></i>
+                                                                            </button>
+                                                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                                                <li>
+                                                                                    <a href="javascript:;">Action </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Another action </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Something else here </a>
+                                                                                </li>
+                                                                                <li class="divider"> </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Separated link </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="timeline-body-content">
+                                                                    <span class="font-grey-cascade"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut consectetuer adipiscing elit laoreet dolore magna aliquam erat volutpat. Ut wisi enim
+                                                                        ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- END TIMELINE ITEM -->
+                                                        <!-- TIMELINE ITEM WITH GOOGLE MAP -->
+                                                        <div class="timeline-item">
+                                                            <div class="timeline-badge">
+                                                                <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_7.jpg"> </div>
+                                                            <div class="timeline-body">
+                                                                <div class="timeline-body-arrow"> </div>
+                                                                <div class="timeline-body-head">
+                                                                    <div class="timeline-body-head-caption">
+                                                                        <a href="javascript:;" class="timeline-body-title font-blue-madison">Paul Kiton</a>
+                                                                        <span class="timeline-body-time font-grey-cascade">Added office location at 2:50 PM</span>
+                                                                    </div>
+                                                                    <div class="timeline-body-head-actions">
+                                                                        <div class="btn-group">
+                                                                            <button class="btn btn-circle red btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Actions
+                                                                                <i class="fa fa-angle-down"></i>
+                                                                            </button>
+                                                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                                                <li>
+                                                                                    <a href="javascript:;">Action </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Another action </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Something else here </a>
+                                                                                </li>
+                                                                                <li class="divider"> </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Separated link </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="timeline-body-content">
+                                                                    <div id="gmap_polygons" class="gmaps"> </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- END TIMELINE ITEM WITH GOOGLE MAP -->
+                                                        <!-- TIMELINE ITEM -->
+                                                        <div class="timeline-item">
+                                                            <div class="timeline-badge">
+                                                                <div class="timeline-icon">
+                                                                    <i class="icon-user-following font-green-haze"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="timeline-body">
+                                                                <div class="timeline-body-arrow"> </div>
+                                                                <div class="timeline-body-head">
+                                                                    <div class="timeline-body-head-caption">
+                                                                        <span class="timeline-body-alerttitle font-red-intense">You have new follower</span>
+                                                                        <span class="timeline-body-time font-grey-cascade">at 11:00 PM</span>
+                                                                    </div>
+                                                                    <div class="timeline-body-head-actions">
+                                                                        <div class="btn-group">
+                                                                            <button class="btn btn-circle green btn-outline btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Actions
+                                                                                <i class="fa fa-angle-down"></i>
+                                                                            </button>
+                                                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                                                <li>
+                                                                                    <a href="javascript:;">Action </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Another action </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Something else here </a>
+                                                                                </li>
+                                                                                <li class="divider"> </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Separated link </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="timeline-body-content">
+                                                                    <span class="font-grey-cascade"> You have new follower
+                                                                        <a href="javascript:;">Ivan Rakitic</a>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- END TIMELINE ITEM -->
+                                                        <!-- TIMELINE ITEM -->
+                                                        <div class="timeline-item">
+                                                            <div class="timeline-badge">
+                                                                <div class="timeline-icon">
+                                                                    <i class="icon-docs font-red-intense"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="timeline-body">
+                                                                <div class="timeline-body-arrow"> </div>
+                                                                <div class="timeline-body-head">
+                                                                    <div class="timeline-body-head-caption">
+                                                                        <span class="timeline-body-alerttitle font-green-haze">Server Report</span>
+                                                                        <span class="timeline-body-time font-grey-cascade">Yesterday at 11:00 PM</span>
+                                                                    </div>
+                                                                    <div class="timeline-body-head-actions">
+                                                                        <div class="btn-group dropup">
+                                                                            <button class="btn btn-circle red btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Actions
+                                                                                <i class="fa fa-angle-down"></i>
+                                                                            </button>
+                                                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                                                <li>
+                                                                                    <a href="javascript:;">Action </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Another action </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Something else here </a>
+                                                                                </li>
+                                                                                <li class="divider"> </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;">Separated link </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="timeline-body-content">
+                                                                    <span class="font-grey-cascade"> Lorem ipsum dolore sit amet
+                                                                        <a href="javascript:;">Ispect</a>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- END TIMELINE ITEM -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END PROFILE CONTENT -->
+                            </div>
+                        </div>
+                    

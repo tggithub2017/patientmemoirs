@@ -1,0 +1,195 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<br>
+
+<div class="dashboardpage_height">
+    <div class="profile-content">
+        <div class="row">
+            <div class="col-md-8 profile-info">
+                <h1 class="font-green sbold uppercase">Darian Poh</h1>
+                <p> There will be added staffs and patients personal detail. </p>
+
+                <ul class="list-inline">
+                    <li>
+                        <i class="fa fa-map-marker"></i> Spain </li>
+                    <li>
+                        <i class="fa fa-calendar"></i> 18 Jan 1982 </li>
+                    <li>
+                        <i class="fa fa-user"></i> Design </li>
+                    <li>
+                        <i class="fa fa-star"></i> Top Seller </li>
+                </ul>
+
+                <p>
+                    <i class="icon-notebook" style="padding-left: 5px;padding-right: 5px;"></i> patient.user@example.com
+                </p>
+            </div>
+            <!--end col-md-8-->
+            <div class="col-md-4">
+                <div class="portlet sale-summary">
+                    <div class="portlet-title">
+                        <div class="caption font-red sbold"> Transaciton Summary </div>
+                        <div class="tools">
+                            <a class="reload" href="javascript:;" data-original-title="" title=""> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <ul class="list-unstyled">
+                            <li>
+                                <span class="sale-info"> Applying Transacitons
+                                    <i class="fa fa-img-up"></i>
+                                </span>
+                                <span class="sale-num"> 23 </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--end col-md-4-->
+        </div>
+        <!--end row-->
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="portlet grey-cascade box">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-cogs"></i>Shopping Cart </div>
+                        <div class="actions">
+                            <div class="portlet-input input-inline">
+                                <div class="input-icon right">
+                                    <i class="icon-magnifier"></i>
+                                    <input type="text" class="form-control input-circle" placeholder="search..."> </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th> Product </th>
+                                        <th> Item Status </th>
+                                        <th> Original Price </th>
+                                        <th> Price </th>
+                                        <th> Quantity </th>
+                                        <th> Tax Amount </th>
+                                        <th> Tax Percent </th>
+                                        <th> Discount Amount </th>
+                                        <th> Total </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr onclick="accept_click()">
+                                        <td>
+                                            <a href="javascript:;"> Product 1 </a>
+                                        </td>
+                                        <td>
+                                            <span class="label label-sm label-success"> Available </span></td>
+                                        <td> 345.50$ </td>
+                                        <td> 345.50$ </td>
+                                        <td> 2 </td>
+                                        <td> 2.00$ </td>
+                                        <td> 4% </td>
+                                        <td> 0.00$ </td>
+                                        <td> 691.00$ </td>
+                                    </tr>
+                                    <tr onclick="accept_click()">
+                                        <td>
+                                            <a href="javascript:;"> Product 1 </a>
+                                        </td>
+                                        <td>
+                                            <span class="label label-sm label-success"> Available </span></td>
+                                        <td> 345.50$ </td>
+                                        <td> 345.50$ </td>
+                                        <td> 2 </td>
+                                        <td> 2.00$ </td>
+                                        <td> 4% </td>
+                                        <td> 0.00$ </td>
+                                        <td> 691.00$ </td>
+                                    </tr>
+                                    <tr onclick="accept_click()">
+                                        <td>
+                                            <a href="javascript:;"> Product 1 </a>
+                                        </td>
+                                        <td>
+                                            <span class="label label-sm label-success"> Available </span></td>
+                                        <td> 345.50$ </td>
+                                        <td> 345.50$ </td>
+                                        <td> 2 </td>
+                                        <td> 2.00$ </td>
+                                        <td> 4% </td>
+                                        <td> 0.00$ </td>
+                                        <td> 691.00$ </td>
+                                    </tr>
+                                    <tr onclick="accept_click()">
+                                        <td>
+                                            <a href="javascript:;"> Product 1 </a>
+                                        </td>
+                                        <td>
+                                            <span class="label label-sm label-success"> Available </span></td>
+                                        <td> 345.50$ </td>
+                                        <td> 345.50$ </td>
+                                        <td> 2 </td>
+                                        <td> 2.00$ </td>
+                                        <td> 4% </td>
+                                        <td> 0.00$ </td>
+                                        <td> 691.00$ </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="transaction-accept">
+        <div class="col-md-6 col-md-offset-3 transaction-accept-main">
+            <div class="portlet box red">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-gift"></i>Apply New Order </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row static-info">
+                        <div class="col-md-5 name"> Order #: </div>
+                        <div class="col-md-7 value"> 12313232
+                            <span class="label label-info label-sm"> Email confirmation was sent </span>
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name"> Order Date &amp; Time: </div>
+                        <div class="col-md-7 value"> Dec 27, 2013 7:16:25 PM </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name"> Grand Total: </div>
+                        <div class="col-md-7 value"> $175.25 </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name"> Payment Information: </div>
+                        <div class="col-md-7 value"> Credit Card </div>
+                    </div>
+
+                    <br>
+
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input type="checkbox" id="inline">&nbsp;Are you sure?
+                        <span></span>
+                    </label>
+                    <button type="button" class="btn green"><i class="fa fa-check"></i> Submit</button>
+                    <button type="button" class="btn default" onclick="accept_disclick()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="transaction-accept-background"></div>
+    </div>
+</div>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script>
+    $("#page-title").html("<h4>Transaction Requests</h4>");
+</script>

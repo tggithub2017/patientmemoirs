@@ -1,0 +1,179 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<br>
+
+<div class="row dashboardpage_height">
+    <div class="col-md-12">
+        <div class="profile-sidebar">
+            <!-- PORTLET MAIN -->
+            <div class="portlet light profile-sidebar-portlet ">
+                <!-- SIDEBAR USERPIC -->
+
+                <%  if current_authcon 
+                        tmpObj = PatientProfile.find_by('authcons_id': current_authcon.id)
+                    else 
+                        tmpObj = PatientProfile.find_by('fusers_id': session[:fuser_id])
+                    end
+                %>
+
+                <div class="profile-userpic">
+                    <% tmpstr = tmpObj.lead_clinician.to_s.split(' ')
+                       tmpLeadObj = StaffProfile.where('first_name = "' + tmpstr[0] + '" and ' + 'last_name = "' + tmpstr[1] + '"') %>
+                    <% if tmpLeadObj.count > 0 %>
+                        <% if tmpLeadObj[0].image == nil || tmpLeadObj[0].image == '' %>
+                            <img src="/images/blank_profile_image.png" class="img-responsive" alt="">
+                        <% else %>
+                            <%  file = File.open("savedimages/" + tmpLeadObj[0].image, "rb")
+                                contents = file.read %>
+                            <img src="<%= contents %>" class="img-responsive patient_profile_img" alt="">
+                        <% end %>
+                    <% end %>
+                </div>
+                <!-- END SIDEBAR USERPIC -->
+                <!-- SIDEBAR USER TITLE -->
+                <div class="profile-usertitle">
+                    <div class="profile-usertitle-name"> <%= tmpObj.lead_clinician.to_s %> </div>
+                </div>
+                <!-- END SIDEBAR USER TITLE -->
+                <!-- SIDEBAR BUTTONS -->
+                <div class="profile-userbuttons">
+                    <button type="button" class="btn btn-circle green btn-sm">Follow</button>
+                    <button type="button" class="btn btn-circle red btn-sm">Message</button>
+                </div>
+                <!-- END SIDEBAR BUTTONS -->
+            </div>
+            <!-- END PORTLET MAIN -->
+            <!-- END PORTLET MAIN -->
+        </div>
+        <!-- BEGIN PROFILE CONTENT -->
+        <div class="profile-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet light ">
+                        <div class="portlet-title tabbable-line">
+                            <div class="caption caption-md">
+                                <i class="icon-globe theme-font hide"></i>
+                                <span class="caption-subject font-blue-madison bold uppercase">Help</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="tab-content">
+                                <!-- TERMS OF USE TAB -->
+                                <div class="tab-pane active" id="tab_1_3">
+                                    <div id="accordion3" class="panel-group">
+                                        <div class="panel panel-success">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion3" aria-expanded="false"> 1. Please see this necessary help carefully </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordion3_1" class="panel-collapse collapse" aria-expanded="false">
+                                                <div class="panel-body">
+                                                    <p> Please see this necessary help carefully Please see this necessary help carefully Please see this necessary help carefully Please see this necessary help carefully
+                                                        Please see this necessary help carefully Please see this necessary help carefully Please see this necessary help carefully. </p>
+                                                    <p> Please see this necessary help carefully Please see this necessary help carefully Please see this necessary help carefully Please see this necessary help carefully
+                                                        Please see this necessary help carefully Please see this necessary help carefully Please see this necessary help carefully. </p>
+                                                    <p> Please see this necessary help carefully Please see this necessary help carefully Please see this necessary help carefully Please see this necessary help carefully
+                                                        Please see this necessary help carefully Please see this necessary help carefully Please see this necessary help carefully. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion3" aria-expanded="false"> 2. Please see this normal help carefully </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordion3_2" class="panel-collapse collapse" aria-expanded="false">
+                                                <div class="panel-body"> Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully.  </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion3" aria-expanded="false"> 3. Please see this normal help carefully </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordion3_3" class="panel-collapse collapse" aria-expanded="false">
+                                                <div class="panel-body"> Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully. </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion3" aria-expanded="false"> 4. Please see this normal help carefully </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordion3_4" class="panel-collapse collapse" aria-expanded="false">
+                                                <div class="panel-body"> Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully. </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion3" aria-expanded="false"> 5. Please see this normal help carefully </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordion3_5" class="panel-collapse collapse" aria-expanded="false">
+                                                <div class="panel-body"> Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully. </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion3" aria-expanded="false"> 6. Please see this normal help carefully </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordion3_6" class="panel-collapse collapse" aria-expanded="false">
+                                                <div class="panel-body"> Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully. </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion3" aria-expanded="false"> 7. Please see this normal help carefully </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordion3_7" class="panel-collapse collapse" aria-expanded="false">
+                                                <div class="panel-body"> Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully 
+                                                    Please see this normal help carefully Please see this normal help carefully Please see this normal help carefully. </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END TERMS OF USE TAB -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PROFILE CONTENT -->
+    </div>
+</div>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="/js/profile-form.js/"></script>
+
+<script>
+    $("#page-title").html("<h4>Help</h4>");
+</script>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en-US"><!--<![endif]-->
+
+<!-- Mirrored from inspirythemes.biz/html-templates/medicalpress/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 05 Apr 2017 17:39:38 GMT -->
+<head>
+    <!-- META TAGS -->
+    <meta charset="UTF-8">
+
+    <!-- Title -->
+    <title>Medicalpress | Just another Website</title>
+
+    <!-- Define a view port to mobile devices to use - telling the browser to assume that
+    the page is as wide as the device (width=device-width)
+     and setting the initial page zoom level to be 1 (initial-scale=1.0) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="SKYPE_TOOLBAR" content ="SKYPE_TOOLBAR_PARSER_COMPATIBLE"/>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/images/pageicon.png">
+
+    <!-- Google Web Font -->
+    <link href="http://fonts.googleapis.com/css?family=Raleway:400,100,500,600,700,800,900,300,200" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- bootstrap Style Sheet (caution ! - Do not edit this stylesheet) -->
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" media="all">
+    <!-- Flexslider stylesheet -->
+    <link rel="stylesheet" href="/css/flexslider.css" type="text/css" media="all">
+    <!-- Animations stylesheet -->
+    <link rel="stylesheet" href="/css/animations.css" type="text/css" media="all">
+    <!-- Awesome Font stylesheet -->
+    <link rel="stylesheet" href="/css/font-awesome.css" type="text/css" media="all">
+    <!-- Datepciker stylesheet -->
+    <link rel="stylesheet" href="/css/datepicker.css" type="text/css" media="all">
+    <!-- Swipebox stylesheet -->
+    <link rel="stylesheet" href="/css/swipebox.css" type="text/css" media="all">
+    <!-- meanmenu stylesheet -->
+    <link rel="stylesheet" href="/css/meanmenu.css" type="text/css" media="all">
+    <!-- Include the site main stylesheet -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+    <!-- Include the site responsive  stylesheet -->
+    <link rel="stylesheet" href="/css/custom-responsive.css" type="text/css" media="all">
+
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="<php echo 'http://www.google.com/chromeframe/?redirect=true'; ?>">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="news_read_p">
+    <a class="logmod__close" onclick="news_read_close()">Close</a>
+    <div class="news_read_inner">
+    </div>
+</div>
+
+<div class="news_read_cover">
+</div>
+
+<%= yield %>
+
+<div class="header-top clearfix" ng-app="myApp">
+    <div class="custom_container" ng-controller="HomeController">
+        <div class="row">
+            <div class="col-md-4 ">
+                <p>Welcome to PatientMemoirs</p>
+            </div>
+            <!--opening hours-->
+            <div class="col-md-8 text-right custom_top">
+
+                <div class="sign_form">
+                    <!-- <% if !logged_in? %>
+                        <%= link_to 'Log in', login_path, class: "signin" %>
+                    <% else %>
+                        <div class="dropdown" style="float: right;">
+                            <a href="#" class="dropbtn">
+                                <%= cookies[:user_email] %>
+                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            </a>
+
+                            <div class="dropdown-content">
+                                <a href="#"><%= cookies[:user_email] %></a>
+                                <%= link_to 'Log out', logout_path, method: :delete, class: "signout" %>
+                            </div>
+                        </div>
+                    <% end %> -->
+
+                    <% if !signed_in? && !current_fuser %>
+                        <%= link_to 'Log in', new_authcon_session_path, class: "signin" %>
+                        <% cookies[:user_start] = 'end' %>
+                    <% else %>
+
+                        <% if cookies[:user_start] === 'end' %>
+                            <script>
+                                location.href = "dashboardpage/index";
+                            </script>
+
+                            <% cookies[:user_start] = 'start' %>
+                        <% end %>
+
+                        <% if current_fuser %>
+                            <div class="dropdown" style="float: right;">
+                                <a href="#" class="dropbtn">
+                                    <%= "My Account" %>
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+
+                                <div class="dropdown-content">
+                                    <a href="#"><%= current_fuser.name %></a>
+                                    <%= link_to 'Dashboard', '/dashboardpage/index', class: "signout" %>
+                                    <%= link_to "Log out", signout_path, class: "signout" %>
+                                </div>
+                            </div>
+                        <% else %>
+                            <div class="dropdown" style="float: right;">
+                                <a href="#" class="dropbtn">
+                                    <%= "My Account" %>
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+
+                                <div class="dropdown-content">
+                                    <a href="#"><%= current_authcon.email %></a>
+                                    <%= link_to 'Dashboard', '/dashboardpage/index', class: "signout" %>
+                                    <%= link_to 'Log out', destroy_authcon_session_path, class: "signout" %>
+                                </div>
+                            </div>
+                        <% end %>
+                    <% end %>
+                </div>
+
+                <p class="top_contact_form">
+                    Opening Hours : <span>Monday to Saturday - 9am to 9pm</span>
+                    <br class="visible-xs">Contact : <span>+9-999-999-999</span>
+
+                    <!-- <a href="#/sign" class="signin">Sign In</a> -->
+
+                    <!-- <div ng-view></div> -->
+                </p>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <header id="header">
+    <div class="container">
+
+    <a href="login">Sign In</a> -->
+
+<header id="header">
+    <div class="container">
+
+        <!-- Website Logo -->
+        <div class="logo clearfix">
+            <a href="">
+                <img src="/images/logo.png" alt="Medicalpress">
+            </a>
+        </div>
+
+        <!-- Main Navigation -->
+        <nav class="main-menu">
+            <ul class="header-nav clearfix" id="menu-main-menu">
+                <li class="current-menu-item page_item">
+                    <a href="#landing-home">Home</a>
+                </li>
+
+                <li>
+                    <a href="#landing-services">Services</a>
+                </li>
+
+                <li>
+                    <a href="#landing-doctors">Doctors</a>
+                </li>
+
+                <li>
+                    <a href="#landing-news">News</a>
+                </li>
+
+                <li>
+                    <a href="#landing-comments">Comments</a>
+                </li>
+
+                <li>
+                    <a href="#main-footer">Contact</a>
+                </li>
+            </ul>
+        </nav>
+        <div id="responsive-menu-container"></div>
+    </div>
+</header>
+
+
+<!--slider-->
+<div class="home-slider clearfix" id="landing-home">
+    <div class="flexslider">
+        <ul class="slides">
+            <!--slide start-->
+            <li class="flex-active-slide">
+                <img src="/images/temp-images/slide-one.jpg" alt="Services That You Can Trust" draggable="false">
+                <div class="content-wrapper clearfix">
+                    <div class="container">
+                        <div class="slide-content clearfix">
+                            <h1>Medical Services <span>That You Can Trust</span></h1>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit sed diam nonummy nibh euismod.</p>
+                            <a class="slider-button" href="">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <!--slide end-->
+
+            <!--slide start-->
+            <li>
+                <img src="/images/temp-images/slide-two.jpg" alt="We Care for You" draggable="false">
+                <div class="content-wrapper clearfix">
+                    <div class="container">
+                        <div class="slide-content clearfix ">
+                            <h1>We <span>Care</span> for <span>You</span></h1>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                            <a class="slider-button" href="">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <!--slide end-->
+        </ul>
+        <!--directional nav-->
+        <ul class="flex-direction-nav">
+            <li><a class="flex-prev" href="#">Previous</a></li>
+            <li><a class="flex-next" href="#">Next</a></li></ul>
+    </div>
+    <!--appointment form-->
+    <div class="appointment clearfix">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6  ">
+                    <span class="btn make-appoint open">Make an Appointment <i class="fa fa-caret-down"></i></span>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="appointment-form clearfix animated" style="display: none;">
+                    <form class="clearfix" id="appointment_form_one" action="make_appointment" method="get" >
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6 common">
+                                <input type="text" name="name" id="app-name" class="required" placeholder="Name" />
+                            </div>
+                            <div class="col-md-3 col-sm-6 common">
+                                <input type="text" name="number" id="app-number" class="required number" placeholder="NHS Number"/>
+                            </div>
+                            <div class="col-md-3 col-sm-6 common">
+                                <input type="email" name="email" id="app-email" class="required email" placeholder="Email Address"/>
+                            </div>
+                            <div class="col-md-3 col-sm-6 common">
+                                <input type="text" name="date" id="datepicker" class="required" placeholder="Appointment Date"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-11 common">
+                                <input type="text" name="message" id="app-message" class="required" placeholder="Message" />
+                            </div>
+                            <div class="col-sm-1 common">
+                                <input type="submit" name="Submit" class="btn form-submit-btn" value="SEND"/>
+                            </div>
+                        </div>
+
+                        <img src="/images/white-loader.gif" class="ajax-loader" id="appointment-loader" alt="Loading...">
+                        <div id="response-container"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--appointment form end-->
+</div>
+
+<!--general services-->
+<div class="home-features clearfix" id="landing-services">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="features-intro clearfix">
+                    <h2><span>Health and Medical</span> Services</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                    <a class="read-more" href="">View Our Services</a>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-sm-6 single-feature">
+                        <div class="row">
+                            <div class="col-sm-3 icon-wrapper">
+                                <i class="fa fa-plus-square fa-custom"></i>
+                            </div>
+                            <div class="col-sm-9">
+                                <h3>Rehabilitation Center</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 single-feature">
+                        <div class="row">
+                            <div class="col-sm-3 icon-wrapper">
+                                <i class="fa fa-medkit fa-custom"></i>
+                            </div>
+                            <div class="col-sm-9">
+                                <h3>Medical Counseling</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 single-feature">
+                        <div class="row">
+                            <div class="col-sm-3 icon-wrapper">
+                                <i class="fa fa-user-md fa-custom"></i>
+                            </div>
+                            <div class="col-sm-9">
+                                <h3>Qualified Doctors </h3>
+                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 single-feature">
+                        <div class="row">
+                            <div class="col-sm-3 icon-wrapper">
+                                <i class="fa fa-ambulance fa-custom"></i>
+                            </div>
+                            <div class="col-sm-9">
+                                <h3>Emergency Services</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--general services end-->
+
+<!--doctors section-->
+<div class="home-doctors  clearfix" id="landing-doctors">
+    <div class="container">
+        <div class="slogan-section animated fadeInUp clearfix">
+            <h2>Meet our <span>Medical Specialists</span></h2>
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+        </div>
+
+        <% if AdminSpecialist.count > 0 
+            tmpSpecialists = AdminSpecialist.where('id is not NULL')
+        end %>
+        <div class="row">
+            <% if AdminSpecialist.count == 3
+                start_ri = 0
+                end_ri = 2
+            end %>
+            <% if AdminSpecialist.count == 2
+                start_ri = 0
+                end_ri = 1
+            end %>
+            <% if AdminSpecialist.count == 1
+                start_ri = 0
+                end_ri = 0
+            end %>
+            <% if AdminSpecialist.count >= 4
+                start_ri = AdminSpecialist.count - 4
+                end_ri = AdminSpecialist.count - 1
+            end %>
+            <% click_ri = 0 %>
+            <% for i in start_ri..end_ri %>
+                <div class="col-md-3 col-sm-6  text-center specialists_read" style="margin-bottom: 15px;">
+                    <div class="common-doctor animated fadeInUp clearfix">
+                        <figure class="specialists_blog_cover">
+                            <% if tmpSpecialists[i].image.to_s.length > 0 && File.exist?("savedimages/" + tmpSpecialists[i].image) %>
+                                <a>
+                                    <%  file = File.open("savedimages/" + tmpSpecialists[i].image, "rb")
+                                        contents = file.read %>
+                                    <img src="<%= contents %>" alt="gallery-1" />
+                                </a>
+                            <% end %>
+                        </figure>
+                        <div class="text-content">
+                            <h5><a href=""> <%= tmpSpecialists[i].title %> </a></h5>
+                            <div class="for-border"></div>
+                            <p>
+                                <%= tmpSpecialists[i].description %>
+                            </p>
+                            <p class="specialists_detail">
+                                <%= tmpSpecialists[i].detail %>
+                            </p>
+                        </div>
+                    </div>
+                    <a class="read-more" onclick="news_read_morer(<%= click_ri %>)">Read More</a>
+                    <% click_ri = click_ri + 1 %>
+                </div>
+            <% end %>
+            <div class="visible-sm clearfix margin-gap"></div>
+        </div>
+    </div>
+</div>
+<!--doctors section end-->
+
+<!--blog posts section-->
+<div class="home-blog text-center clearfix" id="landing-news">
+    <div class="container">
+        <div class="slogan-section animated fadeInUp clearfix">
+            <h2>Latest News from <span>Health and Medical</span></h2>
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+        </div>
+        <div class="row">
+            <%  start_i = @blog_data.length - 1
+                end_i   = @blog_data.length - 3
+                click_i = 0
+                if (@blog_data.length == 2)
+                    start_i = 0
+                    end_i = 1
+                end
+                if (@blog_data.length == 1)
+                    start_i = 0
+                    end_i = 0
+                end
+                for i in end_i..start_i 
+                    if (@blog_data.length == 0)
+                        break
+                    end %>
+                    <div class="col-md-4 news_read">
+                        <article class="common-blog-post animated fadeInRight clearfix">
+                            <div class="gallery gallery-slider clearfix loading">
+                                <ul class="slides">
+                                    <% if(File.exist?("savedimages/" + @blog_data[i].image) && @blog_data[i].image != '') %>
+                                        <li>
+                                            <a href="" title="" >
+                                                <%  file = File.open("savedimages/" + @blog_data[i].image, "rb")
+                                                    contents = file.read %>
+                                                <img src="<%= contents %>" alt="gallery-1" />
+                                            </a>
+                                        </li>
+                                    <% end %>
+                                    <% if(File.exist?("savedimages/" + @blog_data[i].image1) && @blog_data[i].image1 != '') %>
+                                        <li class="flex-active-slide">
+                                            <a href="" title="" >
+                                                <%  file = File.open("savedimages/" + @blog_data[i].image1, "rb")
+                                                    contents = file.read %>
+                                                <img src="<%= contents %>" alt="gallery-2" />
+                                            </a>
+                                        </li>
+                                    <% end %>
+                                    <% if(File.exist?("savedimages/" + @blog_data[i].image2) && @blog_data[i].image2 != '') %>
+                                        <li>
+                                            <a href="" title="" >
+                                                <%  file = File.open("savedimages/" + @blog_data[i].image2, "rb")
+                                                    contents = file.read %>
+                                                <img src="<%= contents %>" alt="gallery-3" />
+                                            </a>
+                                        </li>
+                                    <% end %>
+                                </ul>
+                            </div>
+                            <div class="text-content clearfix">
+                                <div class="entry-meta">
+                                    <span><%= @blog_data[i].updated_at %></span>, by 
+                                    <a href="#" title="Posts by John Doe">
+                                        <%  if(Authcon.exists?(id: @blog_data[i].account_id))
+                                                blog_owner = Authcon.find(@blog_data[i].account_id) %>
+                                                <%= blog_owner.email %>
+                                        <%  else %>
+                                            <%= "Unkown" %>
+                                        <%  end %>
+                                    </a>
+                                </div>
+                                <div class="for-border"></div>
+                                <p style="display: none;margin-top: 15px;font-size: 18px;font-weight: 600;"><%= @blog_data[i].title %></p>
+                                <p><%= @blog_data[i].description %></p>
+                                <p style="display: none;border-top: 1px solid lightgray"><%= @blog_data[i].detail %></p>
+                            </div>
+                        </article>
+                        <a class="read-more" onclick="news_read_more(<%= click_i %>)">Read More</a>
+                        <% click_i = click_i + 1 %>
+                    </div>
+            <%  end %>
+        </div>
+    </div>
+</div>
+<!--blog posts section end-->
+
+<!--testimonials section-->
+<div class="home-testimonial  clearfix" id="landing-comments">
+    <div class="container">
+        <div class="text-center">
+            <div class="slogan-section animated fadeInUp clearfix">
+                <h2>What patients say <span>About MedicalPress</span></h2>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10 text-center">
+                <div class="flexslider-three animated fadeInUp">
+                    <ul class="slides">
+                        <li>
+                            <img class="img-circle" src="/images/temp-images/author-22-130x130.jpg" alt="author-22" />
+                            <blockquote>
+                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam quis nostrud exerci tation.</p>
+                            </blockquote>
+
+                            <div class="testimonial-footer clearfix">
+                                <h3>Marina Forrest</h3>
+                                <div class="for-border"></div>
+                                <p><a target="_blank" href="#">Medical Service</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <img class="img-circle" src="/images/temp-images/author-11-130x130.jpg"  alt="author-11" />
+                            <blockquote>
+                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+                            </blockquote>
+
+                            <div class="testimonial-footer clearfix">
+                                <h3>Jaden Wayne</h3>
+                                <div class="for-border"></div>
+                                <p><a target="_blank" href="#">Medical Service</a></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </div>
+</div>
+<!--testimonials section end-->
+
+
+
+<!--page footer-->
+<footer id="main-footer" class="site-footer clearfix">
+    <div class="container">
+        <div class="row">
+
+
+            <!--about widget-->
+            <div class="col-md-3 col-sm-6">
+                <section  class="widget animated fadeInLeft">
+                    <h3 class="title">About MedicalPress</h3>
+                    <div class="textwidget">
+                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                            tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                        <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis
+                            nisl ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                </section>
+            </div>
+
+
+            <!--general services-->
+            <div class="col-md-3 col-sm-6  ">
+                <section class="widget animated fadeInLeft ae-animation-fadeInLeft">
+                    <h3 class="title">General Services</h3>
+                    <ul>
+                        <li>
+                            <a href="#">Immunization</a>
+                        </li>
+                        <li>
+                            <a href="#">Medical Services</a>
+                        </li>
+                        <li>
+                            <a href="#">Surgical</a>
+                        </li>
+                        <li>
+                            <a href="#">Diagnostic Services</a>
+                        </li>
+                        <li>
+                            <a href="#">Pharmacy</a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+            <div class="clearfix visible-sm"></div>
+
+            <!--recent posts-->
+            <div class="col-md-3 col-sm-6  ">
+                <section  class="widget animated fadeInLeft">
+                    <h3 class="title">Latest Tweets</h3>
+                    <ul id="twitter_update_list">
+                        <li>No Tweet Loaded !</li>
+                    </ul>
+                </section>
+            </div>
+            <!--subscription form-->
+            <div class="col-md-3 col-sm-6  ">
+                <section  class="widget animated fadeInLeft">
+                    <h3 class="title">Subscribe!</h3>
+                    <div class="textwidget">Subscribe to my blog for updates</div>
+                    <div>
+                        <form name="subs-form" id="subs_form" class="subs-form" method="post" action="http://inspirythemes.biz/html-templates/medicalpress/subscription-handler.php">
+                            <label for="subs-name">Name:</label>
+                            <input name="name" id="subs-name" class="required" type="text" title="* Please provide your name" /><br/>
+
+                            <label for="subs-email">Email:</label>
+                            <input name="email" class="required email" id="subs-email" type="text" title="* Please provide a valid email address" /><br/>
+
+                            <input type="hidden" name="action" value="send_message">
+                            <input type="hidden" name="nonce" value="">
+
+                            <input id="subs-form-submit" name="Submit" type="submit" value="SUBMIT" />
+                            <img src="/images/loader3.gif" id="subs-loader" alt="Loading...">
+                            <div id="subs-error-container"></div>
+                            <div id="subs-response-container"></div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="footer-bottom animated fadeInDown clearfix">
+            <div class="row">
+                <div class="col-sm-7">
+                    <p>&copy; Copyright 2017. All Rights Reserved by Darian Poh</p>
+                </div>
+                <!--footer social icons-->
+                <div class="col-sm-5 clearfix">
+                    <ul class="footer-social-nav">
+                        <li><a target="_blank" href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a target="_blank" href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a target="_blank" href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a target="_blank" href="#"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a target="_blank" href="#"><i class="fa fa-instagram"></i></a></li>
+                        <li><a target="_blank" href="#"><i class="fa fa-youtube"></i></a></li>
+                        <li><a target="_blank" href="skype:skypeusername?add"><i class="fa fa-skype"></i></a></li>
+                        <li><a target="_blank" href="#"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<a href="#top" id="scroll-top"></a>
+
+<script type='text/javascript' id='quick-js'></script>
+<script type='text/javascript' src='/js/jquery-2.2.3.min.js'></script>
+<script type='text/javascript' src='/js/bootstrap.min.js'></script>
+<script type='text/javascript' src='/js/jquery.flexslider-min.js'></script>
+<script type='text/javascript' src='/js/jquery.swipebox.min.js'></script>
+<script type='text/javascript' src='/js/jquery.isotope.min.js'></script>
+<script type='text/javascript' src='/js/jquery.appear.js'></script>
+<script type='text/javascript' src='/js/jquery.ui.core.min.js'></script>
+<script type='text/javascript' src='/js/jquery.ui.datepicker.min.js'></script>
+<script type='text/javascript' src='/js/jquery.validate.min.js'></script>
+<script type='text/javascript' src='/js/jquery.form.js'></script>
+<script type='text/javascript' src='/js/jquery.autosize.min.js'></script>
+<script type='text/javascript' src='/js/jquery.meanmenu.min.js'></script>
+<script type='text/javascript' src='/js/jquery.velocity.min.js'></script>
+<script type='text/javascript' src='/js/jquery-twitterFetcher.js'></script>
+<script type='text/javascript' src='/js/respond.min.js'></script>
+<script type='text/javascript' src='/js/jquery-migrate-1.2.1.min.js'></script>
+<script type='text/javascript' src='/js/custom.js'></script>
+<script type='text/javascript' src='/js/controller.js'></script>
+
+<style>
+    @media screen and (min-width: 992px) {
+        .wide {
+            min-width: 360px;
+            min-height: 360px;
+            height: 360px;
+            width: auto!important;
+            max-width: 720px;
+            max-height: 720px;
+            position: relative;
+        }
+
+        .tall {
+            min-width: 360px;
+            min-height: 360px;
+            height: auto!important;
+            width: 360px;
+            max-width: 720px;
+            max-height: 720px;
+            position: relative;
+        }
+    }
+
+    .specialists_blog_cover {
+        height: 180px;
+        overflow: hidden;
+    }
+
+    @media screen and (min-width: 768px) {
+        .wide1 {
+            min-width: 262px;
+            min-height: 180px;
+            height: 180px;
+            width: auto!important;
+            max-width: 524px;
+            max-height: 360px;
+            position: relative;
+        }
+
+        .tall1 {
+            min-width: 262px;
+            min-height: 180px;
+            height: auto!important;
+            width: 262px;
+            max-width: 524px;
+            max-height: 360px;
+            position: relative;
+        }
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+        .wide1 {
+            min-width: 345px;
+            min-height: 262px;
+            height: 262px;
+            width: auto!important;
+            max-width: 690px;
+            max-height: 524px;
+            position: relative;
+        }
+
+        .tall1 {
+            min-width: 345px;
+            min-height: 262px;
+            height: auto!important;
+            width: 345px;
+            max-width: 690px;
+            max-height: 524px;
+            position: relative;
+        }
+
+        .specialists_blog_cover {
+            height: 262px;
+            overflow: hidden;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .specialists_blog_cover {
+            width: 100%;
+            height: 100%;
+            overflow: none;
+        }      
+    }
+</style>
+
+<script>
+    setTimeout(function() {
+        $(window).on('load', function(){
+            $('.common-blog-post .slides').find('img').each(function(){
+                var imgClass = (this.width/this.height > 1) ? 'wide' : 'tall';
+                var left = 360 - $(this).width();
+                $(this).css('position', 'relative');
+                $(this).addClass(imgClass);
+            });
+
+            $('.common-doctor figure').find('img').each(function(){
+                var imgClass = (this.width/this.height > 1) ? 'wide1' : 'tall1';
+                var left = 262 - $(this).width();
+                $(this).css('position', 'relative');
+                $(this).addClass(imgClass);
+            });
+        });
+    }, 0);
+
+    function news_read_more(index) {
+        var length = $(".news_read:eq("+index+") .slides img").length;
+        var count = 0;
+        $(".news_read:eq("+index+") .slides img").each(function() {
+            if(length == 5) {
+                if(count < 3) {
+                    $(".news_read_inner").append($(this).parent().html());
+                }
+            }
+            if(length == 4) {
+                if(count < 2) {
+                    $(".news_read_inner").append($(this).parent().html());
+                }             
+            }
+            if(length == 3) {
+                if(count < 1) {
+                    $(".news_read_inner").append($(this).parent().html());
+                }             
+            }
+            count++;
+        });
+        $(".news_read_inner").append($(".news_read:eq("+index+") .text-content").html());
+        $(".news_read_inner p").css("display", "block");
+
+        $(".news_read_inner img").removeClass('wide');
+        $(".news_read_inner img").removeClass('tall');
+        $(".news_read_cover").css("display", "block");
+        $(".news_read_inner").css("display", "grid");
+        $("body").css("position", "fixed");
+        $(".news_read_p").css("display", "block");
+    }
+
+    function news_read_morer(index) {
+        var length = $(".specialists_read:eq("+index+") figure img").length;
+        var count = 0;
+        $(".specialists_read:eq("+index+") figure img").each(function() {
+            $(".news_read_inner").append($(this).parent().html());
+            count++;
+        });
+        $(".news_read_inner").append($(".specialists_read:eq("+index+") .text-content").html());
+        $(".news_read_inner p").css("display", "block");
+        $(".news_read_inner p:eq(0)").css("font-weight", "700");
+
+        $(".news_read_inner img").removeClass('wide1');
+        $(".news_read_inner img").removeClass('tall1');
+        $(".news_read_cover").css("display", "block");
+        $(".news_read_inner").css("display", "grid");
+        $("body").css("position", "fixed");
+        $(".news_read_p").css("display", "block");
+    }
+
+    function news_read_close() {
+        $(".news_read_cover").css("display", "none");
+        $(".news_read_inner").css("display", "none");
+        $("body").css("position", "relative");
+        $(".news_read_p").css("display", "none");
+        $(".news_read_inner").html('');
+    }
+</script>
+
+<script src="http://localhost:8880/socket.io/socket.io.js"></script>
+<script src="/js/notification.js" type="text/javascript"></script>
+
+</body>
+
+</html>

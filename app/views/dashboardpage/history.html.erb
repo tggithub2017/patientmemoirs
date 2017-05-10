@@ -1,0 +1,251 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<style>
+.col1 {
+  width: auto!important;
+}
+
+.col2 {
+  width: auto!important;
+  float: right!important;
+}
+</style>
+
+<br>
+
+<div class="profile-content dashboardpage_height">
+    <div class="row">
+        <div class="col-md-8 profile-info">
+            <% if current_authcon %>
+                <% if Authcon.find(current_authcon.id).usertype == "Staff" %>
+                    <h1 class="font-green sbold uppercase"><%= StaffProfile.find_by('authcons_id': current_authcon.id).first_name.to_s + ' ' + StaffProfile.find_by('authcons_id': current_authcon.id).last_name.to_s %></h1>
+                <% else %>
+                    <h1 class="font-green sbold uppercase"><%= PatientProfile.find_by('authcons_id': current_authcon.id).first_name.to_s + ' ' + PatientProfile.find_by('authcons_id': current_authcon.id).last_name.to_s %></h1>
+                <% end %>
+            <% else %>
+                <h1 class="font-green sbold uppercase"><%= PatientProfile.find_by('fusers_id': session[:fuser_id]).first_name.to_s + ' ' + PatientProfile.find_by('fusers_id': session[:fuser_id]).last_name.to_s %></h1>
+            <% end %>
+            <p> Here are your action histories. </p>
+        </div>
+        <!--end col-md-8-->
+        <div class="col-md-4">
+            <div class="portlet sale-summary">
+                <div class="portlet-title">
+                    <div class="caption font-red sbold"> History </div>
+                    <div class="tools">
+                        <a class="reload" onclick="location.reload();" data-original-title="" title=""> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            <span class="sale-info"> Applying Actions
+                                <i class="fa fa-img-up"></i>
+                            </span>
+                            <span class="sale-num">  </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--end col-md-4-->
+    </div>
+    <!--end row-->
+
+    <div class="tabbable-line tabbable-custom-profile">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="" data-toggle="tab" aria-expanded="false"> Feeds </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1_22">
+                <div class="tab-pane active" id="tab_1_1_1">
+                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto;"><div class="scroller" data-height="" data-always-visible="1" data-rail-visible1="1" data-initialized="1" style="overflow: hidden; width: auto;padding: 0px!important;">
+                        <% if current_authcon %>
+                            <% if Authcon.find(current_authcon.id).usertype == "Staff"
+                                tmpHistory = StaffProfile.where("id is not NULL")
+                                tmpHistory1 = PatientProfile.where("id is not NULL")
+                                tmpMessage = Message.where("patient_profile_id < 0")
+                                usertype = "Staff"; %>
+                                <script>
+                                    setTimeout(function() {
+                                        $(".sale-num").html("<%= tmpHistory.count + tmpHistory1.count + tmpMessage.count %>");
+                                    }, 0);
+                                </script>
+                            <% else
+                                tmpHistory = PatientProfile.where("authcons_id = " + current_authcon.id.to_s);
+                                tmpHistory1 = " ";
+                                usertype = "Patient"; %>
+                                <script>
+                                    setTimeout(function() {
+                                        $(".sale-num").html("<%= tmpHistory.count %>");
+                                    }, 0);   
+                                </script>
+                            <% end %>
+                        <% else
+                            tmpHistory = PatientProfile.where("fusers_id = " + session[:fuser_id].to_s);
+                            tmpHistory1 = " ";
+                            usertype = "Patient"; %>
+                            <script>
+                                setTimeout(function() {
+                                    $(".sale-num").html("<%= tmpHistory.count %>");
+                                }, 0);
+                            </script>
+                        <% end %>
+                        <ul class="feeds">
+                            <% if usertype == "Staff" || usertype == "Patient"
+                                for i in 0..tmpHistory.count - 1 %>
+                                    <li>
+                                        <div class="col1">
+                                            <div class="cont">
+                                                <div class="cont-col1">
+                                                    <div class="label label-sm label-info">
+                                                        <i class="fa fa-check"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="cont-col2">
+                                                    <div class="desc"> My profile setup request.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col2">
+                                            <div class="date"> <%= tmpHistory[i].updated_at.to_s %> </div>
+                                        </div>
+                                    </li>
+                                <% end %>
+
+                                <% for i in 0..tmpHistory1.count - 1 %>
+                                    <% if tmpHistory1[i].allowed == 1 %>
+                                        <li>
+                                            <div class="col1">
+                                                <div class="cont">
+                                                    <div class="cont-col1">
+                                                        <div class="label label-sm label-info">
+                                                            <i class="fa fa-check"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cont-col2">
+                                                        <div class="desc"> Patient profile setup request. &nbsp&nbsp&nbsp&nbsp&nbsp From &nbsp&nbsp <strong><%= tmpHistory1[i].first_name + ' ' + tmpHistory1[i].last_name %></strong> </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col2">
+                                                <div class="date"> <%= tmpHistory1[i].updated_at.to_s %> </div>
+                                            </div>
+                                        </li>
+                                    <% else %>
+                                        <li>
+                                            <div class="col1">
+                                                <div class="cont">
+                                                    <div class="cont-col1">
+                                                        <div class="label label-success">
+                                                            <i class="fa fa-bell-o"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cont-col2">
+                                                        <div class="desc"> Patient profile setup request. &nbsp&nbsp&nbsp&nbsp&nbsp From &nbsp&nbsp <strong><%= tmpHistory1[i].first_name + ' ' + tmpHistory1[i].last_name %></strong> </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col2">
+                                                <div class="date"> <%= tmpHistory1[i].updated_at.to_s %> </div>
+                                            </div>
+                                        </li>
+                                    <% end %>
+                                <% end %>
+
+                                <% for i in 0..tmpMessage.count - 1 %>
+                                    <% tmpname = tmpMessage[i].content.split('|') %>
+                                    <% if tmpMessage[i].patient_profile_id == -2 %>
+                                        <li>
+                                            <div class="col1">
+                                                <div class="cont">
+                                                    <div class="cont-col1">
+                                                        <div class="label label-sm label-info">
+                                                            <i class="fa fa-check"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cont-col2">
+                                                        <div class="desc"> Not signed user request. &nbsp&nbsp&nbsp&nbsp&nbsp From &nbsp&nbsp <strong><%= tmpname[0] %></strong> </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col2">
+                                                <div class="date"> <%= tmpMessage[i].updated_at.to_s %> </div>
+                                            </div>
+                                        </li>
+                                    <% else %>
+                                        <li>
+                                            <div class="col1">
+                                                <div class="cont">
+                                                    <div class="cont-col1">
+                                                        <div class="label label-success">
+                                                            <i class="fa fa-bell-o"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cont-col2">
+                                                        <div class="desc"> Not signed user request. &nbsp&nbsp&nbsp&nbsp&nbsp From &nbsp&nbsp <strong><%= tmpname[0] %></strong> </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col2">
+                                                <div class="date"> <%= tmpMessage[i].updated_at.to_s %> </div>
+                                            </div>
+                                        </li>
+                                    <% end %>
+                                <% end %>
+                            <% else %>
+                                <% for i in 0..tmpHistory.count - 1 %>
+                                    <% if tmpHistory[i].allowed == 1 %>
+                                        <li>
+                                            <div class="col1">
+                                                <div class="cont">
+                                                    <div class="cont-col1">
+                                                        <div class="label label-sm label-info">
+                                                            <i class="fa fa-check"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cont-col2">
+                                                        <div class="desc"> Patient profile setup request. </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col2">
+                                                <div class="date"> <%= tmpHistory[i].updated_at.to_s %> </div>
+                                            </div>
+                                        </li>
+                                    <% else %>
+                                        <li>
+                                            <div class="col1">
+                                                <div class="cont">
+                                                    <div class="cont-col1">
+                                                        <div class="label label-success">
+                                                            <i class="fa fa-bell-o"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cont-col2">
+                                                        <div class="desc"> Patient profile setup request. </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col2">
+                                                <div class="date"> <%= tmpHistory[i].updated_at.to_s %> </div>
+                                            </div>
+                                        </li>
+                                    <% end %>
+                                <% end %>
+                            <% end %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script>
+    $("#page-title").html("<h4>History</h4>");
+</script>

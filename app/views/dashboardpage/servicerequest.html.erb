@@ -1,0 +1,298 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<br>
+
+<div class="portlet light bordered dashboardpage_height">
+    <div class="portlet-title">
+        <div class="caption font-green">
+            <i class="icon-pin font-green"></i>
+            <span class="caption-subject bold uppercase"> Request type</span>
+
+            <select class="form-control" style="margin-top: 15px;" onchange="request_type(this.value)">
+                <option>General Request</option>
+                <option>Profile Request</option>
+            </select>
+        </div>
+        <div class="actions">
+            <div class="btn-group">
+                <a class="btn btn-sm default dropdown-toggle" href="javascript:;" data-toggle="dropdown" aria-expanded="false"> Settings
+                    <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-pencil"></i> Edit </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-trash-o"></i> Delete </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-ban"></i> Ban </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet-body form general_request">
+        <form role="form">
+            <div class="form-body">
+                <div class="form-group form-md-line-input form-md-floating-label">
+                    <input type="text" class="form-control edited" placeholder="">
+                    <label for="form_control_1">Please input your name</label>
+                    <span class="help-block">Your name  here...</span>
+                </div>
+
+                <div class="md-radio-inline">
+                    <div class="md-radio">
+                        <input type="radio" id="radio6" name="radio2" class="md-radiobtn" checked="">
+                        <label for="radio6">
+                            <span class="inc"></span>
+                            <span class="check"></span>
+                            <span class="box"></span> Male </label>
+                    </div>
+                    <div class="md-radio">
+                        <input type="radio" id="radio7" name="radio2" class="md-radiobtn">
+                        <label for="radio7">
+                            <span class="inc"></span>
+                            <span class="check"></span>
+                            <span class="box"></span> Female </label>
+                    </div>
+                </div>
+
+                <div class="form-group form-md-line-input form-md-floating-label has-info">
+                    <select class="form-control edited" id="form_control_1">
+                        <option value=""></option>
+                        <option value="1" selected="">request 1</option>
+                        <option value="2">request 2</option>
+                        <option value="3">request 3</option>
+                        <option value="4">request 4</option>
+                    </select>
+                    <label for="form_control_1">Please select your main request</label>
+                </div>
+
+                <div class="form-group form-md-line-input form-md-floating-label">
+                    <input type="text" class="form-control edited" placeholder="">
+                    <label for="form_control_1">Please input disease name</label>
+                    <span class="help-block">Disease name  following your opinion here...</span>
+                </div>
+
+                <div class="form-group form-md-line-input form-md-floating-label">
+                    <input type="text" class="form-control edited" placeholder="">
+                    <label for="form_control_1">Please input disease time</label>
+                    <span class="help-block">Disease time  that you think about it here...</span>
+                </div>
+
+                <div class="form-group form-md-line-input form-md-floating-label">
+                    <input type="text" class="form-control edited" placeholder="">
+                    <label for="form_control_1">Please input before disease name</label>
+                    <span class="help-block">Before disease name  which you think similar to current disease here...</span>
+                </div>
+
+                <div class="form-group form-md-line-input form-md-floating-label">
+                    <textarea class="form-control" rows="3"></textarea>
+                    <label for="form_control_1">More details you think</label>
+                </div>
+            </div>
+            <div class="form-actions noborder">
+                <button type="button" class="btn blue">Submit</button>
+                <button type="button" class="btn default">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="portlet-body profile_request">
+
+        <div class="tab-content">
+
+            <!-- CHANGE AVATAR TAB -->
+                <link rel="stylesheet" type="text/css" href="/css/upload_style.css" />
+
+                <div class="tab-pane" id="tab_1_2" style="display: block;margin-bottom: 25px;">
+                    <div id="tab-pane copper_container" class="crop_cover_container">
+                        <!--<a id="back_btn" class="back_button"></a>-->
+                        <div class="crop_img_source">
+                            <a id="rotate_btn"></a>
+                            <div id="dragdrop_info">Drag and drop<br>your image here</div>
+                            <div id="drag_drop_area"></div>
+                            <div id="cropper_img_area_bg"></div>
+                            <div id="status"></div>
+                            <a id="select_img_button" href="javascript:void(0);" onclick="document.getElementById('image_file').click();"></a>
+                            <input type="file" id="image_file" size="10" style="visibility:hidden;" />
+                            
+                            <canvas id="cropper_img_area"></canvas>
+                            <img id="reset_img" width="300" height="300" style="display:none" />
+                        </div>
+                        <div id="preview_container" class="preview_container">
+                            <canvas id="preview_100_px"></canvas>
+                            <span class="img_detail_text">Preview Image</span>
+                            <button id="save_img_button" class="btn btn-success">Set as Profile</button>
+                            <button id="change_img_button" class="btn btn-warning">Change Picture</button>
+                            <button id="reset_img_button" class="btn btn-warning" style="display: none;">Reset Picture</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content profile_request">
+            <!-- PERSONAL INFO TAB -->
+            <div class="tab-pane active" id="tab_1_1">
+
+                <%= form_for(:patient_profile, :url => dashboardpage_patientprofileinsert_path, :method => "post") do |f| %>
+                    <div class="form-body">
+
+                        <div style="display: block;">
+                            <%= f.text_area(:image, id: "profile_img_id", style: "display: none;") %>
+                            <%= f.text_area(:profile_type, id: "profile_type_id", style: "display: none;", value: ".staff_summary") %>
+                        </div>
+
+                        <div class="form-group form-md-line-input form-md-floating-label">
+                            <%= f.text_field(:first_name, class: "form-control edited", id: "first_name") %>
+                            <label for="form_control_1"> First Name </label>
+                            <span class="help-block">first name here...</span>
+                        </div>
+
+                        <div class="form-group form-md-line-input form-md-floating-label">
+                            <%= f.text_field(:last_name, class: "form-control edited", id: "last_name") %>
+                            <label for="form_control_1"> Last Name </label>
+                            <span class="help-block">last name here...</span>
+                        </div>
+
+                        <div class="form-group" id="sex">
+                            <label for="form_control_1" class="profile_setup_custom"> Sex </label><br>
+                            <%= f.radio_button :sex, 'Male' %> Male &nbsp&nbsp
+                            <%= f.radio_button :sex, 'Female' %> Female
+                        </div>
+
+                        <div class="form-group form-md-line-input form-md-floating-label" style="z-index: 11">
+                            <label for="form_control_1" style="color: #979797;"> Birthday </label><br>
+                            
+                            <div class="bootstrap-iso">
+                                <div class="container-fluid date_input">
+                                    <div class="form-group">
+                                        <%= f.text_field(:birthdate, class: "form-control", id: "birthdate", placeholder: "MM/DD/YYY your birthday here...") %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   
+
+                        <div class="form-group form-md-line-input form-md-floating-label" style="z-index: 12">
+                            <%= f.text_field(:phone_number, class: "form-control edited", id: "phone_number") %>
+                            <label for="form_control_1"> Phone Number </label>
+                            <span class="help-block">phone number here...</span>
+                        </div>
+
+                        <div class="form-group form-md-line-input form-md-floating-label">
+                            <label for="form_control_1" class="profile_setup_custom"> NHS Number </label><br>
+                            <div class="nhs_number">
+                                <%= f.text_field(:nhs_number1, class: "form-control edited", maxlength: 3, id: "nhs_number1") %>
+                                <span>-</span>
+                                <%= f.text_field(:nhs_number2, class: "form-control edited", maxlength: 3, id: "nhs_number2") %>
+                                <span>-</span>
+                                <%= f.text_field(:nhs_number3, class: "form-control edited", maxlength: 4, id: "nhs_number3") %>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-md-line-input form-md-floating-label">
+                            <%= f.text_field(:address, class: "form-control edited", id: "address") %>
+                            <label for="form_control_1"> Address </label>
+                            <span class="help-block">address here...</span>
+                        </div>
+
+                        <div class="form-group patient_summary patient_occupation">
+                            <label for="form_control_1" class="profile_setup_custom"> Occupation </label><br>
+                            <%= f.select :occupation, options_for_select([["Staff", "Staff"], ["Developer", "Developer"], ["Admin", "Admin"]]) %>
+                        </div>
+
+                        <div class="form-group form-md-line-input form-md-floating-label">
+                            <%= f.text_area(:detail, class: "form-control edited", id: "detail") %>
+                            <label for="form_control_1"> Detail </label>
+                            <span class="help-block">detiai here...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions noborder">
+                        <%= f.submit("Send Profile", class: "btn blue patient_profile_request", id: "profile_push") %>
+                    </div>
+                <% end %> 
+            </div>
+            <!-- END PERSONAL INFO TAB -->
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script src="/js/ComnovoUtil.js" type="text/javascript"></script>
+<script src="/js/ImageCropper.js" type="text/javascript"></script>
+<script src="/js/UploadImages.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+<script>
+    $(document).ready(function(){
+      var date_input=$('input[name="patient_profile[birthdate]"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'mm/dd/yyyy',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+      };
+      date_input.datepicker(options);
+    })
+</script>
+
+<script>
+    $("#page-title").html("<h4 style='font-size: 18px;'>Service Requests</h4>");
+
+    function request_type(e) {
+        if ( e == "General Request" ) {
+            $(".general_request").css("display", "block");
+            $(".profile_request").css("display", "none");
+            $(".qn_request").css("display", "none");
+            $(".page-content").css("height", "auto");
+        }
+
+        if ( e == "Profile Request" ) {
+            $(".general_request").css("display", "none");
+            $(".profile_request").css("display", "block");
+            $(".qn_request").css("display", "none");
+            $(".page-content").css("height", "auto");
+        }
+
+        if ( e == "Questionnaire Reqeust" ) {
+            $(".general_request").css("display", "none");
+            $(".profile_request").css("display", "none");
+            $(".qn_request").css("display", "block");
+            $(".page-content").css("height", "1000px");
+        }
+    }
+
+    $("#save_img_button").on('click', function() {
+        $("#profile_img_id").val(document.getElementById("preview_100_px").toDataURL('image/jpeg', 1.0));
+        $(".crop_img_source").css("display", "none");
+        $("#preview_container").css("left", "0px");
+        $("#save_img_button").css("display", "none");
+        $("#change_img_button").css("display", "none");
+        $(".crop_cover_container").css("height", "220px");
+        $("#reset_img_button").css("display", "block");
+        $(".img_detail_text").css("height", "30px");
+    });
+
+    $("#reset_img_button").on('click', function() {
+        $(".crop_img_source").css("display", "block");
+        $("#preview_container").css("left", "350px");
+        $("#save_img_button").css("display", "block");
+        $("#change_img_button").css("display", "block");
+        $(".crop_cover_container").css("height", "300px");
+        $("#reset_img_button").css("display", "none");
+        $(".img_detail_text").css("height", "60px");     
+    });
+</script>

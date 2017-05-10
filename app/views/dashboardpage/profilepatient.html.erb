@@ -1,0 +1,240 @@
+<%= render "dashboardpage/header.html.erb" %>
+
+<br>
+
+<div class="row dashboardpage_height">
+    <div class="col-md-12 col-sm-12 min-show media_adjust">
+        <div class="pull-left col-md-5 col-sm-12 media_adjust" style="padding: 0px">
+            <div class="profile-detail-cover">
+                <div class="col-md-12 col-sm-12">
+                    <div class="profile-detail-header">
+                        <p class="profile-detail-header-text">Patient Detail</p>
+                    </div>
+                </div>
+
+                <%  if current_authcon 
+                        tmpObj = PatientProfile.find_by('authcons_id': current_authcon.id)
+                    else 
+                        tmpObj = PatientProfile.find_by('fusers_id': session[:fuser_id])
+                    end
+                %>
+
+                <div class="col-md-5 profile-image-cover">
+                    <% if tmpObj.image == nil || tmpObj.image == '' || tmpObj.allowed == 0 %>
+                        <img src="/images/blank_profile_image.png" class="img-responsive patient_profile_img" alt="">
+                    <% else %>
+                        <%  file = File.open("savedimages/" + tmpObj.image, "rb")
+                            contents = file.read %>
+                        <img src="<%= contents %>" class="img-responsive patient_profile_img" alt="">
+                    <% end %>
+                </div>
+                <div class="col-md-7 media_adjust_detail" style="text-align: center;">
+                    <div class="col-md-12 col-sm-12" style="padding-top: 15px;">
+                        <ul class="col-md-12 col-sm-12 profile-detail-ul">
+                            <li class="col-md-12 col-sm-12">
+                               <span class="pull-left">ID : </span>
+                               <span class="pull-right">123</span> 
+                            </li>
+                            <li class="col-md-12 col-sm-12">
+                               <span class="pull-left">Name : </span>
+                               <span class="pull-right"><%= tmpObj.first_name.to_s + ' ' + tmpObj.last_name.to_s %></span> 
+                            </li>
+                            <li class="col-md-12 col-sm-12">
+                               <span class="pull-left">Sex : </span>
+                               <span class="pull-right"><%= tmpObj.sex.to_s %></span> 
+                            </li>
+                            <li class="col-md-12 col-sm-12">
+                               <span class="pull-left">BirthDate : </span>
+                               <span class="pull-right"><%= tmpObj.birthdate.to_s %></span> 
+                            </li>
+                            <li class="col-md-12 col-sm-12">
+                               <span class="pull-left">Phone : </span>
+                               <span class="pull-right"><%= tmpObj.phone_number.to_s %></span> 
+                            </li>
+                            <li class="col-md-12 col-sm-12">
+                               <span class="pull-left">Address : </span>
+                               <span class="pull-right"><%= tmpObj.address.to_s %></span> 
+                            </li>
+                            <li class="col-md-12 col-sm-12">
+                               <span class="pull-left">Healthcare Professional : </span>
+                               <span class="pull-right"><%= tmpObj.healthcare_professional.to_s %></span> 
+                            </li>  
+                            <li class="col-md-12 col-sm-12">
+                               <span class="pull-left">Lead Clinician : </span>
+                               <span class="pull-right"><%= tmpObj.lead_clinician.to_s %></span> 
+                            </li>  
+                            <li class="col-md-12 col-sm-12">
+                               <span class="pull-left">CoreMobid Pathways : </span>
+                               <span class="pull-right">Diabetes</span> 
+                            </li>                      
+                        </ul>
+                    </div>
+                    <div class="profile-userbuttons patient-profile-btn">
+                        <button type="button" class="btn btn-circle green btn-sm profile_history_btn">Patient History</button>
+                        <button type="button" class="btn btn-circle green btn-sm profile_note_btn">General Note</button>
+                    </div>                
+                </div>
+            </div>
+        </div>
+
+        <div class="pull-right col-md-7 col-sm-12 profile-assume media_adjust">
+            <div class="col-md-12 col-sm-12 profile-assume-inner">
+                <div class="col-md-12 col-sm-12" style="padding-left: 0px;padding-right: 0px;border-bottom: 1px solid lightgray;">
+                    <div class="pull-left profile-overview-header">
+                        <p class="profile-detail-header-text">Patient Detail</p>
+                    </div>
+                    <div class="pull-right">
+                        <p class="profile-detail-header-text">Assessment:Date</p>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 nav-menu-cover">
+                    <nav class="navpart-collapse" role="navpartigation">
+                        <ul class="nav nav-tabs">
+                            <li class="dropdown pull-right tabdrop">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href=""><i class="fa fa-ellipsis-v"></i>&nbsp;<i class="fa fa-angle-down"></i> <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li class=""></li>
+                                </ul>
+                            </li>
+                            <li class="active">
+                                <a href="" data-toggle="tab" aria-expanded="false">Disable</a>
+                            </li>
+                            <li class="">
+                                <a href="" data-toggle="tab" aria-expanded="false">Enable</a>
+                            </li>
+                            <li class="">
+                                <a href="" data-toggle="tab" aria-expanded="false">Deactivated</a>
+                            </li>                                            
+                        </ul>
+                        <div style="width: 100%;height: 1px;border-top: 1px solid lightgray;">
+                        </div>
+
+                        <button type="button" class="btn btn-circle green btn-sm send-message">Send Message</button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding-left: 15px;padding-right: 15px;">
+        <div class="col-md-12 col-sm-12" style="margin-top: 15px;background-color: white;display: grid;">
+            <div class="col-md-12 col-sm-12" style="background-color: white;">
+                <div class="profile-detail-header">
+                    <p class="profile-detail-header-text">Historical Patient Pathway Progression</p>
+                </div>
+
+                <nav class="navpart-collapse" role="navpartigation" style="margin-top: 15px;">
+                    <ul class="nav nav-tabs">
+                        <li class="dropdown pull-right tabdrop">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href=""><i class="fa fa-ellipsis-v"></i>&nbsp;<i class="fa fa-angle-down"></i> <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li class=""><a href="" data-toggle="tab" aria-expanded="false">Blood 1</a></li>
+                                <li class=""><a href="" data-toggle="tab" aria-expanded="false">Blood 1</a></li>
+                                <li class=""><a href="" data-toggle="tab" aria-expanded="false">Blood 1</a></li>
+                            </ul>
+                        </li>
+                        <li class="active">
+                            <a href="" data-toggle="tab" aria-expanded="false">Blood 1</a>
+                        </li>
+                        <li class="">
+                            <a href="" data-toggle="tab" aria-expanded="false">Blood 2</a>
+                        </li>
+                        <li class="">
+                            <a href="" data-toggle="tab" aria-expanded="false">Blood 3</a>
+                        </li>                                            
+                    </ul>
+                    <div style="width: 100%;height: 1px;border-top: 1px solid lightgray;">
+                    </div>
+
+                    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<script>
+    $(".detail_click").click(function() {
+        $(".detail_click").removeClass("item_active");
+        var index = $(".detail_click").index(this);
+        $(".detail_click:eq("+index+")").addClass("item_active");
+    });
+
+    $(".chart_click").click(function() {
+        $(".chart_click").removeClass("item_active");
+        var index = $(".chart_click").index(this);
+        $(".chart_click:eq("+index+")").addClass("item_active");
+    });
+</script>
+
+<%= render "dashboardpage/footer.html.erb" %>
+
+<script>
+    $("#page-title").html("<h4>My Profile</h4>");
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    function load_chart() {
+        var chart = new CanvasJS.Chart("chartContainer",
+        {
+            theme: "theme2",
+            title:{
+                text: "Level"
+            },
+            animationEnabled: true,
+            axisX: {
+                valueFormatString: "MMM",
+                interval:1,
+                intervalType: "month"
+                
+            },
+            axisY:{
+                includeZero: false
+                
+            },
+            data: [
+                {        
+                    type: "line",
+                    //lineThickness: 3,        
+                    dataPoints: [
+                    { x: new Date(2017, 00, 1), y: 450 },
+                    { x: new Date(2017, 01, 1), y: 414},
+                    { x: new Date(2017, 02, 1), y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle"},
+                    { x: new Date(2017, 03, 1), y: 460 },
+                    { x: new Date(2017, 04, 1), y: 450 },
+                    { x: new Date(2017, 05, 1), y: 500 },
+                    { x: new Date(2017, 06, 1), y: 480 },
+                    { x: new Date(2017, 07, 1), y: 480 },
+                    { x: new Date(2017, 08, 1), y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross"},
+                    { x: new Date(2017, 09, 1), y: 500 },
+                    { x: new Date(2017, 10, 1), y: 480 },
+                    { x: new Date(2017, 11, 1), y: 510 }
+                    
+                    ]
+                }
+            ]
+        });
+
+        chart.render();
+    }
+
+    $(document).ready(function() {
+        setTimeout(function() {
+            var title = $("#page-title").html();
+            if(onloadf == 1 && (title == "<h4>My Profile</h4>")) {
+                load_chart();
+            }
+
+            window.onload = function () {
+                onloadf = 1;
+                load_chart();
+            }
+        }, 0);
+    });
+});
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>

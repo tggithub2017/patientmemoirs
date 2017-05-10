@@ -1,0 +1,2 @@
+class RequestQn < ApplicationRecord
+end
