@@ -4400,3 +4400,11 @@ table tbody tr {
     margin-top: 15px;
     display: none;
 }
+
+.slider-button:hover {
+    background-color: #f15b5a!important;
+}
+
+.sliderv-button:hover {
+    background-color: #f15b5a!important;
+}

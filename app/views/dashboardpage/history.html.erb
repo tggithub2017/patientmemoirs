@@ -67,16 +67,17 @@
                                 tmpHistory = StaffProfile.where("id is not NULL")
                                 tmpHistory1 = PatientProfile.where("id is not NULL")
                                 tmpMessage = Message.where("patient_profile_id < 0")
-                                usertype = "Staff"; %>
+                                usertype = "Staff" %>
                                 <script>
                                     setTimeout(function() {
                                         $(".sale-num").html("<%= tmpHistory.count + tmpHistory1.count + tmpMessage.count %>");
                                     }, 0);
                                 </script>
                             <% else
-                                tmpHistory = PatientProfile.where("authcons_id = " + current_authcon.id.to_s);
-                                tmpHistory1 = " ";
-                                usertype = "Patient"; %>
+                                tmpHistory = PatientProfile.where("authcons_id = " + current_authcon.id.to_s)
+                                tmpHistory1 = PatientProfile.where("authcons_id = -100")
+                                tmpMessage = Message.where("patient_profile_id < -100")
+                                usertype = "Patient" %>
                                 <script>
                                     setTimeout(function() {
                                         $(".sale-num").html("<%= tmpHistory.count %>");
@@ -85,8 +86,9 @@
                             <% end %>
                         <% else
                             tmpHistory = PatientProfile.where("fusers_id = " + session[:fuser_id].to_s);
-                            tmpHistory1 = " ";
-                            usertype = "Patient"; %>
+                            tmpHistory1 = PatientProfile.where("authcons_id = -100")
+                            tmpMessage = Message.where("patient_profile_id < -100")
+                            usertype = "Patient" %>
                             <script>
                                 setTimeout(function() {
                                     $(".sale-num").html("<%= tmpHistory.count %>");

@@ -220,12 +220,18 @@ License: You must have a valid license purchased only from themeforest(the above
             <div style="display: none;" id="my_profile_id">
                 <% if current_authcon 
                     if Authcon.find(current_authcon.id).usertype == "Patient" %>
-                        <%= PatientProfile.find_by('authcons_id': current_authcon.id).id %>
+                        <% if PatientProfile.exists?('authcons_id': current_authcon.id) %>
+                            <%= PatientProfile.find_by('authcons_id': current_authcon.id).id %>
+                        <% end %>
                     <% else %>
-                        <%= StaffProfile.find_by('authcons_id': current_authcon.id).id %>
+                        <% if StaffProfile.exists?('authcons_id': current_authcon.id) %>
+                            <%= StaffProfile.find_by('authcons_id': current_authcon.id).id %>
+                        <% end %>
                     <% end %>
                 <% else %>
-                    <%= PatientProfile.find_by('fusers_id': session[:fuser_id]).id %>
+                    <% if PatientProfile.exists?('fusers_id': session[:fuser_id]) %>
+                        <%= PatientProfile.find_by('fusers_id': session[:fuser_id]).id %>
+                    <% end %>
                 <% end %>
             </div>
 
@@ -247,84 +253,262 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
                         <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                         <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-                        <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-closed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-                            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-                            <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-                            <li class="sidebar-toggler-wrapper hide">
-                                <div class="sidebar-toggler">
-                                    <span></span>
-                                </div>
-                            </li>
-                            <!-- END SIDEBAR TOGGLER BUTTON -->
-                            <% if current_authcon %>
-                                <li class="nav-item pmenu">
-                                    <% if(current_authcon.usertype == "Patient") %>
+                        <% show_detail_flag = 0 %>
+                        <% if current_authcon %>
+                            <% if StaffProfile.exists?('authcons_id': current_authcon.id) || PatientProfile.exists?('authcons_id': current_authcon.id) %>
+                                <% show_detail_flag = 1 %>
+                            <% end %>
+                        <% else %>
+                            <% if PatientProfile.exists?('fusers_id': session[:fuser_id]) %>
+                                <% show_detail_flag = 1 %>
+                            <% end %>
+                        <% end %>
+
+                        <% if show_detail_flag == 1 %>
+                            <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-closed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                                <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+                                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                                <li class="sidebar-toggler-wrapper hide">
+                                    <div class="sidebar-toggler">
+                                        <span></span>
+                                    </div>
+                                </li>
+                                <!-- END SIDEBAR TOGGLER BUTTON -->
+                                <% if current_authcon %>
+                                    <li class="nav-item pmenu">
+                                        <% if(current_authcon.usertype == "Patient") %>
+                                            <a href="profilepatient" class="nav-link nav-toggle">
+                                                <i class="icon-user"></i>
+                                                <span class="title ptitle">Patient</span>
+                                                <span class="selected"></span>
+                                                <span class="arrow"></span>
+                                            </a>
+                                        <% else %>
+                                            <a href="profilestaff" class="nav-link nav-toggle">
+                                                <i class="icon-user"></i>
+                                                <span class="title ptitle">Staff</span>
+                                                <span class="selected"></span>
+                                                <span class="arrow"></span>
+                                            </a>   
+                                        <% end %>
+
+                                        <ul class="sub-menu">
+                                            <% if(current_authcon.usertype == "Patient") %>
+                                                <li class="nav-item  ">
+                                                    <a href="profilepatient" class="nav-link ">
+                                                        <i class="icon-docs"></i>
+                                                        <span class="title">My Profile</span>
+                                                    </a>
+                                                </li>
+                                            <% end %>
+
+                                            <% if(current_authcon.usertype == "Staff") %>
+                                                <li class="nav-item  ">
+                                                    <a href="profilestaff" class="nav-link ">
+                                                        <i class="icon-docs"></i>
+                                                        <span class="title">My Wrokplace</span>
+                                                    </a>
+                                                </li>
+                                            <% end %>
+
+                                            <% if(current_authcon.usertype == "Staff") %>
+                                                <!-- <li class="nav-item ">
+                                                    <a href="profilemanagement" class="nav-link ">
+                                                        <i class="icon-wrench"></i>
+                                                        <span class="title">Patient Management</span>
+                                                    </a>
+                                                </li> -->
+                                                <li class="nav-item  ">
+                                                    <a href="profilesetting" class="nav-link ">
+                                                        <i class="icon-settings"></i>
+                                                        <span class="title">Profile Setup</span>
+                                                        <span class="selected"></span>
+                                                    </a>
+                                                </li>
+                                            <% end %>
+
+                                            <% if(current_authcon.usertype == "Patient") %>
+                                                <li class="nav-item  ">
+                                                    <a href="profilehelp" class="nav-link ">
+                                                        <i class="icon-info"></i>
+                                                        <span class="title">Help</span>
+                                                    </a>
+                                                </li>
+                                            <% end %>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-item pmenu">
+                                        <% if(current_authcon.usertype == "Patient") %>
+                                            <a href="service" class="nav-link nav-toggle">
+                                                <i class="icon-social-dribbble"></i>
+                                                <span class="title ptitle">Service</span>
+                                                <span class="arrow"></span>
+                                            </a>
+
+                                            <ul class="sub-menu">
+                                                <li class="nav-item  ">
+                                                    <a href="service" class="nav-link ">
+                                                        <i class="icon-graph"></i>
+                                                        <span class="title">Service VR</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item  ">
+                                                    <a href="servicerequest" class="nav-link ">
+                                                        <i class="icon-notebook"></i>
+                                                        <span class="title">Service Request</span>
+                                                    </a>
+                                                </li>
+                                                <% if current_authcon
+                                                    if PatientProfile.find_by('authcons_id': current_authcon.id).allowed %>
+                                                        <li class="nav-item  ">
+                                                            <a href="servicenotification" class="nav-link ">
+                                                                <i class="icon-envelope"></i>
+                                                                <span class="title">Service Notification</span>
+                                                            </a>
+                                                        </li>
+                                                    <% end
+                                                else
+                                                    if PatientProfile.find_by('fusers_id': session[:fuser_id]).allowed %>
+                                                        <li class="nav-item  ">
+                                                            <a href="servicenotification" class="nav-link ">
+                                                                <i class="icon-envelope"></i>
+                                                                <span class="title">Service Notification</span>
+                                                            </a>
+                                                        </li>
+                                                    <% end                                        
+                                                end %>
+                                            </ul>
+                                        <% else %>
+                                            <a href="serviceqnsetup" class="nav-link nav-toggle">
+                                                <i class="icon-globe"></i>
+                                                <span class="title ptitle">Service</span>
+                                                <span class="arrow"></span>
+                                            </a>
+
+                                            <ul class="sub-menu">
+                                                <li class="nav-item  ">
+                                                    <a href="serviceqnsetup" class="nav-link ">
+                                                        <i class="icon-note"></i>
+                                                        <span class="title">Questionnaire Setup</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item  ">
+                                                    <a href="servicenotification" class="nav-link ">
+                                                        <i class="icon-envelope-open"></i>
+                                                        <span class="title">Service Notification</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        <% end %>
+                                    </li>
+
+                                    <li class="nav-item pmenu">
+                                        <% if(current_authcon.usertype == "Patient") %>
+                                            <a href="transactionrequest" class="nav-link nav-toggle">
+                                                <i class="icon-basket"></i>
+                                                <span class="title ptitle">Transaction</span>
+                                                <span class="arrow"></span>
+                                            </a>
+
+                                            <ul class="sub-menu">
+                                                <li class="nav-item  ">
+                                                    <a href="transactionrequest" class="nav-link ">
+                                                        <i class="icon-tag"></i>
+                                                        <span class="title">Order New</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item  ">
+                                                    <a href="transactionsetting" class="nav-link ">
+                                                        <i class="icon-settings"></i>
+                                                        <span class="title">Billing Setup</span>
+                                                    </a>
+                                                </li>
+
+                                                <!-- <li class="nav-item  ">
+                                                    <a href="#transaction" class="nav-link ">
+                                                        <i class="icon-home"></i>
+                                                        <span class="title">Transaction Overview</span>
+                                                    </a>
+                                                </li> -->
+                                            </ul>
+                                        <% else %>
+                                            <a href="transaction" class="nav-link nav-toggle">
+                                                <i class="icon-basket"></i>
+                                                <span class="title">Transaction</span>
+                                                <span class="arrow"></span>
+                                            </a>
+                                        <% end %>
+                                    </li>
+
+                                    <% if current_authcon.usertype == "Staff" %>
+                                        <li class="nav-item pmenu">
+                                            <a href="blog_post" class="nav-link nav-toggle">
+                                                <i class="icon-note"></i>
+                                                <span class="title ptitle">Post</span>
+                                                <span class="arrow"></span>
+                                            </a>
+
+                                            <% if StaffProfile.exists?('authcons_id': current_authcon.id) %>
+                                                <% if StaffProfile.find_by('authcons_id': current_authcon.id).occupation == "Admin" %>
+                                                    <ul class="sub-menu">
+                                                        <li class="nav-item">
+                                                            <a href="blog_post" class="nav-link ">
+                                                                <i class="icon-note"></i>
+                                                                <span class="title">Blog Post</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a href="specialists_post" class="nav-link ">
+                                                                <i class="icon-tag"></i>
+                                                                <span class="title">Specialists Post</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                <% end %>
+                                            <% end %>
+                                        </li>
+                                    <% end %>
+
+                                    <li class="nav-item pmenu">
+                                        <a href="history" class="nav-link nav-toggle">
+                                            <i class="icon-clock"></i>
+                                            <span class="title ptitle">History</span>
+                                            <span class="arrow"></span>
+                                        </a>
+                                    </li>
+                                <% end %>
+
+                                <% if session[:fuser_id] %>
+                                    <li class="nav-item  ">
                                         <a href="profilepatient" class="nav-link nav-toggle">
                                             <i class="icon-user"></i>
-                                            <span class="title ptitle">Patient</span>
+                                            <span class="title">Patient</span>
                                             <span class="selected"></span>
                                             <span class="arrow"></span>
                                         </a>
-                                    <% else %>
-                                        <a href="profilestaff" class="nav-link nav-toggle">
-                                            <i class="icon-user"></i>
-                                            <span class="title ptitle">Staff</span>
-                                            <span class="selected"></span>
-                                            <span class="arrow"></span>
-                                        </a>   
-                                    <% end %>
 
-                                    <ul class="sub-menu">
-                                        <% if(current_authcon.usertype == "Patient") %>
+
+                                        <ul class="sub-menu">
                                             <li class="nav-item  ">
                                                 <a href="profilepatient" class="nav-link ">
                                                     <i class="icon-docs"></i>
                                                     <span class="title">My Profile</span>
                                                 </a>
                                             </li>
-                                        <% end %>
-
-                                        <% if(current_authcon.usertype == "Staff") %>
-                                            <li class="nav-item  ">
-                                                <a href="profilestaff" class="nav-link ">
-                                                    <i class="icon-docs"></i>
-                                                    <span class="title">My Wrokplace</span>
-                                                </a>
-                                            </li>
-                                        <% end %>
-
-                                        <% if(current_authcon.usertype == "Staff") %>
-                                            <!-- <li class="nav-item ">
-                                                <a href="profilemanagement" class="nav-link ">
-                                                    <i class="icon-wrench"></i>
-                                                    <span class="title">Patient Management</span>
-                                                </a>
-                                            </li> -->
-                                            <li class="nav-item  ">
-                                                <a href="profilesetting" class="nav-link ">
-                                                    <i class="icon-settings"></i>
-                                                    <span class="title">Profile Setup</span>
-                                                    <span class="selected"></span>
-                                                </a>
-                                            </li>
-                                        <% end %>
-
-                                        <% if(current_authcon.usertype == "Patient") %>
                                             <li class="nav-item  ">
                                                 <a href="profilehelp" class="nav-link ">
                                                     <i class="icon-info"></i>
                                                     <span class="title">Help</span>
                                                 </a>
                                             </li>
-                                        <% end %>
-                                    </ul>
-                                </li>
+                                        </ul>
+                                    </li>
 
-                                <li class="nav-item pmenu">
-                                    <% if(current_authcon.usertype == "Patient") %>
+                                    <li class="nav-item  ">
                                         <a href="service" class="nav-link nav-toggle">
                                             <i class="icon-social-dribbble"></i>
-                                            <span class="title ptitle">Service</span>
+                                            <span class="title">Service</span>
                                             <span class="arrow"></span>
                                         </a>
 
@@ -341,55 +525,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="title">Service Request</span>
                                                 </a>
                                             </li>
-                                            <% if current_authcon
-                                                if PatientProfile.find_by('authcons_id': current_authcon.id).allowed %>
-                                                    <li class="nav-item  ">
-                                                        <a href="servicenotification" class="nav-link ">
-                                                            <i class="icon-envelope"></i>
-                                                            <span class="title">Service Notification</span>
-                                                        </a>
-                                                    </li>
-                                                <% end
-                                            else
-                                                if PatientProfile.find_by('fusers_id': session[:fuser_id]).allowed %>
-                                                    <li class="nav-item  ">
-                                                        <a href="servicenotification" class="nav-link ">
-                                                            <i class="icon-envelope"></i>
-                                                            <span class="title">Service Notification</span>
-                                                        </a>
-                                                    </li>
-                                                <% end                                        
-                                            end %>
-                                        </ul>
-                                    <% else %>
-                                        <a href="serviceqnsetup" class="nav-link nav-toggle">
-                                            <i class="icon-globe"></i>
-                                            <span class="title ptitle">Service</span>
-                                            <span class="arrow"></span>
-                                        </a>
-
-                                        <ul class="sub-menu">
-                                            <li class="nav-item  ">
-                                                <a href="serviceqnsetup" class="nav-link ">
-                                                    <i class="icon-note"></i>
-                                                    <span class="title">Questionnaire Setup</span>
-                                                </a>
-                                            </li>
                                             <li class="nav-item  ">
                                                 <a href="servicenotification" class="nav-link ">
-                                                    <i class="icon-envelope-open"></i>
+                                                    <i class="icon-envelope"></i>
                                                     <span class="title">Service Notification</span>
                                                 </a>
                                             </li>
                                         </ul>
-                                    <% end %>
-                                </li>
+                                    </li>
 
-                                <li class="nav-item pmenu">
-                                    <% if(current_authcon.usertype == "Patient") %>
+                                    <li class="nav-item  ">
                                         <a href="transactionrequest" class="nav-link nav-toggle">
                                             <i class="icon-basket"></i>
-                                            <span class="title ptitle">Transaction</span>
+                                            <span class="title">Transaction</span>
                                             <span class="arrow"></span>
                                         </a>
 
@@ -414,154 +562,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </a>
                                             </li> -->
                                         </ul>
-                                    <% else %>
-                                        <a href="transaction" class="nav-link nav-toggle">
-                                            <i class="icon-basket"></i>
-                                            <span class="title">Transaction</span>
+                                    </li>
+
+                                    <li class="nav-item  ">
+                                        <a href="history" class="nav-link nav-toggle">
+                                            <i class="icon-clock"></i>
+                                            <span class="title">History</span>
                                             <span class="arrow"></span>
                                         </a>
-                                    <% end %>
-                                </li>
-
-                                <% if current_authcon.usertype == "Staff" %>
-                                    <% if StaffProfile.find_by('authcons_id': current_authcon.id).occupation == "Staff" %>
-                                        <li class="nav-item pmenu">
-                                            <a href="blog_post" class="nav-link nav-toggle">
-                                                <i class="icon-note"></i>
-                                                <span class="title ptitle">Post</span>
-                                                <span class="arrow"></span>
-                                            </a>
-                                        </li>
-                                    <% else %>
-                                        <li class="nav-item pmenu">
-                                            <a href="blog_post" class="nav-link nav-toggle">
-                                                <i class="icon-note"></i>
-                                                <span class="title ptitle">Post</span>
-                                                <span class="arrow"></span>
-                                            </a>
-
-                                            <ul class="sub-menu">
-                                                <li class="nav-item">
-                                                    <a href="blog_post" class="nav-link ">
-                                                        <i class="icon-note"></i>
-                                                        <span class="title">Blog Post</span>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="specialists_post" class="nav-link ">
-                                                        <i class="icon-tag"></i>
-                                                        <span class="title">Specialists Post</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    <% end %>
+                                    </li>
                                 <% end %>
 
-                                <li class="nav-item pmenu">
-                                    <a href="history" class="nav-link nav-toggle">
-                                        <i class="icon-clock"></i>
-                                        <span class="title ptitle">History</span>
-                                        <span class="arrow"></span>
-                                    </a>
-                                </li>
-                            <% end %>
-
-                            <% if session[:fuser_id] %>
-                                <li class="nav-item  ">
-                                    <a href="profilepatient" class="nav-link nav-toggle">
-                                        <i class="icon-user"></i>
-                                        <span class="title">Patient</span>
-                                        <span class="selected"></span>
-                                        <span class="arrow"></span>
-                                    </a>
-
-
-                                    <ul class="sub-menu">
-                                        <li class="nav-item  ">
-                                            <a href="profilepatient" class="nav-link ">
-                                                <i class="icon-docs"></i>
-                                                <span class="title">My Profile</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item  ">
-                                            <a href="profilehelp" class="nav-link ">
-                                                <i class="icon-info"></i>
-                                                <span class="title">Help</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item  ">
-                                    <a href="service" class="nav-link nav-toggle">
-                                        <i class="icon-social-dribbble"></i>
-                                        <span class="title">Service</span>
-                                        <span class="arrow"></span>
-                                    </a>
-
-                                    <ul class="sub-menu">
-                                        <li class="nav-item  ">
-                                            <a href="service" class="nav-link ">
-                                                <i class="icon-graph"></i>
-                                                <span class="title">Service VR</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item  ">
-                                            <a href="servicerequest" class="nav-link ">
-                                                <i class="icon-notebook"></i>
-                                                <span class="title">Service Request</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item  ">
-                                            <a href="servicenotification" class="nav-link ">
-                                                <i class="icon-envelope"></i>
-                                                <span class="title">Service Notification</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item  ">
-                                    <a href="transactionrequest" class="nav-link nav-toggle">
-                                        <i class="icon-basket"></i>
-                                        <span class="title">Transaction</span>
-                                        <span class="arrow"></span>
-                                    </a>
-
-                                    <ul class="sub-menu">
-                                        <li class="nav-item  ">
-                                            <a href="transactionrequest" class="nav-link ">
-                                                <i class="icon-tag"></i>
-                                                <span class="title">Order New</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item  ">
-                                            <a href="transactionsetting" class="nav-link ">
-                                                <i class="icon-settings"></i>
-                                                <span class="title">Billing Setup</span>
-                                            </a>
-                                        </li>
-
-                                        <!-- <li class="nav-item  ">
-                                            <a href="#transaction" class="nav-link ">
-                                                <i class="icon-home"></i>
-                                                <span class="title">Transaction Overview</span>
-                                            </a>
-                                        </li> -->
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item  ">
-                                    <a href="history" class="nav-link nav-toggle">
-                                        <i class="icon-clock"></i>
-                                        <span class="title">History</span>
-                                        <span class="arrow"></span>
-                                    </a>
-                                </li>
-                            <% end %>
-
-                        </ul>
+                            </ul>
+                        <% end %>
                         <!-- END SIDEBAR MENU -->
                         <!-- END SIDEBAR MENU -->
                     </div>

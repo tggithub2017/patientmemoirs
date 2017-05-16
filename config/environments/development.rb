@@ -29,30 +29,31 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   # config.action_mailer.raise_delivery_errors = false
 
-  config.action_mailer.perform_caching = false
-
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    :user_name => 'f4c760a44b7a51',
-    :password => '37ca2103657ec1',
-    :address => 'smtp.mailtrap.io',
-    :domain => 'smtp.mailtrap.io',
-    :port => '2525',
-    :authentication => :cram_md5
-  }
+  # config.action_mailer.perform_caching = false
 
   # config.action_mailer.delivery_method = :smtp
   # config.action_mailer.smtp_settings = {
-  #   :address              => "smtp.gmail.com",
-  #   :port                 => 587,
-  #   :domain               => "gmail.com",
-  #   :user_name            => "webdev.maradossi@gmail.com",
-  #   :password             => "cjsgk123456789",
-  #   :authentication       => "plain",
-  #   :tsl                  => true,
-  #   enable_starttls_auto: true
-  #   # :enable_starttls_auto => true # I don't have this, but it should work anyway
+  #   :user_name => 'f4c760a44b7a51',
+  #   :password => '37ca2103657ec1',
+  #   :address => 'smtp.mailtrap.io',
+  #   :domain => 'smtp.mailtrap.io',
+  #   :port => '2525',
+  #   :authentication => :cram_md5
   # }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = [:host]
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :domain               => "gmail.com",
+    :user_name            => "webdev.maradossi@gmail.com",
+    :password             => "cjsgk123456789",
+    :authentication       => "plain",
+    :tsl                  => true,
+    enable_starttls_auto: true
+    # :enable_starttls_auto => true # I don't have this, but it should work anyway
+  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

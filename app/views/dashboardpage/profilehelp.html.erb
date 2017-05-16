@@ -15,25 +15,27 @@
                         tmpObj = PatientProfile.find_by('fusers_id': session[:fuser_id])
                     end
                 %>
-
-                <div class="profile-userpic">
-                    <% tmpstr = tmpObj.lead_clinician.to_s.split(' ')
-                       tmpLeadObj = StaffProfile.where('first_name = "' + tmpstr[0] + '" and ' + 'last_name = "' + tmpstr[1] + '"') %>
-                    <% if tmpLeadObj.count > 0 %>
-                        <% if tmpLeadObj[0].image == nil || tmpLeadObj[0].image == '' %>
-                            <img src="/images/blank_profile_image.png" class="img-responsive" alt="">
-                        <% else %>
-                            <%  file = File.open("savedimages/" + tmpLeadObj[0].image, "rb")
-                                contents = file.read %>
-                            <img src="<%= contents %>" class="img-responsive patient_profile_img" alt="">
+                
+                <% if PatientProfile.exists?('authcons_id': current_authcon.id) || PatientProfile.exists?('fusers_id': current_authcon.id) %>
+                    <div class="profile-userpic">
+                        <% tmpstr = tmpObj.lead_clinician.to_s.split(' ')
+                        tmpLeadObj = StaffProfile.where('first_name = "' + tmpstr[0].to_s + '" and ' + 'last_name = "' + tmpstr[1].to_s + '"') %>
+                        <% if tmpLeadObj.count > 0 %>
+                            <% if tmpLeadObj[0].image == nil || tmpLeadObj[0].image == '' %>
+                                <img src="/images/blank_profile_image.png" class="img-responsive" alt="">
+                            <% else %>
+                                <%  file = File.open("savedimages/" + tmpLeadObj[0].image, "rb")
+                                    contents = file.read %>
+                                <img src="<%= contents %>" class="img-responsive patient_profile_img" alt="">
+                            <% end %>
                         <% end %>
-                    <% end %>
-                </div>
-                <!-- END SIDEBAR USERPIC -->
-                <!-- SIDEBAR USER TITLE -->
-                <div class="profile-usertitle">
-                    <div class="profile-usertitle-name"> <%= tmpObj.lead_clinician.to_s %> </div>
-                </div>
+                    </div>
+                    <!-- END SIDEBAR USERPIC -->
+                    <!-- SIDEBAR USER TITLE -->
+                    <div class="profile-usertitle">
+                        <div class="profile-usertitle-name"> <%= tmpObj.lead_clinician.to_s %> </div>
+                    </div>
+                <% end %>
                 <!-- END SIDEBAR USER TITLE -->
                 <!-- SIDEBAR BUTTONS -->
                 <div class="profile-userbuttons">
