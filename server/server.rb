@@ -1,0 +1,1 @@
+cookies[:testsimplecall] = "simple call"

@@ -2,11 +2,19 @@
 
 <br>
 
+<% tmpAut = Authcon.where('id is not NULL') %>
+<% tmpSta = StaffProfile.where('id is not NULL') %>
+<% tmpPro = PatientProfile.where('id is not NULL') %>
+<% tmpMsg = Message.where('id is not NULL') %>
+
 <div class="portlet light bordered dashboardpage_height">
     <div class="portlet-title">
         <div class="caption">
-            <i class="icon-bubble font-hide hide"></i>
-            <span class="caption-subject font-hide bold uppercase">Notifications</span>
+            <div class="caption font-green" style="font-size: 18px;">
+                <i class="icon-pin font-green"></i>
+                <span class="caption-subject bold uppercase"> Real Time Consultation </span>
+            </div>
+            <div style="width: 100%;height: 15px;"></div>
         </div>
         <div class="actions">
             <div class="see_allmsg">
@@ -19,51 +27,90 @@
             </div>
         </div>
     </div>
-    <div class="portlet-body chat-room" id="chats">
-        <% if current_authcon %>
-            <% if Authcon.find(current_authcon.id).usertype == "Staff" || Authcon.find(current_authcon.id).usertype == "Admin" %>
-                <% sel_access = 1
-                   tmpPro = PatientProfile.where('id is not NULL') %>
-                <select id="user_select" style="margin-bottom: 15px;">
-                    <% for i in 0..tmpPro.count - 1 %>
-                        <option value="<%= tmpPro[i].id %>">
-                            ID : <%= tmpPro[i].id %>&nbsp
-                            Name : <%= tmpPro[i].first_name + ' ' + tmpPro[i].last_name %>
-                        </option>
-                    <% end %>
-                </select>
-            <% end %>
-        <% end %>
-
-        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto;"><div class="scroller" style="height: 525px; overflow: auto; width: auto;" data-always-visible="1" data-rail-visible1="1" data-initialized="1">
-            <ul class="chats">
-                <% if sel_access == 1 %>
-                    <% srmsg = Message.where('id is not NULL') %>
-                    <% for i in 0..srmsg.count - 1 %>
-                        <% if srmsg[i].patient_profile_id.to_s != '-1' && srmsg[i].patient_profile_id.to_s != '-2' %>
-                            <% if srmsg[i].staff_profile_id == nil || srmsg[i].staff_profile_id.to_s == '' %>
-                                <li class="in">
-                                    <% if PatientProfile.exists?('id': srmsg[i].patient_profile_id) %>
-                                        <% if PatientProfile.find(srmsg[i].patient_profile_id).image.to_s.length > 0 %>
-                                            <%  file = File.open("savedimages/" + PatientProfile.find(srmsg[i].patient_profile_id).image, "rb")
-                                            contents = file.read %>
-                                            <img class="avatar" alt="" src="<%= contents %>">
-                                        <% else %>
-                                            <img class="avatar" alt="" src="/images/blank_profile_image.png">
-                                        <% end %>
-                                        <div class="message">
-                                            <span class="arrow"> </span>
-                                            <a href="javascript:;" class="name"> Customer : <%= PatientProfile.find(srmsg[i].patient_profile_id).first_name + ' ' + PatientProfile.find(srmsg[i].patient_profile_id).last_name %> </a>
-                                            <span class="datetime"> <%= srmsg[i].updated_at %> </span>
-                                            <span class="body"> <%= srmsg[i].content %> </span>
-                                        </div>
-                                    <% end %>
+    <div class="portlet-body chat-room" style="display: -webkit-box;" id="chats">
+        <div style="width: 100%;height: auto;">
+            <div class="contact_info">
+                <% if current_authcon %>
+                    <% if find_custom(tmpAut, current_authcon.id).usertype == "Staff" || find_custom(tmpAut, current_authcon.id).usertype == "Admin" %>
+                        <% sel_access = 1 %>
+                        <div class="caption font-green" style="font-size: 16px;">
+                            <span class="caption-subject bold uppercase"> Please select a patient to connect to CONSULTATION </span>
+                        </div>
+                        <div style="width: 100%;height: 15px;"></div>
+                        <ul id="user_select" class="consult_multisel" multiple>
+                            <% for i in 0..tmpPro.count - 1 %>
+                                <li value="<%= tmpPro[i].id %>" class="account_sel">
+                                    ID : <%= tmpPro[i].id %><br>
+                                    <label class="account_name"><%= tmpPro[i].first_name + ' ' + tmpPro[i].last_name %></label>
                                 </li>
-                            <% else %>
-                                <% if srmsg[i].staff_profile_id == StaffProfile.find_by('authcons_id': current_authcon.id).id %>
+                            <% end %>
+                        </ul>
+                    <% end %>
+                <% end %>
+            </div>
+
+            <div class="slimScrollDiv message_info">
+                <div class="scroller" style="height: 600px; overflow: auto; width: auto;" data-always-visible="1" data-rail-visible1="1" data-initialized="1">
+                    <ul class="chats">
+                        <% if sel_access == 1 %>
+                            <% srmsg = Message.where('id is not NULL') %>
+                            <% for i in 0..srmsg.count - 1 %>
+                                <% if srmsg[i].patient_profile_id.to_s != '-1' && srmsg[i].patient_profile_id.to_s != '-2' %>
+                                    <% if srmsg[i].staff_profile_id == nil || srmsg[i].staff_profile_id.to_s == '' %>
+                                        <li class="in">
+                                            <% tmpPro.each do |tmpPro_sel|
+                                                if tmpPro_sel['id'] == srmsg[i].patient_profile_id %>
+                                                    <% if find_custom(tmpPro, srmsg[i].patient_profile_id).image.to_s.length > 0 %>
+                                                        <%  file = File.open("savedimages/" + find_custom(tmpPro, srmsg[i].patient_profile_id).image, "rb")
+                                                        contents = file.read %>
+                                                        <img class="avatar" alt="" src="<%= contents %>">
+                                                    <% else %>
+                                                        <img class="avatar" alt="" src="/images/blank_profile_image.png">
+                                                    <% end %>
+                                                    <div class="message">
+                                                        <span class="arrow"> </span>
+                                                        <a href="javascript:;" class="name"> Customer : <%= find_custom(tmpPro, srmsg[i].patient_profile_id).first_name + ' ' + find_custom(tmpPro, srmsg[i].patient_profile_id).last_name %> </a>
+                                                        <span class="datetime"> <%= srmsg[i].updated_at %> </span>
+                                                        <span class="body"> <%= srmsg[i].content %> </span>
+                                                    </div>
+                                                    <% break
+                                                end
+                                            end %>
+                                        </li>
+                                    <% else %>
+                                        <% if srmsg[i].staff_profile_id == find_by_custom(tmpSta, 'authcons_id', current_authcon.id).id %>
+                                            <li class="out">
+                                                <% if find_custom(tmpSta, srmsg[i].staff_profile_id).image.to_s.length > 0 %>
+                                                    <%  file = File.open("savedimages/" + find_custom(tmpSta, srmsg[i].staff_profile_id).image, "rb")
+                                                    contents = file.read %>
+                                                    <img class="avatar" alt="" src="<%= contents %>">
+                                                <% else %>
+                                                    <img class="avatar" alt="" src="/images/blank_profile_image.png">
+                                                <% end %>
+                                                <div class="message">
+                                                    <span class="arrow"> </span>
+                                                    <a href="javascript:;" class="name"> You </a>
+                                                    <span class="datetime"> <%= srmsg[i].updated_at %> </span>
+                                                    <span class="body"> <%= srmsg[i].content %> </span>
+                                                </div>
+                                            </li>                          
+                                        <% end %>
+                                    <% end %>
+                                <% end %>
+                            <% end %>
+                        <% else %>
+                            <%  if current_authcon 
+                                    my_id = find_by_custom(tmpPro, 'authcons_id', current_authcon.id).id
+                                else
+                                    my_id = find_by_custom(tmpPro, 'fusers_id', session[:fuser_id]).id
+                                end
+                            %>
+                            <% prmsg = Message.where('id is not NULL') %>
+                            <% for i in 0..prmsg.count - 1 %>
+                                <% if prmsg[i].patient_profile_id == my_id %>
                                     <li class="out">
-                                        <% if StaffProfile.find(srmsg[i].staff_profile_id).image.to_s.length > 0 %>
-                                            <%  file = File.open("savedimages/" + StaffProfile.find(srmsg[i].staff_profile_id).image, "rb")
+                                        <% if find_custom(tmpPro, prmsg[i].patient_profile_id).image.to_s.length > 0 %>
+                                            <%  file = File.open("savedimages/" + find_custom(tmpPro, prmsg[i].patient_profile_id).image, "rb")
                                             contents = file.read %>
                                             <img class="avatar" alt="" src="<%= contents %>">
                                         <% else %>
@@ -72,77 +119,49 @@
                                         <div class="message">
                                             <span class="arrow"> </span>
                                             <a href="javascript:;" class="name"> You </a>
-                                            <span class="datetime"> <%= srmsg[i].updated_at %> </span>
-                                            <span class="body"> <%= srmsg[i].content %> </span>
+                                            <span class="datetime"> <%= prmsg[i].updated_at %> </span>
+                                            <span class="body"> <%= prmsg[i].content %> </span>
                                         </div>
-                                    </li>                          
+                                    </li>
                                 <% end %>
+                                <% if prmsg[i].send_to == my_id %>
+                                    <li class="in">
+                                        <% if find_custom(tmpSta, find_by_custom(tmpMsg, 'send_to', prmsg[i].send_to).staff_profile_id).image.to_s.length > 0 %>
+                                            <%  file = File.open("savedimages/" + find_custom(tmpSta, find_by_custom(tmpMsg, 'send_to', prmsg[i].send_to).staff_profile_id).image, "rb")
+                                            contents = file.read %>
+                                            <img class="avatar" alt="" src="<%= contents %>">
+                                        <% else %>
+                                            <img class="avatar" alt="" src="/images/blank_profile_image.png">
+                                        <% end %>
+                                        <div class="message">
+                                            <span class="arrow"> </span>
+                                            <a href="javascript:;" class="name"> Support </a>
+                                            <span class="datetime"> <%= prmsg[i].updated_at %> </span>
+                                            <span class="body"> <%= prmsg[i].content %> </span>
+                                        </div>
+                                    </li>
+                                <% end %>          
                             <% end %>
                         <% end %>
-                    <% end %>
-                <% else %>
-                    <%  if current_authcon 
-                            my_id = PatientProfile.find_by('authcons_id': current_authcon.id).id
-                        else
-                            my_id = PatientProfile.find_by('fusers_id': session[:fuser_id]).id
-                        end
-                    %>
-                    <% prmsg = Message.where('id is not NULL') %>
-                    <% for i in 0..prmsg.count - 1 %>
-                        <% if prmsg[i].patient_profile_id == my_id %>
-                            <li class="out">
-                                <% if PatientProfile.find(prmsg[i].patient_profile_id).image.to_s.length > 0 %>
-                                    <%  file = File.open("savedimages/" + PatientProfile.find(prmsg[i].patient_profile_id).image, "rb")
-                                    contents = file.read %>
-                                    <img class="avatar" alt="" src="<%= contents %>">
-                                <% else %>
-                                    <img class="avatar" alt="" src="/images/blank_profile_image.png">
-                                <% end %>
-                                <div class="message">
-                                    <span class="arrow"> </span>
-                                    <a href="javascript:;" class="name"> You </a>
-                                    <span class="datetime"> <%= prmsg[i].updated_at %> </span>
-                                    <span class="body"> <%= prmsg[i].content %> </span>
-                                </div>
-                            </li>
-                        <% end %>
-                        <% if prmsg[i].send_to == my_id %>
-                            <li class="in">
-                                <% if StaffProfile.find(Message.find_by('send_to': prmsg[i].send_to).staff_profile_id).image.to_s.length > 0 %>
-                                    <%  file = File.open("savedimages/" + StaffProfile.find(Message.find_by('send_to': prmsg[i].send_to).staff_profile_id).image, "rb")
-                                    contents = file.read %>
-                                    <img class="avatar" alt="" src="<%= contents %>">
-                                <% else %>
-                                    <img class="avatar" alt="" src="/images/blank_profile_image.png">
-                                <% end %>
-                                <div class="message">
-                                    <span class="arrow"> </span>
-                                    <a href="javascript:;" class="name"> Support </a>
-                                    <span class="datetime"> <%= prmsg[i].updated_at %> </span>
-                                    <span class="body"> <%= prmsg[i].content %> </span>
-                                </div>
-                            </li>
-                        <% end %>          
+                    </ul>
+                </div>
+                <%= form_for(:message_request, :url => dashboardpage_message_path, :method => "post") do |f| %>
+                    <%= f.text_field(:id, style: "display: none;") %>
+                    <%= f.text_field(:content, class: "form-control pull-left", placeholder: "Type a message here...") %>
+                    <%= f.submit("Send", class: "btn blue icn-only send_msg pull-right") %>
+                <% end %>
+
+                <% if sel_access == 1 %>
+                    <% if tmpPro.count != 0 %>
+                        <script>
+                            setTimeout(function() {
+                                $("#message_request_id").val("<%= tmpPro[0].id %>");
+                            }, 0);
+                        </script>
                     <% end %>
                 <% end %>
-            </ul>
+            </div>
         </div>
-
-        <%= form_for(:message_request, :url => dashboardpage_message_path, :method => "post") do |f| %>
-            <%= f.text_field(:id, style: "display: none;") %>
-            <%= f.text_field(:content, class: "form-control pull-left", placeholder: "Type a message here...") %>
-            <%= f.submit("Send Request", class: "btn blue icn-only send_msg pull-right") %>
-        <% end %>
-
-        <% if sel_access == 1 %>
-            <% if tmpPro.count != 0 %>
-                <script>
-                    setTimeout(function() {
-                        $("#message_request_id").val("<%= tmpPro[0].id %>");
-                    }, 0);
-                </script>
-            <% end %>
-        <% end %>
     </div>
 </div>
 

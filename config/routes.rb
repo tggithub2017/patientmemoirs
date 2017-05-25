@@ -61,6 +61,12 @@ Rails.application.routes.draw do
   get 'dashboardpage/profileperform', to: 'dashboardpage#profileperform'
   get 'dashboardpage/specialists_post', to: 'dashboardpage#specialists_post'
 
+  get 'landpage/page_not_found', to: 'landpage#page_not_found'
+  get '*path' => redirect('landpage/page_not_found')
+
+  get 'application/simplecall'
+  post 'application/simplecall'
+
   # email confirmations
   #resources :sessions, only: [:create1, :destroy1]
   # devise_for :users, controllers: { registrations: "registrations" }

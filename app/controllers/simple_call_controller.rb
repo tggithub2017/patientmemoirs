@@ -1,0 +1,3 @@
+class SimpleCallController < ApplicationController
+
+end

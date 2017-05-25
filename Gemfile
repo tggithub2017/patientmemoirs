@@ -37,6 +37,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-oauth2'
 gem "omniauth-google-oauth2"
 
+gem 'rack-cors', '~> 0.4.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

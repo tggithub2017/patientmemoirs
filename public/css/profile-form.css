@@ -830,6 +830,7 @@ html {
 
 .staff_introduce li {
     margin-bottom: 5px;
+    display: -webkit-box!important;
 }
 
 .staff_workplace {
@@ -947,4 +948,77 @@ html {
 
 .patient_profile_request {
 
+}
+
+.message .body {
+    margin-top: 5px;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.consult_multisel {
+    margin-bottom: 15px;
+    height: 570px!important;
+    width: 90%;
+    border: 2px solid #eef1f5;
+    padding: 10px;
+    overflow: scroll;
+}
+
+.contact_info {
+    width: 26%;
+    float: left;
+    height: 635px;
+    border-right: 5px solid #eef1f5;
+}
+
+.message_info {
+    position: relative;
+    overflow: hidden;
+    width: 70%;
+    float: right;
+}
+
+.account_sel {
+    background-image: url(/images/blank_profile_image.png);
+    height: 65px;
+    background-size: 60px 60px;
+    background-repeat: no-repeat;
+    padding-left: 70px;
+    padding-top: 8px;
+    font-size: 15px;
+    border-color: green;
+}
+
+.account_sel:nth-child(1) {
+    border: 4px dashed green;
+}
+
+.account_sel:hover {
+    cursor: pointer;
+    border: 4px dashed green;
+}
+
+.account_name {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+@media screen and (max-width: 1050px) {
+    .contact_info {
+        width: 100%;
+        float: none;
+        height: auto;
+    }
+
+    .message_info {
+        width: 100%;
+        flex: none;
+    }
+
+    .consult_multisel {
+        height: auto!important;
+    }
 }

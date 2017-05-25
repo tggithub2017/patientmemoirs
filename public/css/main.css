@@ -4355,6 +4355,20 @@ table tbody tr {
     border-radius: 2px;
 }
 
+@media screen and (max-width: 1444px) {
+    .news_read_inner {
+        margin-left: 20%;
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .news_read_inner {
+        margin-left: 10%;
+        width: 80%;
+    }
+}
+
 .news_read_inner img {
     margin-top: 15px;
     width: 100%!important;

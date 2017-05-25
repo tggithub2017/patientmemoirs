@@ -1,0 +1,2 @@
+module SimpleCallHelper
+end

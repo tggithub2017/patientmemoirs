@@ -63,6 +63,26 @@ License: You must have a valid license purchased only from themeforest(the above
     </head>
     <!-- END HEAD -->
 
+    <!-- Ruby functions define -->
+    <%  
+        def find_custom(tmp, id)
+            tmp.each do |tmp_sel|
+                if tmp_sel['id'] == id
+                    return tmp_sel
+                end
+            end
+        end
+
+        def find_by_custom(tmp, tar, con)
+            tmp.each do |tmp_sel|
+                if tmp_sel[tar] == con
+                    return tmp_sel
+                end
+            end
+        end
+    %>
+    <!-- end of Ruby functions define -->
+
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-content-white page-sidebar-closed">
         <div class="page-wrapper">
             <!-- BEGIN HEADER -->

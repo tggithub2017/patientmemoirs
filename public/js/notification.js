@@ -105,11 +105,12 @@ $(document).ready(function() {
     });
 });
 
-$("#user_select").change(function() {
-    $( "select option:selected" ).each(function() {
-        $("#message_request_id").val($(this).val());
-    });
-}).trigger( "change" );
+$(".account_sel").on('click', function() {
+    var index = $(".account_sel").index(this);
+    $("#message_request_id").val($(".account_sel:eq("+index+")").val());
+    $(".account_sel").css({"border-color": "green;", "border-width": "0px", "border-style": "dashed"});
+    $(".account_sel:eq("+index+")").css({"border-color": "green;", "border-width": "4px", "border-style": "dashed"});
+});
 
 if(window.location.href.includes("servicenotification")) {
     $(".notification").css("display", "none");
@@ -117,3 +118,20 @@ if(window.location.href.includes("servicenotification")) {
     $("#pending_msg").html('');
     tmpcount = 0;
 }
+
+// $("#simplecall").on('click', function() {
+//     $.ajax({
+//         method: "GET",
+
+//         url: "http://34.223.252.95:3003/application/simplecall",
+
+//         success: function(data){
+//             // var obj = JSON.parse(data);
+//             console.log(data);
+//         } ,
+
+//         error: function(result){
+//             console.log("failed");
+//         }
+//     });
+// });
