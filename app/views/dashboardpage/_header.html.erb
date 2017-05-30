@@ -80,6 +80,15 @@ License: You must have a valid license purchased only from themeforest(the above
                 end
             end
         end
+
+        def exists_custom(tmp, tar, con)
+            tmp.each do |tmp_sel|
+                if tmp_sel[tar] == con
+                    return true
+                end
+            end
+            return false
+        end
     %>
     <!-- end of Ruby functions define -->
 

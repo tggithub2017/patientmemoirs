@@ -13,17 +13,23 @@
 
 <br>
 
+<%  
+    tmpAut = Authcon.where('id is not NULL')
+    tmpSta = StaffProfile.where('id is not NULL')
+    tmpPro = PatientProfile.where('id is not NULL')
+%>
+
 <div class="profile-content dashboardpage_height">
     <div class="row">
         <div class="col-md-8 profile-info">
             <% if current_authcon %>
-                <% if Authcon.find(current_authcon.id).usertype == "Staff" %>
-                    <h1 class="font-green sbold uppercase"><%= StaffProfile.find_by('authcons_id': current_authcon.id).first_name.to_s + ' ' + StaffProfile.find_by('authcons_id': current_authcon.id).last_name.to_s %></h1>
+                <% if find_custom(tmpAut, current_authcon.id).usertype == "Staff" %>
+                    <h1 class="font-green sbold uppercase"><%= find_by_custom(tmpSta, 'authcons_id', current_authcon.id).first_name.to_s + ' ' + find_by_custom(tmpSta, 'authcons_id', current_authcon.id).last_name.to_s %></h1>
                 <% else %>
-                    <h1 class="font-green sbold uppercase"><%= PatientProfile.find_by('authcons_id': current_authcon.id).first_name.to_s + ' ' + PatientProfile.find_by('authcons_id': current_authcon.id).last_name.to_s %></h1>
+                    <h1 class="font-green sbold uppercase"><%= find_by_custom(tmpPro, 'authcons_id', current_authcon.id).first_name.to_s + ' ' + find_by_custom(tmpPro, 'authcons_id', current_authcon.id).last_name.to_s %></h1>
                 <% end %>
             <% else %>
-                <h1 class="font-green sbold uppercase"><%= PatientProfile.find_by('fusers_id': session[:fuser_id]).first_name.to_s + ' ' + PatientProfile.find_by('fusers_id': session[:fuser_id]).last_name.to_s %></h1>
+                <h1 class="font-green sbold uppercase"><%= find_by_custom(tmpPro, 'fusers_id', session[:fuser_id]).first_name.to_s + ' ' + find_by_custom(tmpPro, 'fusers_id', session[:fuser_id]).last_name.to_s %></h1>
             <% end %>
             <p> Here are your action histories. </p>
         </div>
@@ -63,7 +69,7 @@
                 <div class="tab-pane active" id="tab_1_1_1">
                     <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto;"><div class="scroller" data-height="" data-always-visible="1" data-rail-visible1="1" data-initialized="1" style="overflow: hidden; width: auto;padding: 0px!important;">
                         <% if current_authcon %>
-                            <% if Authcon.find(current_authcon.id).usertype == "Staff"
+                            <% if find_custom(tmpAut, current_authcon.id).usertype == "Staff"
                                 tmpHistory = StaffProfile.where("id is not NULL")
                                 tmpHistory1 = PatientProfile.where("id is not NULL")
                                 tmpMessage = Message.where("patient_profile_id < 0")

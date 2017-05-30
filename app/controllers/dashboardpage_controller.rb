@@ -224,26 +224,26 @@ class DashboardpageController < ApplicationController
   end
 
   def message
-    if current_authcon
-      if Authcon.find(current_authcon.id).usertype == "Staff"
-        cid = StaffProfile.find_by('authcons_id': current_authcon.id).id
-        @message_request = Message.new(message_params)
-        @message_request.staff_profile_id = cid
-        @message_request.send_to = params[:message_request][:id].to_i
-        @message_request.save
+    @message_request = Message.new(message_params)
+    if @message_request.content != ''
+      if current_authcon 
+        if Authcon.find(current_authcon.id).usertype == "Staff"
+          cid = StaffProfile.find_by('authcons_id': current_authcon.id).id
+          @message_request.staff_profile_id = cid
+          @message_request.send_to = params[:message_request][:id].to_i
+          @message_request.save
+        else
+          cid = PatientProfile.find_by('authcons_id': current_authcon.id).id
+          @message_request.patient_profile_id = cid
+          @message_request.send_to = 0
+          @message_request.save
+        end
       else
-        cid = PatientProfile.find_by('authcons_id': current_authcon.id).id
-        @message_request = Message.new(message_params)
+        cid = PatientProfile.find_by('fusers_id': session[:fuser_id]).id
         @message_request.patient_profile_id = cid
         @message_request.send_to = 0
         @message_request.save
       end
-    else
-      cid = PatientProfile.find_by('fusers_id': session[:fuser_id]).id
-      @message_request = Message.new(message_params)
-      @message_request.patient_profile_id = cid
-      @message_request.send_to = 0
-      @message_request.save
     end
   end
 

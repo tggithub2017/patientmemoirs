@@ -38,6 +38,12 @@ gem 'omniauth-oauth2'
 gem "omniauth-google-oauth2"
 
 gem 'rack-cors', '~> 0.4.0'
+
+# gem for line chart
+gem 'fusioncharts-rails'
+
+# gem for google map
+gem 'gmaps4rails'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

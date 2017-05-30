@@ -259,6 +259,7 @@
 
 .profile-image-cover {
     padding-top: 15px;
+    overflow: hidden;
 }
 
 .profile-assume {
@@ -843,6 +844,7 @@ html {
     width: 200px!important;
     height: 200px!important;
     margin-left: 15px;
+    max-width: 200px!important;
 }
 
 .qn_setup_custom {
@@ -915,8 +917,8 @@ html {
 
 @media screen and (max-width: 991px) {
     .media_adjust_detail {
-        padding-left: 150px;
-        padding-right: 150px;
+        /*padding-left: 150px;
+        padding-right: 150px;*/
     }
 }
 
@@ -963,6 +965,7 @@ html {
     border: 2px solid #eef1f5;
     padding: 10px;
     overflow: scroll;
+    list-style-type: none;
 }
 
 .contact_info {
@@ -980,7 +983,6 @@ html {
 }
 
 .account_sel {
-    background-image: url(/images/blank_profile_image.png);
     height: 65px;
     background-size: 60px 60px;
     background-repeat: no-repeat;
@@ -1021,4 +1023,40 @@ html {
     .consult_multisel {
         height: auto!important;
     }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1407px) {
+    .adjust_image {
+        width: 100%!important;
+        float: none!important;
+    }
+
+    .adjust_container {
+        width: 100%!important;
+        float: none!important;
+        padding-left: 0px;
+        margin-top: 15px;
+    }
+}
+
+.grid_style {
+    width: 33%;
+    float: left;
+}
+
+#headm3d {
+    height: 400px; 
+    min-width: 310px; 
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.refresh_a:hover {
+    background-color: transparent!important;
+    border-color: transparent!important;
+}
+
+.refresh_a:focus {
+    background-color: transparent!important;
+    border-color: transparent!important;   
 }

@@ -181,6 +181,10 @@ $(document).ready(function() {
   if($(".page-content").height() < $(window).height()) {
       $(".page-content").height($(window).height());
   }
+
+  if($(".page-content").height() >= $(window).height()) {
+      $(".page-content").height($(".dashboardpage_height").height() + 500);
+  }
 });
 
 $(window).resize(function() {

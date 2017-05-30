@@ -14,6 +14,11 @@
 
 <br>
 
+<%
+    tmpSta = StaffProfile.where('id is not NULL')
+    tmpMsg = Message.where('id is not NULL')
+%>
+
 <div class="row dashboardpage_height">
     <div class="col-md-12">
         <!-- BEGIN PROFILE SIDEBAR -->
@@ -22,11 +27,11 @@
             <div class="portlet light profile-sidebar-portlet">
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
-                    <% if StaffProfile.count != 0 && StaffProfile.exists?('authcons_id': current_authcon.id) %>
-                        <% if StaffProfile.find_by('authcons_id': current_authcon.id).image == '' || StaffProfile.find_by('authcons_id': current_authcon.id).image == nil %>
+                    <% if tmpSta.size != 0 && exists_custom(tmpSta, 'authcons_id', current_authcon.id) %>
+                        <% if find_by_custom(tmpSta, 'authcons_id', current_authcon.id).image == '' || find_by_custom(tmpSta, 'authcons_id', current_authcon.id).image == nil %>
                             <img src="/images/blank_profile_image.png" class="img-responsive" style="width: 200px;height: 200px;" alt=""> 
                         <% else %>
-                            <%  file = File.open("savedimages/" + StaffProfile.find_by('authcons_id': current_authcon.id).image, "rb")
+                            <%  file = File.open("savedimages/" + find_by_custom(tmpSta, 'authcons_id', current_authcon.id).image, "rb")
                                 contents = file.read %>
                             <img src="<%= contents %>" class="img-responsive" style="width: 200px;height: 200px;" alt="">
                         <% end %>
@@ -36,12 +41,12 @@
                 </div>
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
-                <% if StaffProfile.count != 0 && StaffProfile.exists?('authcons_id': current_authcon.id) %>
+                <% if tmpSta.size != 0 && exists_custom(tmpSta, 'authcons_id', current_authcon.id) %>
                     <div class="profile-usertitle">
-                        <div class="profile-usertitle-name"> <%= StaffProfile.find_by('authcons_id': current_authcon.id).first_name + ' ' + StaffProfile.find_by('authcons_id': current_authcon.id).last_name %> </div>
-                        <div class="profile-usertitle-job"> <%= StaffProfile.find_by('authcons_id': current_authcon.id).occupation %> </div>
+                        <div class="profile-usertitle-name"> <%= find_by_custom(tmpSta, 'authcons_id', current_authcon.id).first_name + ' ' + find_by_custom(tmpSta, 'authcons_id', current_authcon.id).last_name %> </div>
+                        <div class="profile-usertitle-job"> <%= find_by_custom(tmpSta, 'authcons_id', current_authcon.id).occupation %> </div>
                     </div>
-                    <% tmpstaffaccount = StaffProfile.find_by('authcons_id': current_authcon.id) %>
+                    <% tmpstaffaccount = find_by_custom(tmpSta, 'authcons_id', current_authcon.id) %>
                     <ul class="list-inline staff_introduce">
                         <li>
                             <i class="fa fa-map-marker"></i> <%= tmpstaffaccount.address.to_s %> </li>
@@ -53,8 +58,8 @@
                             <i class="icon-notebook"></i> <%= tmpstaffaccount.email.to_s %> </li>
                     </ul>
 
-                     <% if Message.count != 0
-                        if Message.exists?('patient_profile_id': -1)
+                     <% if tmpMsg.size != 0
+                        if exists_custom(tmpMsg, 'patient_profile_id', -1)
                             tmpMrequest = Message.where('patient_profile_id = -1')
                         end   
                      end %>
@@ -98,7 +103,7 @@
                                     <span class="sale-info"> Request from Users
                                         <i class="fa fa-img-down"></i>
                                     </span>
-                                    <% if Message.exists?('patient_profile_id': -1) %>
+                                    <% if exists_custom(tmpMsg, 'patient_profile_id', -1) %>
                                         <span class="sale-num newrequest_num"> <%= PatientProfile.where('allowed = 0').count + tmpMrequest.count %> </span>
                                     <% else %>
                                         <span class="sale-num newrequest_num"> <%= PatientProfile.where('allowed = 0').count %> </span>
@@ -158,7 +163,7 @@
                                                 <td> Profile Setup Request </td>
                                             </tr>
                                         <% end %>
-                                        <% if Message.exists?('patient_profile_id': -1) %>
+                                        <% if exists_custom(tmpMsg, 'patient_profile_id', -1) %>
                                             <% for i in 0..tmpMrequest.count-1 %>
                                                 <tr onclick="request_checkuser('<%= tmpMrequest[i].content %>')">
                                                     <td> <%= tmpPatient.count+i+1 %> </td>

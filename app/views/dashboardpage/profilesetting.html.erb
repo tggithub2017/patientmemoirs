@@ -10,6 +10,11 @@
 
 <br>
 
+<%
+    tmpSta = StaffProfile.where('id is not NULL');
+    tmpPro = PatientProfile.where('id is not NULL');
+%>
+
 <div class="row dashboardpage_height">
     <div class="col-md-12">
         <!-- BEGIN PROFILE SIDEBAR -->
@@ -42,10 +47,10 @@
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
                     <% if StaffProfile.count != 0 && StaffProfile.exists?('authcons_id': current_authcon.id) %>
-                        <% if StaffProfile.find_by('authcons_id': current_authcon.id).image == '' || StaffProfile.find_by('authcons_id': current_authcon.id).image == nil %>
+                        <% if find_by_custom(tmpSta, 'authcons_id', current_authcon.id).image == '' || find_by_custom(tmpSta, 'authcons_id', current_authcon.id).image == nil %>
                             <img src="/images/blank_profile_image.png" class="img-responsive" style="width: 200px;height: 200px;" alt=""> 
                         <% else %>
-                            <%  file = File.open("savedimages/" + StaffProfile.find_by('authcons_id': current_authcon.id).image, "rb")
+                            <%  file = File.open("savedimages/" + find_by_custom(tmpSta, 'authcons_id', current_authcon.id).image, "rb")
                                 contents = file.read %>
                             <img src="<%= contents %>" class="img-responsive" style="width: 200px;height: 200px;" alt="">
                         <% end %>
@@ -57,8 +62,8 @@
                 <!-- SIDEBAR USER TITLE -->
                 <% if StaffProfile.count != 0 && StaffProfile.exists?('authcons_id': current_authcon.id) %>
                     <div class="profile-usertitle">
-                        <div class="profile-usertitle-name"> <%= StaffProfile.find_by('authcons_id': current_authcon.id).first_name + ' ' + StaffProfile.find_by('authcons_id': current_authcon.id).last_name %> </div>
-                        <div class="profile-usertitle-job"> <%= StaffProfile.find_by('authcons_id': current_authcon.id).occupation %> </div>
+                        <div class="profile-usertitle-name"> <%= find_by_custom(tmpSta, 'authcons_id', current_authcon.id).first_name + ' ' + find_by_custom(tmpSta, 'authcons_id', current_authcon.id).last_name %> </div>
+                        <div class="profile-usertitle-job"> <%= find_by_custom(tmpSta, 'authcons_id', current_authcon.id).occupation %> </div>
                     </div>
                     <!-- END SIDEBAR USER TITLE -->
                     <!-- SIDEBAR BUTTONS -->
@@ -94,31 +99,30 @@
 
                                 <br>
                                 <div style="margin-bottom: 18px;">
-                                    <select>
-                                        <% patientprofile_item = PatientProfile.where('id is not null') %>
+                                    <select style="border: 3px dashed #5e8c5d;">
                                         <% for i in 0..PatientProfile.count - 1 %>
-                                            <% if patientprofile_item[i].allowed == 0 %>
-                                                <% if patientprofile_item[i].authcons_id %>
-                                                    <option name="get_patient_info(<%= i %>);">(R) - ID : <%= patientprofile_item[i].authcons_id %>&nbsp,&nbsp
-                                                            Name : <%= patientprofile_item[i].first_name %>&nbsp
-                                                                    <%= patientprofile_item[i].last_name %>
+                                            <% if tmpPro[i].allowed == 0 %>
+                                                <% if tmpPro[i].authcons_id %>
+                                                    <option name="get_patient_info(<%= i %>);">(R) - ID : <%= tmpPro[i].authcons_id %>&nbsp,&nbsp
+                                                            Name : <%= tmpPro[i].first_name %>&nbsp
+                                                                    <%= tmpPro[i].last_name %>
                                                     </option>
                                                 <% else %>
-                                                    <option name="get_patient_info(<%= i %>);">(R) - ID : <%= patientprofile_item[i].fusers_id %>&nbsp F &nbsp,&nbsp
-                                                            Name : <%= patientprofile_item[i].first_name %>&nbsp
-                                                                    <%= patientprofile_item[i].last_name %>
+                                                    <option name="get_patient_info(<%= i %>);">(R) - ID : <%= tmpPro[i].fusers_id %>&nbsp F &nbsp,&nbsp
+                                                            Name : <%= tmpPro[i].first_name %>&nbsp
+                                                                    <%= tmpPro[i].last_name %>
                                                     </option>
                                                 <% end %>
                                             <% else %>
-                                                <% if patientprofile_item[i].authcons_id %>
-                                                    <option name="get_patient_info(<%= i %>);">&nbsp&nbspID : <%= patientprofile_item[i].authcons_id %>&nbsp,&nbsp
-                                                            Name : <%= patientprofile_item[i].first_name %>&nbsp
-                                                                    <%= patientprofile_item[i].last_name %>
+                                                <% if tmpPro[i].authcons_id %>
+                                                    <option name="get_patient_info(<%= i %>);">&nbsp&nbspID : <%= tmpPro[i].authcons_id %>&nbsp,&nbsp
+                                                            Name : <%= tmpPro[i].first_name %>&nbsp
+                                                                    <%= tmpPro[i].last_name %>
                                                     </option>
                                                 <% else %>
-                                                    <option name="get_patient_info(<%= i %>);">&nbsp&nbspID : <%= patientprofile_item[i].fusers_id %>&nbsp F &nbsp,&nbsp
-                                                            Name : <%= patientprofile_item[i].first_name %>&nbsp
-                                                                    <%= patientprofile_item[i].last_name %>
+                                                    <option name="get_patient_info(<%= i %>);">&nbsp&nbspID : <%= tmpPro[i].fusers_id %>&nbsp F &nbsp,&nbsp
+                                                            Name : <%= tmpPro[i].first_name %>&nbsp
+                                                                    <%= tmpPro[i].last_name %>
                                                     </option>
                                                 <% end %>
                                             <% end %>
@@ -126,26 +130,26 @@
                                     </select>
 
                                     <% for i in 0..PatientProfile.count - 1 %>
-                                        <% if patientprofile_item[i].authcons_id %>
-                                            <label class="select_patient_profile"><%= patientprofile_item[i].authcons_id.to_s + '|' +  
-                                                patientprofile_item[i].image.to_s + '|' +
-                                                patientprofile_item[i].first_name.to_s + '|' + patientprofile_item[i].last_name.to_s + '|' +
-                                                patientprofile_item[i].sex.to_s + '|' + patientprofile_item[i].birthdate.to_s + '|' +
-                                                patientprofile_item[i].email.to_s + '|' + patientprofile_item[i].phone_number.to_s + '|' + 
-                                                patientprofile_item[i].nhs_number.to_s + '|' + patientprofile_item[i].address.to_s + '|' +
-                                                patientprofile_item[i].healthcare_professional.to_s + '|' + patientprofile_item[i].lead_clinician.to_s + '|' +
-                                                patientprofile_item[i].occupation.to_s + '|' + patientprofile_item[i].detail.to_s + '|' + 
+                                        <% if tmpPro[i].authcons_id %>
+                                            <label class="select_patient_profile"><%= tmpPro[i].authcons_id.to_s + '|' +  
+                                                tmpPro[i].image.to_s + '|' +
+                                                tmpPro[i].first_name.to_s + '|' + tmpPro[i].last_name.to_s + '|' +
+                                                tmpPro[i].sex.to_s + '|' + tmpPro[i].birthdate.to_s + '|' +
+                                                tmpPro[i].email.to_s + '|' + tmpPro[i].phone_number.to_s + '|' + 
+                                                tmpPro[i].nhs_number.to_s + '|' + tmpPro[i].address.to_s + '|' +
+                                                tmpPro[i].healthcare_professional.to_s + '|' + tmpPro[i].lead_clinician.to_s + '|' +
+                                                tmpPro[i].occupation.to_s + '|' + tmpPro[i].detail.to_s + '|' + 
                                                 "general" %>
                                             </label>
                                         <% else %>
-                                            <label class="select_patient_profile"><%= patientprofile_item[i].fusers_id.to_s + '|' +  
-                                                patientprofile_item[i].image.to_s + '|' +
-                                                patientprofile_item[i].first_name.to_s + '|' + patientprofile_item[i].last_name.to_s + '|' +
-                                                patientprofile_item[i].sex.to_s + '|' + patientprofile_item[i].birthdate.to_s + '|' +
-                                                patientprofile_item[i].email.to_s + '|' + patientprofile_item[i].phone_number.to_s + '|' + 
-                                                patientprofile_item[i].nhs_number.to_s + '|' + patientprofile_item[i].address.to_s + '|' +
-                                                patientprofile_item[i].healthcare_professional.to_s + '|' + patientprofile_item[i].lead_clinician.to_s + '|' +
-                                                patientprofile_item[i].occupation.to_s + '|' + patientprofile_item[i].detail.to_s + '|' + 
+                                            <label class="select_patient_profile"><%= tmpPro[i].fusers_id.to_s + '|' +  
+                                                tmpPro[i].image.to_s + '|' +
+                                                tmpPro[i].first_name.to_s + '|' + tmpPro[i].last_name.to_s + '|' +
+                                                tmpPro[i].sex.to_s + '|' + tmpPro[i].birthdate.to_s + '|' +
+                                                tmpPro[i].email.to_s + '|' + tmpPro[i].phone_number.to_s + '|' + 
+                                                tmpPro[i].nhs_number.to_s + '|' + tmpPro[i].address.to_s + '|' +
+                                                tmpPro[i].healthcare_professional.to_s + '|' + tmpPro[i].lead_clinician.to_s + '|' +
+                                                tmpPro[i].occupation.to_s + '|' + tmpPro[i].detail.to_s + '|' + 
                                                 "facebook" %>
                                             </label>
                                         <% end %>
