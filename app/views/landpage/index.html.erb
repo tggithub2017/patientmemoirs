@@ -48,7 +48,7 @@
 
 <body>
 
-<a id="simplecall">Sample Call</a>
+<!-- <a id="simplecall">Sample Call</a> -->
 
 <div class="news_read_p">
     <a class="logmod__close" onclick="news_read_close()">Close</a>
@@ -363,7 +363,7 @@
                 start_ri = 0
                 end_ri = 1
             end %>
-            <% if AdminSpecialist.count == 1
+            <% if AdminSpecialist.count == 1 || AdminSpecialist.count == 0
                 start_ri = 0
                 end_ri = 0
             end %>
@@ -372,32 +372,34 @@
                 end_ri = AdminSpecialist.count - 1
             end %>
             <% click_ri = 0 %>
-            <% for i in start_ri..end_ri %>
-                <div class="col-md-3 col-sm-6  text-center specialists_read" style="margin-bottom: 15px;">
-                    <div class="common-doctor animated fadeInUp clearfix">
-                        <figure class="specialists_blog_cover">
-                            <% if tmpSpecialists[i].image.to_s.length > 0 && File.exist?("savedimages/" + tmpSpecialists[i].image) %>
-                                <a>
-                                    <%  file = File.open("savedimages/" + tmpSpecialists[i].image, "rb")
-                                        contents = file.read %>
-                                    <img src="<%= contents %>" alt="gallery-1" />
-                                </a>
-                            <% end %>
-                        </figure>
-                        <div class="text-content">
-                            <h5><a href=""> <%= tmpSpecialists[i].title %> </a></h5>
-                            <div class="for-border"></div>
-                            <p>
-                                <%= tmpSpecialists[i].description %>
-                            </p>
-                            <p class="specialists_detail">
-                                <%= tmpSpecialists[i].detail %>
-                            </p>
+            <% if end_ri != 0 %>
+                <% for i in start_ri..end_ri %>
+                    <div class="col-md-3 col-sm-6  text-center specialists_read" style="margin-bottom: 15px;">
+                        <div class="common-doctor animated fadeInUp clearfix">
+                            <figure class="specialists_blog_cover">
+                                <% if tmpSpecialists[i].image.to_s.length > 0 && File.exist?("savedimages/" + tmpSpecialists[i].image) %>
+                                    <a>
+                                        <%  file = File.open("savedimages/" + tmpSpecialists[i].image, "rb")
+                                            contents = file.read %>
+                                        <img src="<%= contents %>" alt="gallery-1" />
+                                    </a>
+                                <% end %>
+                            </figure>
+                            <div class="text-content">
+                                <h5><a href=""> <%= tmpSpecialists[i].title %> </a></h5>
+                                <div class="for-border"></div>
+                                <p>
+                                    <%= tmpSpecialists[i].description %>
+                                </p>
+                                <p class="specialists_detail">
+                                    <%= tmpSpecialists[i].detail %>
+                                </p>
+                            </div>
                         </div>
+                        <a class="read-more" onclick="news_read_morer(<%= click_ri %>)">Read More</a>
+                        <% click_ri = click_ri + 1 %>
                     </div>
-                    <a class="read-more" onclick="news_read_morer(<%= click_ri %>)">Read More</a>
-                    <% click_ri = click_ri + 1 %>
-                </div>
+                <% end %>
             <% end %>
             <div class="visible-sm clearfix margin-gap"></div>
         </div>
@@ -417,8 +419,8 @@
                 end_i   = @blog_data.length - 3
                 click_i = 0
                 if (@blog_data.length == 2)
-                    start_i = 0
-                    end_i = 1
+                    start_i = 1
+                    end_i = 0
                 end
                 if (@blog_data.length == 1)
                     start_i = 0

@@ -10,7 +10,17 @@
 
             <select class="form-control" style="margin-top: 15px;" onchange="request_type(this.value)">
                 <option>General Request</option>
-                <option>Profile Request</option>
+                <% if current_authcon %>
+                    <% if PatientProfile.exists?('authcons_id': current_authcon.id) %>
+                    <% else %>
+                        <option>Profile Request</option>
+                    <% end %>
+                <% else %>
+                    <% if PatientProfile.exists?('fusers_id': session[:fuser_id]) %>
+                    <% else %>
+                        <option>Profile Request</option>
+                    <% end %>
+                <% end %>
             </select>
         </div>
         <div class="actions">

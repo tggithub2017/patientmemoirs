@@ -23,8 +23,10 @@
 
                 <%  if current_authcon 
                         tmpObj = PatientProfile.find_by('authcons_id': current_authcon.id)
+                        tmpQn = RequestQn.where('patient_profile_id': tmpObj.id)
                     else 
                         tmpObj = PatientProfile.find_by('fusers_id': session[:fuser_id])
+                        tmpQn = RequestQn.where('patient_profile_id': tmpObj.id)
                     end
                 %>
 
@@ -118,6 +120,24 @@
                         <div style="width: 100%;height: 1px;border-top: 1px solid lightgray;">
                         </div>
 
+                        <div>
+                            <% if tmpQn.count > 0 %>
+                                <% for i in 0..tmpQn.count - 1 %>
+                                    <% if tmpQn[i].q_type == "qn0" %>
+                                        Generalized Anxiaty Discorder : <%= (tmpQn[i].q1 + tmpQn[i].q2 + tmpQn[i].q3 + tmpQn[i].q4 + tmpQn[i].q5 + tmpQn[i].q6 + tmpQn[i].q7).to_s + "/7" %> (level)<br>
+                                    <% end %>
+                                    <% if tmpQn[i].q_type == "qn1" %>
+                                        Patient Healthcare Questionnaire : <%= (tmpQn[i].q1 + tmpQn[i].q2 + tmpQn[i].q3 + tmpQn[i].q4 + tmpQn[i].q5 + tmpQn[i].q6 + tmpQn[i].q7 + tmpQn[i].q8 + tmpQn[i].q9).to_s + "/9" %> (level)<br>
+                                    <% end %>
+                                    <% if tmpQn[i].q_type == "qn2" %>
+                                        PAM : <%= (tmpQn[i].q1 + tmpQn[i].q2 + tmpQn[i].q3 + tmpQn[i].q4 + tmpQn[i].q5 + tmpQn[i].q6 + tmpQn[i].q7 + tmpQn[i].q8 + tmpQn[i].q9 + tmpQn[i].q10 + tmpQn[i].q11 + tmpQn[i].q12 + tmpQn[i].q13).to_s + "/13" %> (level)<br>
+                                    <% end %>
+                                <% end %>
+                            <% else %>
+                                No query setup
+                            <% end %>
+                        </div>
+
                         <button type="button" class="btn btn-circle green btn-sm send-message">Send Message</button>
                     </nav>
                 </div>
@@ -128,8 +148,20 @@
     <div style="padding-left: 15px;padding-right: 15px;">
         <div class="col-md-12 col-sm-12" style="margin-top: 15px;background-color: white;display: grid;margin-bottom: 50px;overflow: scroll;padding-bottom: 20px;">
             <div class="col-md-12 col-sm-12" style="background-color: white;">
-                <div class="profile-detail-header">
+                <div class="profile-detail-header" style="padding-bottom: 10px;overflow: hidden;">
                     <p class="profile-detail-header-text">Historical Patient Pathway Progression</p>
+
+                    <% if @tmphistory %>
+                        <% historyarray = Array.new(@tmphistory.count) { Array.new(2) } %>
+                        <% for i in 0..@tmphistory.count - 1 %>
+                            <% historyarray[i][0] = @tmphistory[i].created_at %>
+                            <% historyarray[i][1] = @tmphistory[i].created_at %>
+                        <% end %>
+                        <label style="float: left;font-size: 16px;font-weight: 600;color: #5a5a5a;">Select past data&nbsp&nbsp:&nbsp&nbsp</label>
+                        <%= form_for(:pointer_profile, :url => dashboardpage_profilepatient_path, :method => "get") do |f| %>
+                            <%= f.select :pointer, options_for_select(historyarray) %>
+                        <% end %>
+                    <% end %>
                 </div>
 
                 <nav class="navpart-collapse" role="navpartigation" style="margin-top: 15px;">
@@ -141,72 +173,24 @@
                             <a href="" data-toggle="tab" aria-expanded="false" id="bloodP">Blood Pressure</a>
                         </li>
                         <li class="">
-                            <a href="" data-toggle="tab" aria-expanded="false" id="headM">Head Movement</a>
+                            <a href="" data-toggle="tab" aria-expanded="false" id="heartR">Heart Rate</a>
                         </li>
                         <li class="">
-                            <a href="" data-toggle="tab" aria-expanded="false">Blood 3</a>
+                            <a href="" data-toggle="tab" aria-expanded="false" id="headM">Head Movement</a>
                         </li>                                            
                     </ul>
                     <div style="width: 100%;height: 1px;border-top: 1px solid lightgray;">
                     </div>
 
-                    <%
-                        @chart = Fusioncharts::Chart.new({
-                            :height => 400,
-                            :width => "100%",
-                            :id => 'chart',
-                            :type => 'line',
-                            :renderAt => 'chart-container',
-                            :dataSource => '{
-                                "chart": {
-                                    "caption": "Oxygen Level",
-                                    "xAxisName": "Time Line",
-                                    "yAxisName": "O2 Level",
-                                    "showvalues": 0
-                                },
-                                "data": [{
-                                    "label": "Jan",
-                                    "value": "100"
-                                }, {
-                                    "value": "99"
-                                }, {
-                                    "label": "Mar",
-                                    "value": "45"
-                                }, {
-                                    "label": "Apr",
-                                    "value": "53"
-                                }, {
-                                    "label": "May",
-                                    "value": "78"
-                                }, {
-                                    "label": "Jun",
-                                    "value": "67"
-                                }, {
-                                    "label": "Jul",
-                                    "value": "90"
-                                }, {
-                                    "label": "Aug",
-                                    "value": "98"
-                                }, {
-                                    "label": "Sep",
-                                    "value": "67"
-                                }, {
-                                    "label": "Oct",
-                                    "value": "96"
-                                }, {
-                                    "label": "Nov",
-                                    "value": "49"
-                                }, {
-                                    "label": "Dec",
-                                    "value": "46"
-                                }]
-                            }'
-                        })
-                    %>
-
                     <div id="chart-container">
                         <%= @chart.render() %>
                     </div>
+
+                    <div id="chart-containerR" style="display: none;">
+                        <%= @chartR.render() %>
+                    </div>
+
+                    <div id="headm3dstr" style="display: none;"><%= @tmpheadposition %></div>
 
                     <!-- head movement 3d -->
                     <div id="headm3d" style="height: 400px;display: none;"></div>

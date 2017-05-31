@@ -127,12 +127,18 @@ class DashboardpageController < ApplicationController
       if tmpProfileID.to_i
         tmpChange = Message.where('patient_profile_id = ' + tmpProfileID.to_s)
         tmpChange1 = Message.where('send_to = ' + tmpProfileID.to_s)
+        tmpChange2 = PatientVrd.where('patient_profile_id = ' + tmpProfileID.to_s)
+        tmpChange3 = RequestQn.where('patient_profile_id = ' + tmpProfileID.to_s)
         if tmpType == 1
           tmpChange.update_all "patient_profile_id = " + PatientProfile.find_by('authcons_id': current_authcon_patient_id).id.to_s
           tmpChange1.update_all "send_to = " + PatientProfile.find_by('authcons_id': current_authcon_patient_id).id.to_s
+          tmpChange2.update_all "patient_profile_id = " + PatientProfile.find_by('authcons_id': current_authcon_patient_id).id.to_s
+          tmpChange3.update_all "patient_profile_id = " + PatientProfile.find_by('authcons_id': current_authcon_patient_id).id.to_s
         else
           tmpChange.update_all "patient_profile_id = " + PatientProfile.find_by('fusers_id': current_authcon_patient_id).id.to_s
           tmpChange1.update_all "send_to = " + PatientProfile.find_by('authcons_id': current_authcon_patient_id).id.to_s
+          tmpChange2.update_all "patient_profile_id = " + PatientProfile.find_by('fusers_id': current_authcon_patient_id).id.to_s
+          tmpChange3.update_all "patient_profile_id = " + PatientProfile.find_by('fusers_id': current_authcon_patient_id).id.to_s
         end
       end
     end
@@ -270,6 +276,159 @@ class DashboardpageController < ApplicationController
     @specialists_post.save
 
     redirect_to dashboardpage_specialists_post_path
+  end
+
+  def profilepatient
+    if current_authcon
+      patient_profile_id = PatientProfile.find_by('authcons_id': current_authcon.id)
+    else
+      patient_profile_id = PatientProfile.find_by('fusers_id': session[:fuser_id])
+    end
+
+    if params[:pointer_profile] && params[:pointer_profile][:pointer]
+      history_sel = params[:pointer_profile][:pointer]
+    end
+
+    tmpvrd = PatientVrd.where('patient_profile_id': patient_profile_id)
+    
+    if tmpvrd.count > 0
+      if params[:pointer_profile] && params[:pointer_profile][:pointer]
+        history_sel = params[:pointer_profile][:pointer]
+        chartdatafa = PatientVrd.find_by('created_at': history_sel, 'patient_profile_id': patient_profile_id)
+      else
+        chartdatafa = tmpvrd.last
+      end
+      
+      if chartdatafa.o2level.to_s.length != 0
+        tmpo2level = chartdatafa.o2level
+        tmpo2level = tmpo2level.split(',')
+
+        o2level = '{
+                "chart": {
+                    "caption": "Oxygen Level",
+                    "xAxisName": "Time Line",
+                    "yAxisName": "O2 Level",
+                    "showvalues": 0,
+                    "theme": "fint",
+                    "anchorBgHoverColor": "#7d7d7d",                
+                    "anchorBorderHoverThickness" : "10",
+                    "anchorHoverRadius":"10",
+                    "showAnchors":"0"
+                },
+                "data": ['
+
+        for i in 0..tmpo2level.count - 1
+          if i != tmpo2level.count - 1
+            if (i + 1)%10 === 0
+              o2level = o2level + '{"label":"' + (i + 1).to_s + '", "value":' + tmpo2level[i] + '},'
+            else
+              o2level = o2level + '{"value":' + tmpo2level[i] + '},'
+            end
+          else
+            o2level = o2level + '{"label": "' + (i + 1).to_s + '", "value":' + tmpo2level[i] + '}]}'
+          end
+        end
+      else
+        o2level = '{
+                "chart": {
+                    "caption": "Oxygen Level",
+                    "xAxisName": "Time Line",
+                    "yAxisName": "O2 Level",
+                    "theme": "fint",
+                    "anchorBgHoverColor": "#7d7d7d",                
+                    "anchorBorderHoverThickness" : "4",
+                    "anchorHoverRadius":"7",
+                    "showAnchors":"0"
+                },
+                "data": []}'   
+      end
+
+      if chartdatafa.heartrate.to_s.length != 0
+        tmpheartrate = chartdatafa.heartrate
+        tmpheartrate = tmpheartrate.split(',')
+
+        heartrate = '{
+                "chart": {
+                    "caption": "Oxygen Level",
+                    "xAxisName": "Time Line",
+                    "yAxisName": "O2 Level",
+                    "showvalues": 0,
+                    "theme": "fint",
+                    "anchorBgHoverColor": "#7d7d7d",                
+                    "anchorBorderHoverThickness" : "10",
+                    "anchorHoverRadius":"10",
+                    "showAnchors":"0"
+                },
+                "data": ['
+
+        for i in 0..tmpheartrate.count - 1
+          if i != tmpheartrate.count - 1
+            if (i + 1)%10 === 0
+              heartrate = heartrate + '{"label":"' + (i + 1).to_s + '", "value":' + tmpheartrate[i] + '},'
+            else
+              heartrate = heartrate + '{"value":' + tmpheartrate[i] + '},'
+            end
+          else
+            heartrate = heartrate + '{"label": "' + (i + 1).to_s + '", "value":' + tmpheartrate[i] + '}]}'
+          end
+        end
+      else
+        heartrate = '{
+                "chart": {
+                    "caption": "Heart Rate",
+                    "xAxisName": "Time Line",
+                    "yAxisName": "Heart Rate Level",
+                    "theme": "fint",
+                    "anchorBgHoverColor": "#7d7d7d",                
+                    "anchorBorderHoverThickness" : "4",
+                    "anchorHoverRadius":"7",
+                    "showAnchors":"0"
+                },
+                "data": []}'   
+      end
+
+      if chartdatafa.headposition.to_s.length != 0
+        @tmpheadposition = chartdatafa.headposition
+        @tmpheadposition = @tmpheadposition.gsub('x','')
+        @tmpheadposition = @tmpheadposition.gsub('y',' ')
+        @tmpheadposition = @tmpheadposition.gsub('z',' ')
+      else
+        @tmpheadposition = ""
+      end
+      
+      @tmphistory = tmpvrd
+    else
+      heartrate = '{
+              "chart": {
+                  "caption": "Oxygen Level",
+                  "xAxisName": "Time Line",
+                  "yAxisName": "O2 Level",
+                  "theme": "fint",
+                  "anchorBgHoverColor": "#7d7d7d",                
+                  "anchorBorderHoverThickness" : "4",
+                  "anchorHoverRadius":"7",
+                  "showAnchors":"0"
+              },
+              "data": []}'
+    end
+
+    @chart = Fusioncharts::Chart.new({
+        :height => 400,
+        :width => "100%",
+        :id => 'chart',
+        :type => 'line',
+        :renderAt => 'chart-container',
+        :dataSource => o2level
+    })
+
+    @chartR = Fusioncharts::Chart.new({
+        :height => 400,
+        :width => "100%",
+        :id => 'chart',
+        :type => 'line',
+        :renderAt => 'chart-containerR',
+        :dataSource => heartrate
+    })
   end
 
   private

@@ -4374,6 +4374,18 @@ table tbody tr {
     width: 100%!important;
 }
 
+.news_read_p p:nth-child(0) {
+    font-size: 30px!important;
+}
+
+.news_read_p p:nth-child(1) {
+    font-size: 20px!important;
+}
+
+.news_read_p p:nth-child(2) {
+    font-size: 22px!important;
+}
+
 .read-more:hover {
     cursor: pointer;
 }

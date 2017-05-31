@@ -983,22 +983,22 @@ html {
 }
 
 .account_sel {
-    height: 65px;
+    height: 60px;
     background-size: 60px 60px;
     background-repeat: no-repeat;
     padding-left: 70px;
     padding-top: 8px;
     font-size: 15px;
-    border-color: green;
+    margin-bottom: 5px;
 }
 
 .account_sel:nth-child(1) {
-    border: 4px dashed green;
+    box-shadow: 1px 0px 10px rgb(78, 86, 78);
 }
 
 .account_sel:hover {
     cursor: pointer;
-    border: 4px dashed green;
+    box-shadow: 1px 0px 10px rgb(78, 86, 78);
 }
 
 .account_name {
@@ -1059,4 +1059,8 @@ html {
 .refresh_a:focus {
     background-color: transparent!important;
     border-color: transparent!important;   
+}
+
+#pointer_profile_pointer {
+    float: left;
 }

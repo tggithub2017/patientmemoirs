@@ -61,7 +61,7 @@
         </div>
     </div>
     <div class="portlet-body form">
-        <form action="javascript;" class="dropzone dropzone-file-area dz-clickable" id="my-dropzone" style="width: 500px; margin-top: 50px;">
+        <form action="javascript;" class="dropzone dropzone-file-area dz-clickable" id="my-dropzone" style="width: 500px; margin-top: 50px;max-height: 300px;overflow: scroll;">
             <h3 class="sbold">Drop files here or click to upload</h3>
             <p> Please upload less than 3 images </p>
             <div class="dz-default dz-message"><span></span></div>
@@ -125,6 +125,7 @@
             $(".dz-hidden-input").prop("disabled",false);
             $(".dropzone-file-area p").html("Please upload less than 3 images");
             $(".dropzone-file-area p").css("color", "black");
+            $(".page-content").height(975);
         }
     });
 </script>

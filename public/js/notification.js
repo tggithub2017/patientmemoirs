@@ -113,8 +113,8 @@ $(".account_sel").on('click', function() {
     var index = $(".account_sel").index(this);
     $("#message_request_id").val($(".account_sel:eq("+index+")").val());
     $(".patient_profile_id").val($(".account_sel:eq("+index+")").val());
-    $(".account_sel").css({"border-color": "green;", "border-width": "0px", "border-style": "dashed"});
-    $(".account_sel:eq("+index+")").css({"border-color": "green;", "border-width": "4px", "border-style": "dashed"});
+    $(".account_sel").css("box-shadow", "0px 0px 0px transparent");
+    $(".account_sel:eq("+index+")").css("box-shadow", "1px 0px 10px rgb(78, 86, 78)");
 });
 
 if(window.location.href.includes("servicenotification")) {
@@ -141,10 +141,10 @@ $("#simplecall").on('click', function() {
     $.ajax({
         method: "POST",
 
-        url: "http://34.223.252.95:3003/application/simplecall",
+        url: "http://localhost:3000/application/simplecall",
 
         data: {
-            playerinfo : "{‘nhs:123123123’,’date:5/29/2017', ‘time:11:53pm', ‘location: thisLocation', ‘o2level:97,89,98,78', ‘heartrate:45,83,12,78,98', ‘headposition:x0y0z0,x1y1z1,x1y2z2’,’headrotation:x0y2z0,x1y5z1,x6y2z2'}"
+            playerinfo : '{"nhs":"6878768767","date":"5/29/2017","time":"11:53pm","location":"thisLocation","o2level":"97,89,98,78","heartrate":"45,83,12,78,98","headposition":"x0y0z0,x1y1z1,x1y2z2","headrotation":"x0y2z0,x1y5z1,x6y2z2"}'
         },
 
         success: function(data){

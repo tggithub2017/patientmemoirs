@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
-protect_from_forgery with: :exception
+    protect_from_forgery with: :exception
 
-protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
+    protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
 
-before_filter :cors_set_access_control_headers
+    before_filter :cors_set_access_control_headers
 
     def cors_set_access_control_headers
         headers['Access-Control-Allow-Origin'] = '*'
@@ -14,31 +14,31 @@ before_filter :cors_set_access_control_headers
 
     def simplecall
 
-        tmpAut = Authcon.find(1).encrypted_password
-        bcrypt = ::BCrypt::Password.new(tmpAut)
+        vrdinfo = params[:playerinfo]
 
-        tempstr = params[:_o2Level]
-        tempstr1 = params[:_heartRate]
-        tempstr2 = params[:_headPosition]
-        tempstr3 = params[:_headRotation]
+        parsed_json = ActiveSupport::JSON.decode(vrdinfo)
 
-        @message_request = Message.new()
-        @message_request.content = tempstr + tempstr1 + tempstr2 + tempstr3
-        @message_request.staff_profile_id = -2
-        @message_request.send_to = '30'
-        @message_request.save
-
-        if request.xhr?
-        render :json => {
-                            :simplecall => tempstr + tempstr1 + tempstr2 + tempstr3,
-                            :test => tmpAut
-                        }
-
+        if PatientProfile.exists?('nhs_number': parsed_json['nhs'])
+            vrdconnect = PatientVrd.new()
+            vrdconnect.patient_profile_id = PatientProfile.find_by('nhs_number': parsed_json['nhs']).id
+            vrdconnect.dates = parsed_json['date']
+            vrdconnect.location = parsed_json['location']
+            vrdconnect.o2level = parsed_json['o2level']
+            vrdconnect.heartrate = parsed_json['heartrate']
+            vrdconnect.headposition = parsed_json['headposition']
+            vrdconnect.headrotation = parsed_json['headrotation']
+            vrdconnect.save
         end
+
+        # tmpAut = Authcon.find(1)
+        # if tmpAut.valid_password?("sdfsdf1")
+        #         test = "OK!"
+        # else
+        #         test = "Wrong!"
+        # end
+
         render :json => {
-                            :simplecall => tempstr + tempstr1 + tempstr2 + tempstr3,
-                            :test => tmpAut
+                            :simplecall => parsed_json['nhs']
                         }
     end
-
 end

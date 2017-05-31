@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   post 'dashboardpage/message'
   post 'dashboardpage/specialistspostinsert'
   get 'dashboardpage/page'
+  get 'dashboardpage/profilepatient'
   #page routes
   get 'dashboardpage/profilestaff', to: 'dashboardpage#profilestaff'
   get 'dashboardpage/profilepatient', to: 'dashboardpage#profilepatient'
